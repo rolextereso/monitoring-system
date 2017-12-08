@@ -1,0 +1,71 @@
+.twitter-typeahead{
+  display: block !important;
+}
+
+.tt-hint {
+  color: #999999;
+}
+.tt-menu {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 12px;
+  padding: 8px 10px;
+  width: 422px;
+}
+.tt-suggestion {
+  font-size: 15px;  
+  padding: 3px 20px;
+}
+
+.tt-selectable{
+  border-radius: 4px;
+}
+.tt-suggestion:hover {
+  cursor: pointer;
+  background-color: #0097CF;
+  color: #FFFFFF;
+}
+.tt-suggestion p {
+  margin: 0;
+}
+
+.Typeahead-spinner {
+    position: absolute;
+    top: 36px;
+    right: 27px;
+    display: none;
+    width: 28px;
+    height: 28px;
+}
+
+.bs-example .EmptyMessage {
+   padding: 5px 16px;
+   text-align: center;
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.red {
+   color: red;
+}
+
+.green {
+   color: green;
+}
+
+h5.close_item{
+            color: red;
+            cursor: pointer;
+}
+
+button{
+            cursor:pointer;
+}
+
+h1#total_amount, h2#transaction_id{
+  text-align: center;
+}
