@@ -7,11 +7,7 @@
       color:white !important;
     }
 
-    #dataTable tr td {
-        height: 30px;
-        padding-bottom:0.1rem ;
-        padding-top:0.1rem ;
-    }
+   
 
     .edit{
           padding: 0px 6px;
@@ -36,8 +32,8 @@
               <div class="card-body">
                        <div class="table-responsive">                               
 
-                               <table class="table table-striped table-hover table-bordered" id="dataTable" width="100%">
-                                  <thead>
+                               <table class="table table-striped table-hover table-bordered" id="dataTable" width="100%" cellpadding="0" cellspacing="0">
+                                  <thead class="thead-dark">
                                         <tr>  <th>Picture</th>
                                               <th>First Name</th>
                                               <th>Last Name</th>

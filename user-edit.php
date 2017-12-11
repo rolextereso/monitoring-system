@@ -16,25 +16,26 @@
     if(isset($_GET['u'])){
         //getting id from url
         $id = $crud->escape_string($_GET['u']);
-         
-        //selecting data associated with this particular id
-        $result = $crud->getData("SELECT * FROM users WHERE user_id=$id LIMIT 1");
-        
-        $user_found=(count($result)==1)?true:false;
+
+        if(is_numeric($id) && $id!=''){
        
-        foreach ($result as $res) {
-            $user_id   = $res['user_id'];
-            $firstname = $res['firstname'];
-            $lastname  = $res['lastname'];
-            $username  = $res['username'];
-            $user_type =$res['user_type'];
-            $status =$res['status'];
-            $profile_pic =$res['profile_pic'];
-          
+            //selecting data associated with this particular id
+            $result = $crud->getData("SELECT * FROM users WHERE user_id=$id LIMIT 1");
+            
+            $user_found=(count($result)==1)?true:false;
+           
+            foreach ($result as $res) {
+                $user_id   = $res['user_id'];
+                $firstname = $res['firstname'];
+                $lastname  = $res['lastname'];
+                $username  = $res['username'];
+                $user_type =$res['user_type'];
+                $status =$res['status'];
+                $profile_pic =$res['profile_pic'];
+              
+            }
         }
     }
-
-
 ?>  
 
 
@@ -243,6 +244,7 @@
                                     },
                                   error: function() 
                                     {
+                                      $('.spinner').hide();
                                         //alert('error: please contact the developer');
                                     }           
                                  });

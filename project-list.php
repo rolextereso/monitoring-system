@@ -16,6 +16,21 @@
     .edit{
           padding: 0px 6px;
     }
+
+    tr[role='row'] td small {
+        display: none;
+    }
+
+    tr.group.group-start td {
+        background: #e9ecef;
+        font-weight: bold;
+    }  
+
+    tr.group.group-start td small {
+        color:blue;
+        font-style: italic;
+    }    
+
 </style>
 
 <?php require_once('layout/nav.php');?>
@@ -23,7 +38,7 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a> / Project List</li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a> / Project List </li>
               </ol>
            </nav>
 
@@ -31,18 +46,20 @@
          <div class="card">
               <div class="card-header">
                 <i class="fa fa-table"></i> Projects
-                <a href='project-register.php' type="button" class="btn btn-info" style="float:right;"><i class="fa fa-plus" aria-hidden="true"></i> Add Project</a>
+               
               </div>
               <div class="card-body">
                        <div class="table-responsive">                               
 
-                               <table class="table table-striped table-hover table-bordered" id="dataTable" width="100%">
-                                  <thead>
-                                        <tr>  <th>No.</th>
+                               <table class="table table-hover " id="dataTable" width="100%" cellpadding="0" cellspacing="0">
+                                  <thead class="thead-dark">
+                                        <tr> 
+                                              <th>Product Name</th>
                                               <th>Project Name</th>
                                               <th>Project Description</th>                                             
                                               <th>Project In-Charge</th>
                                               <th>Project status</th>
+                                              <th>Price</th>
                                               <th>Commands</th>
                                         </tr>
                                   </thead>
@@ -55,6 +72,7 @@
 
       <script src="assets/datatables/jquery.dataTables.js"></script>
       <script src="assets/datatables/dataTables.bootstrap4.js"></script> 
+      <script src="assets/dataTables.rowGroup.min.js"></script> 
       <script>   
 
           $(document).ready(function(){
@@ -64,7 +82,7 @@
                                   "serverSide": true,
                                   "searching" : true,
                                   "ajax":{
-                                    url :"phpscript/projectSetup/projectList.php", // json datasource
+                                    url :"phpscript/projectSetup/projectList.php", // json datasource                                
                                     
                                     error: function(){  // error handling
                                       $(".employee-grid-error").html("");
@@ -72,10 +90,26 @@
                                       $("#employee-grid_processing").css("display","none");
                                       
                                     }
-                                  }
+                                  },
+                                      columns: [
+                                          { data: 0 },
+                                          { data: 1 },
+                                          { data: 2 },
+                                          { data: 3 },
+                                          { data: 4 },
+                                          { data: 5 },
+                                          { data: 6 },
+                                   
+                                      ],
+                                      order: [[1, 'asc']],
+                                      rowGroup: {
+                                          dataSrc: 1
+                                      },
+                                      columnDefs: [ {
+                                          targets: [4, 5, 6], // column or columns numbers
+                                          orderable: false,  // set orderable for selected columns
+                                      }]
                                 } );  
-
-
           });
       </script>
 <?php require_once('layout/footer.php');?>      

@@ -25,10 +25,16 @@ class Crud extends DbConfig
         return $rows;
     }
 
+    public function commit(){
+        $this->connection->commit();
+    }
+
+
     private function autoCommit(){
         $this->connection->autocommit(FALSE);
-    }
-        
+    }      
+
+
     public function execute($query) 
     {
         $this->autoCommit();//trigger auto commit disable
@@ -43,6 +49,23 @@ class Crud extends DbConfig
         } else {
             $this->connection->commit();
             
+            return true;
+        }        
+    }
+
+    public function executeUnAutoCommit($query) 
+    {
+        $this->autoCommit();//trigger auto commit disable
+
+        $result = $this->connection->query($query);
+        
+        if ($result == false) {
+            //echo 'Error: cannot execute the command';
+            $this->connection->rollback();
+
+            return false;
+        } else {
+                      
             return true;
         }        
     }

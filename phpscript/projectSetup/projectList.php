@@ -25,8 +25,12 @@ $result = $crud->getData($query);
 $totalData= count($result);
 $totalFiltered=$totalData;
 
-$sql = "SELECT * ";
-$sql.=" FROM projects WHERE 1=1";
+$sql = "SELECT pd.product_id,pr.project_id, price, product_name, project_name, project_description, CONCAT(firstname,' ',lastname) AS incharge, pd.product_status  ";
+$sql.=" FROM projects pr";
+$sql.=" INNER JOIN products pd ON pd.project_id= pr.project_id ";
+$sql.=" INNER JOIN product_price pc ON pc.price_id= pd.product_price ";
+$sql.=" INNER JOIN users u ON u.user_id= pr.project_incharge ";
+$sql.=" WHERE 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -41,6 +45,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	$sql.=" OR project_incharge LIKE '".$requestData['search']['value']."%' )";
 }
 
+
 $result = $crud->getData($sql);
 $totalFiltered = count($result); 
 
@@ -52,13 +57,14 @@ $data=array();
 $count=1;
 foreach($result as $key =>$row){
 	$nestedData=array(); 
-	$nestedData[] = $count++;
-    $nestedData[] = $row["project_name"];
-	$nestedData[] = $row["project_description"];
-	$nestedData[] = $row["project_incharge"];
-	$nestedData[] = $row["project_status"];
 
-	$nestedData[] = "<a title='Edit Project' href='project-edit.php?u=".$row["user_id"]."' class='edit btn btn-success'><i class='fa fa-pencil-square-o'></i></a>";
+	$nestedData[] = $row["product_name"];
+    $nestedData[] = $row["project_name"]." <small><a href='project-register.php?edit=".$row['project_id']."'>[edit]</a></small>";
+	$nestedData[] = $row["project_description"];
+	$nestedData[] = $row["incharge"];
+	$nestedData[] = ($row["product_status"]=='Y')?'<span class="badge badge-success">Active</span>':'<span class="badge badge-warning">Unactive</span>';
+	$nestedData[] = "&#8369; ".$row["price"];
+	$nestedData[] = "<a href='product-register.php?edit=".$row['product_id']."'><i class='fa fa-pencil'></i></a>";
 	
 	$data[] = $nestedData;
 }

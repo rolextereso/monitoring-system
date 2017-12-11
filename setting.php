@@ -39,7 +39,7 @@
                               <div class="card-body" style="text-align: center;">
                                     <h4 class="card-title">Project Setup</h4>
                                     <p class="card-text">This module used to add, edit and set user role and status of the user.</p>
-                                    <a href="project-list.php" class="btn btn-primary">View Setting</a>
+                                    <a href="project-register.php" class="btn btn-primary">View Setting</a>
                               </div>
                           </div>
                         </div>
@@ -49,7 +49,7 @@
                                 <div class="card-body" style="text-align: center;">
                                       <h4 class="card-title">Product Setup</h4>
                                       <p class="card-text">This module used to add, edit and set user role and status of the user.</p>
-                                      <a href="user-list.php" class="btn btn-primary">View Setting</a>
+                                      <a href="product-register.php" class="btn btn-primary">View Setting</a>
                                 </div>
                             </div>
                         </div>

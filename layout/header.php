@@ -33,6 +33,16 @@
                   z-index: 10000;
                   display: none;
               }
+
+              .table-bordered td, .table-bordered th {
+                 border: none !important;
+              }
+
+              #dataTable tr td {
+                  height: 30px;
+                  padding-bottom:0.1rem ;
+                  padding-top:0.1rem ;
+              }
           </style>
 
 </head>
