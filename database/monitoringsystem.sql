@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2017 at 11:52 PM
+-- Generation Time: Dec 13, 2017 at 10:48 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -21,6 +21,37 @@ SET time_zone = "+00:00";
 --
 -- Database: `monitoringsystem`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(45) DEFAULT NULL,
+  `customer_address` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALUES
+(3, 'df', 'df'),
+(4, 's', 's'),
+(5, 'd', 'd'),
+(6, 'd', 'd'),
+(7, 'd', 'd'),
+(8, 'h', 'h'),
+(9, 'df', 'fg'),
+(10, 'df', 'fg'),
+(11, 'd', 'd'),
+(12, 'd', 'd'),
+(13, 'd', 'd'),
+(14, 'd', 'd'),
+(15, 'd', 'd');
 
 -- --------------------------------------------------------
 
@@ -122,16 +153,72 @@ INSERT INTO `projects` (`project_id`, `project_name`, `project_description`, `pr
 CREATE TABLE `sales_record` (
   `sales_id` int(11) NOT NULL,
   `or_number` varchar(45) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `product_price` double DEFAULT NULL,
-  `quantity_sold` double DEFAULT NULL,
-  `amount` double DEFAULT NULL,
-  `customer_name` varchar(45) DEFAULT NULL,
-  `customer_address` varchar(105) DEFAULT NULL,
+  `total_amount` double DEFAULT NULL,
   `mode_of_payment` varchar(45) DEFAULT NULL,
   `sold_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `user_id` int(11) DEFAULT NULL
+  `user_id` int(11) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sales_record`
+--
+
+INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_payment`, `sold_date`, `user_id`, `customer_id`) VALUES
+(5, 'ddddd', 1000, 'cash', '2017-12-12 20:51:33', 1, 3),
+(6, '11111', 1000, 'cash', '2017-12-12 20:53:26', 1, 4),
+(7, 'sfsf', 1000, 'cash', '2017-12-12 22:34:29', 1, 5),
+(8, '222222', 1000, 'cash', '2017-12-12 22:35:26', 1, 6),
+(9, 'dfdfd', 10, 'cash', '2017-12-12 22:50:19', 1, 7),
+(10, 'fgfgfg', 40, 'cash', '2017-12-12 22:51:03', 1, 8),
+(11, 'dfsf', 0, 'cash', '2017-12-13 14:58:24', 1, 9),
+(12, 'dfsf', 0, 'cash', '2017-12-13 14:58:33', 1, 10),
+(13, 'd', 0, 'cash', '2017-12-13 15:00:58', 1, 11),
+(14, '1', 0, 'cash', '2017-12-13 15:01:53', 1, 12),
+(15, '1', 0, 'cash', '2017-12-13 15:01:58', 1, 13),
+(16, 'd', 1080, 'cash', '2017-12-13 16:03:08', 1, 14),
+(17, 'd', 1010, 'cash', '2017-12-13 16:06:29', 1, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sales_specific`
+--
+
+CREATE TABLE `sales_specific` (
+  `sales_specific_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `amount` double DEFAULT NULL,
+  `or_number` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sales_specific`
+--
+
+INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `amount`, `or_number`) VALUES
+(5, 2, 2, 20, 5),
+(6, 14, 1, 10, 5),
+(7, 5, 1, 100, 6),
+(8, 14, 1, 10, 6),
+(9, 2, 1, 10, 6),
+(10, 14, 1, 10, 7),
+(11, 2, 1, 10, 7),
+(12, 6, 1, 1, 8),
+(13, 14, 1, 10, 8),
+(14, 2, 2, 20, 8),
+(15, 2, 1, 10, 9),
+(16, 2, 4, 40, 10),
+(17, 2, 2, 20, 11),
+(18, 2, 2, 20, 12),
+(19, 2, 1, 10, 13),
+(20, 2, 1, 10, 14),
+(21, 2, 1, 10, 15),
+(22, 7, 4, 80, 16),
+(23, 13, 1, 1, 16),
+(24, 13, 1, 1, 17),
+(25, 2, 1, 10, 17);
 
 -- --------------------------------------------------------
 
@@ -157,11 +244,18 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`, `hint`, `status`, `profile_pic`, `user_type`, `created_on`) VALUES
-(1, 'Rolly', 'Tereso', 'admin', 'ƒ¡‡X¼“ÇÃ²üÀ‰£', '111', 'N', NULL, 1, '2017-12-11 17:35:10');
+(1, 'Rolly', 'Tereso', 'admin', 'ƒ¡‡X¼“ÇÃ²üÀ‰£', '111', 'N', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-11 17:35:10'),
+(2, 'Christine', 'Gondaya', 'christine', 'skÜ…°Ï’ôÇä¥kO\0', 'Case Number', 'N', NULL, 1, '2017-12-12 17:24:05');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`customer_id`);
 
 --
 -- Indexes for table `products`
@@ -190,8 +284,16 @@ ALTER TABLE `projects`
 --
 ALTER TABLE `sales_record`
   ADD PRIMARY KEY (`sales_id`),
-  ADD KEY `fprodId_idx` (`product_id`),
-  ADD KEY `fuserId_idx` (`user_id`);
+  ADD KEY `fuserId_idx` (`user_id`),
+  ADD KEY `fk_customer_idx` (`customer_id`);
+
+--
+-- Indexes for table `sales_specific`
+--
+ALTER TABLE `sales_specific`
+  ADD PRIMARY KEY (`sales_specific_id`),
+  ADD KEY `fk_pro_idx` (`product_id`),
+  ADD KEY `fk_sale_idx` (`or_number`);
 
 --
 -- Indexes for table `users`
@@ -203,6 +305,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -222,12 +329,17 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `sales_specific`
+--
+ALTER TABLE `sales_specific`
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
@@ -250,8 +362,15 @@ ALTER TABLE `projects`
 -- Constraints for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  ADD CONSTRAINT `fprodId` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fuserId` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sales_specific`
+--
+ALTER TABLE `sales_specific`
+  ADD CONSTRAINT `fk_pro` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sale` FOREIGN KEY (`or_number`) REFERENCES `sales_record` (`sales_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
