@@ -3,8 +3,25 @@
    <script  type="text/javascript" src="https://www.tutorialrepublic.com/examples/js/typeahead/0.11.1/typeahead.bundle.js"></script>
    <script type="text/javascript" src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
    <script type="text/javascript" src="assets/typeahead.js"></script>
-   <link href="assets/typeahead.css" rel="stylesheet">
+   <link href="assets/typeahead.css" rel="stylesheet">  
+   <style>
+      #total_and_change h1{
+        border-bottom:none;
+        margin-bottom: 0px;
+        text-align: center;
+      }
 
+      .form-group{
+        margin-bottom: 0px;
+      }
+
+      #total_amount_cont{
+        background: black;
+        color: #28a745;
+        border-radius:5px;
+        border: 2px solid #28a745;
+      }
+   </style>
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
@@ -13,23 +30,49 @@
                     <li class="breadcrumb-item active" aria-current="page">Home</li>
               </ol>
           </nav>
-
-          <div class="row  ">
-              <div class="col-sm-8">
-                    <label>Enter Product Item or Number</label>
-                    <input type="text" class="typeahead tt-query form-control" autocomplete="off" spellcheck="false" placeholder="Type here.." />
-                    <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
+     <form data-toggle="validator" role="form" id="form">
+       <div class="row">
+          <div class="col-sm-8">
+            <div class="row">
+               <div class="col-sm-6 form-group">
+                    <label>Customer Name:</label>
+                    <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required />
+                                         
               </div>
-               <div class="col-sm-3">
-                  <small>Total Amount</small>
-                  <h1 id="total_amount">0.00</h1>
+              <div class="col-sm-6 form-group">
+                    <label>Customer Address:</label>
+                    <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
+                    <br/>                
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                    <label>Enter Product Item</label>
+                    <input autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.." />
+                    <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
+                     <br/>
+              </div>
+            </div>            
+
+          </div>
+          <div class="col-sm-3" id="total_and_change">
+               <div class="col-sm-12" id="total_amount_cont">
+                  <span>Total Amount</span>
+                  <h1 id="total_amount" >&#8369; 0.00</h1>
+                  <input type='hidden' id="total_amount_" name="total_amount">                 
+               </div>
+              <div class="col-sm-12">
+                  <span>Change:</span>
+                  <h1 id="change">&#8369; 0.00</h1>                 
                </div>
           </div>
-        
+        </div>
+          
           <div class="row">
               <div class="table-responsive col-sm-8" style="height: 408px;overflow-y:auto;">
-                      <table class="table table-striped table-bordered table-hover">
-                        <thead>
+                      <table class="table table-hover table-dark table-striped" id="dataTable">
+                        <thead class="thead-dark">
                           <tr>
                             <th></th>
                             <th>Description</th>
@@ -39,33 +82,216 @@
                           </tr>
                         </thead>
                         <tbody>
+                          
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"></th>
+                            <th></th>
+                          </tr>                          
                         </tbody>
                       </table>
               </div>
-              <div class="col-sm-3" style="border:1px solid silver;">
-                  <small>Transaction ID</small>
-                  <h2 id="transaction_id">1232444-12</h2>
-                  <hr/>
-                  <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">$</span>
-                    <input type="text" class="form-control" placeholder="0.00" aria-label="Username" >
+              <div class="col-sm-3" style="border:1px solid silver;background: #f8f9f5e6;">                  
+                  <label> OR Number:</label>
+                  <div class="input-group form-group">                
+                    <input autocomplete="off" type="text" class="form-control" placeholder="xxxx-xxx-xxx" name="or" required >
                   </div>
+                  <hr/>
+                  <label> Amount Tendered:</label>
+                  <div class="input-group form-group">
+                    <span class="input-group-addon" id="basic-addon1">&#8369;</span>
+                    <input autocomplete="off" type="text" id="amount" name="amount_tendered" class="form-control" placeholder="0.00"  required>
+                  </div>
+                  <hr/>
+                  <label> Mode of Payment:</label>
+                  <div class="input-group form-group">
+                      <select name="mode-payment" class="form-control">
+                          <option value="cash">Cash</option>
+                          <option value="check">Check</option>
+                      </select>
+                  </div>
+                  <hr/>
+                 <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Payment</button>
+                 
+                 <button type="button" class="btn btn-danger btn-block" style="padding: .375rem .75rem;font-size: 1rem;" >Print Preview</button>
+                
               </div>
-          
-        </div>
+            </div>
+          </form>
         </main>
-
+          <script src='assets/validator.min.js'></script>   
+          <script src='assets/numberFormat.js'></script>   
           <script id="empty-template" type="text/x-handlebars-template">
                 <div class="EmptyMessage">Your search turned up 0 results. Maybe because the item is out of stock </div>
           </script>
 
           <script id="result-template" type="text/x-handlebars-template">
-                 <div style="border-bottom: 1px solid silver;">
-                        <div>
-                              PNO: <strong>{{value}}</strong> <br>
-                              <small>{{value}}</small>
-                        </div>
-                        <small>Available Quantity: 2</small>            
+                 <div style="border-bottom: 1px solid silver;">                        
+                              <strong style="width:60%">{{product_name}}</strong>
+                              <h6 style="float:right;">&#8369; {{price}}/{{unit_of_measurement}}</h6>
+                        <br/>
+                        <small>Project Name: {{project_name}}</small>            
                  </div>
           </script>
+          <script>
+          $(function() {
+                  $('#form').validator();
+                  // when the form is submitted
+                  $('#form').on('submit', function (e) {
+                      // if the validator does not prevent form submit
+                      if (!e.isDefaultPrevented()) {
+                                var url = "phpscript/savePayment/savePayment.php";
+                                var amount=parseFloat($('#amount').val());
+                                var total_amount=parseFloat($('#total_amount_').val());
+                                if(amount<total_amount){
+                                     $('.alert').removeClass('alert-success, alert-danger')
+                                                       .addClass('alert-danger')
+                                                       .html("<b>Amount tendered</b> must be exact or greater than the <b>total amount</b>")
+                                                       .fadeIn(100,function(){
+                                                           $(this).fadeOut(5000);
+                                                       });
+                                }else{
+                                    // POST values in the background the the script URL
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        dataType   : 'json',
+                                        data: $(this).serialize(),
+                                        success: function (data)
+                                        {
+                                            $('.alert').removeClass('alert-success, alert-danger')
+                                                       .addClass(data.type)
+                                                       .html(data.message)
+                                                       .fadeIn(100,function(){
+                                                           $(this).fadeOut(5000);
+                                                       });
+                                            if(data.type=='success'){
+                                               $('#form')[0].reset();
+                                               $('tr[row]').remove();
+                                               total_amount();
+                                            }
+                                            
+                                        }
+                                    });
+                                }
+                                    return false;
+                      }
+                  });
+
+                 
+
+                  $('input#amount').keyup(function (event) {
+                      // skip for arrow keys
+                      if (event.which >= 37 && event.which <= 40) {
+                          event.preventDefault();
+                      }
+
+                      var currentVal = ($(this).val()=="")? '0.00':$(this).val();                    
+
+                      var testDecimal = testDecimals(currentVal);
+                      if (testDecimal.length > 1) {
+                          console.log("You cannot enter more than one decimal point");
+                          currentVal = currentVal.slice(0, -1);
+                      }
+
+                      $(this).val(replaceCommas(currentVal));  
+                      change(currentVal);               
+
+                });
+            });
+
+            function change(value){
+              console.log(value);
+                 
+                      var total_amount = parseFloat($('#total_amount_').val());
+                      var change=parseFloat(value.replace(',',''))-total_amount;
+                      $("#change").html("&#8369; "+change.format(2));
+            }
+</script>
 <?php require_once('layout/footer.php');?>      

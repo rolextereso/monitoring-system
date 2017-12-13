@@ -25,6 +25,9 @@
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
           <style>
+              body{
+                font-size: 13px !important;
+              }
               .alert{
                   position: fixed;
                   top: 25px; 
@@ -42,6 +45,16 @@
                   height: 30px;
                   padding-bottom:0.1rem ;
                   padding-top:0.1rem ;
+              }
+              
+              .btn{
+                font-size: 13px;
+              }
+
+              .has-error .form-control {
+                border-color: #a94442;
+                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
               }
           </style>
 

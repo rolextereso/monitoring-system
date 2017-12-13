@@ -49,13 +49,7 @@
   font-weight: bold;
 }
 
-.red {
-   color: red;
-}
 
-.green {
-   color: green;
-}
 
 h5.close_item{
             color: red;
@@ -64,8 +58,13 @@ h5.close_item{
 
 button{
             cursor:pointer;
+
 }
 
 h1#total_amount, h2#transaction_id{
   text-align: center;
+}
+
+.btn-primary{
+   padding: 2px 7px;
 }

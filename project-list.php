@@ -42,34 +42,24 @@
               </ol>
            </nav>
 
-        
-         <div class="card">
-              <div class="card-header">
-                <i class="fa fa-table"></i> Projects
-               
-              </div>
-              <div class="card-body">
-                       <div class="table-responsive">                               
-
-                               <table class="table table-hover " id="dataTable" width="100%" cellpadding="0" cellspacing="0">
-                                  <thead class="thead-dark">
-                                        <tr> 
-                                              <th>Product Name</th>
-                                              <th>Project Name</th>
-                                              <th>Project Description</th>                                             
-                                              <th>Project In-Charge</th>
-                                              <th>Project status</th>
-                                              <th>Price</th>
-                                              <th>Commands</th>
-                                        </tr>
-                                  </thead>
-                              </table>
-                      </div>
-              </div>
-        </div>
+           <div class="table-responsive">                          
+                    <table class="table table-hover" id="dataTable" width="100%" cellpadding="0" cellspacing="0">
+                      <thead class="thead-dark">
+                            <tr> 
+                                  <th>Product Name</th>
+                                  <th>Project Name</th>
+                                  <th>Project Description</th>                                             
+                                  <th>Project In-Charge</th>
+                                  <th>Status</th>
+                                  <th>Price</th>
+                                  <th>Commands</th>
+                            </tr>
+                      </thead>
+                  </table>
+          </div>
+              
         </div>
       </main>
-
       <script src="assets/datatables/jquery.dataTables.js"></script>
       <script src="assets/datatables/dataTables.bootstrap4.js"></script> 
       <script src="assets/dataTables.rowGroup.min.js"></script> 

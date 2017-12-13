@@ -14,11 +14,7 @@
       max-height: 100%;
   }
 
-  .has-error .form-control {
-    border-color: #a94442;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-  }
+
 
 </style>
 

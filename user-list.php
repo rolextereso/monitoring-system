@@ -7,8 +7,6 @@
       color:white !important;
     }
 
-   
-
     .edit{
           padding: 0px 6px;
     }

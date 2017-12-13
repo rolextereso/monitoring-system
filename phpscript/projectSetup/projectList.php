@@ -62,7 +62,7 @@ foreach($result as $key =>$row){
     $nestedData[] = $row["project_name"]." <small><a href='project-register.php?edit=".$row['project_id']."'>[edit]</a></small>";
 	$nestedData[] = $row["project_description"];
 	$nestedData[] = $row["incharge"];
-	$nestedData[] = ($row["product_status"]=='Y')?'<span class="badge badge-success">Active</span>':'<span class="badge badge-warning">Unactive</span>';
+	$nestedData[] = ($row["product_status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] = "&#8369; ".$row["price"];
 	$nestedData[] = "<a href='product-register.php?edit=".$row['product_id']."'><i class='fa fa-pencil'></i></a>";
 	

@@ -44,9 +44,7 @@ if(isset($_POST['product_name'])){
 		}
 		 
 
-		 echo print_message($result, '<strong>Success:</strong> Product successfully save.','<strong>Error:</strong> Product not saved, please contact the developer.');
-
-		
+		 echo print_message($result, '<strong>Success:</strong> Product successfully save.','<strong>Error:</strong> Product not saved, please contact the developer.');	
 
 }
 ?>

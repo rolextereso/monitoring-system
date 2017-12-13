@@ -1,5 +1,5 @@
   $(document).ready(function(){
-              var city, template, empty; 
+              var product, template, empty; 
 
               /* below code is for typeahead once user type text on the textbox*/
 
@@ -7,11 +7,11 @@
               empty = Handlebars.compile($("#empty-template").html());
               
               // Constructing the suggestion engine
-              var city = new Bloodhound({
+              var product = new Bloodhound({
                   datumTokenizer: Bloodhound.tokenizers.whitespace,
                   queryTokenizer: Bloodhound.tokenizers.whitespace,
                   remote: {
-                  url: 'city.php?query=%QUERY',
+                  url: 'phpscript/ProductSelection/getProduct.php?query=%QUERY',
                   wildcard: '%QUERY'
                 }
               });
@@ -23,18 +23,23 @@
                   minLength: 1 /* Specify minimum characters required for showing result */
               },
               {
-                  name: 'city',
-                  source: city,
-                  display: 'value',
-                  limit: 4,
+                  name: 'product_name',
+                  source: product,
+                  display: 'product_name',
+                  limit: 10,
                   templates: {
                   notFound: empty,
                   suggestion: template
               }
               }).on('typeahead:selected', function(e,suggestion){
-                input_.typeahead('val','');
+                  input_.typeahead('val','');
                   //console.log('Selection: ' + suggestion.value);
-                   $(".table tbody").append(render(suggestion));
+                  if($("[row='_"+suggestion.id+"']").length==1){
+                       addQuantity($("[row='_"+suggestion.id+"']").attr('num'));
+                  }else{
+                       $(".table tbody").prepend(render(suggestion));                  
+                  }
+
                   totalAmount();
               }).on('typeahead:asyncrequest', function() {
                  $('.Typeahead-spinner').show();
@@ -52,14 +57,16 @@
   };
 
   function render(object){
+        var price=object.price.replace(',','');
         count++;//increase the count value by 1
-        return "<tr id='row"+count+"'><td> <h5 class='close_item' onclick='remove("+count+")'>&Cross;</h5>"
-                  +"</td><td>"+1
-                  +"</td><td>"+1
-                  +"</td><td ><div id='_"+count+"'>1</div>"
+        return "<tr id='row"+count+"' row='_"+object.id+"' num='"+count+"'><td> "+
+                  "<input type='hidden' value='"+object.id+"' name='product_id[]' /> <h5 class='close_item' onclick='remove("+count+")'>&Cross;</h5>"
+                  +"</td><td>"+object.product_name
+                  +"</td><td>"+object.price+"/"+object.unit_of_measurement
+                  +"</td><td ><input type='hidden' id='q_"+count+"' name='quantity[]' value='1' /><div id='_"+count+"'>1</div>"
                   +"</td><td><button type='button' onclick='addQuantity("+(count)+")' class='btn btn-primary'>&plus;</button> "
                   +"<button type='button' onclick=subtractQuantity("+(count)+") class='btn btn-primary'>&ndash;</button>"
-                  +"</td><td class='amount' amount='205.50' a_id="+count+">"+205.50
+                  +"</td><input type='hidden' id='a_"+count+"' name='amount[]' value='"+object.price+"'/><td class='amount' amount='"+price+"' a_id="+count+">"+object.price
               +"</td></tr>";
                  
   }
@@ -74,10 +81,12 @@
         var quantity=parseInt($("div#_"+index).text())+1;
         var presentAmount=parseFloat($("[a_id="+index+"]").attr("amount"));//actual amount per item
         var amount=quantity*presentAmount;//multiplied by the number of quantity
-
+        $('#q_'+index).val(quantity); 
 
         $("[a_id="+index+"]").html(amount.format(2));
         $("div#_"+index).html(quantity);
+
+         $("#a_"+index).val(amount);
         totalAmount();
  }
 
@@ -90,8 +99,11 @@
         var amount=quantity*actualAmount; //get the deducted amount
 
         if(quantity>=1){
+            $('#q_'+index).val(quantity);
             $("div#_"+index).html(quantity).addClass("bounce animated bold");
             $("[a_id="+index+"]").html(amount.format(2));
+            $("#a_"+index).val(amount);
+
              totalAmount();
 
             setTimeout(function (){
@@ -104,20 +116,30 @@
  function totalAmount(){
         var total = 0.00;
         var amount= $(".amount");
+        var currentVal = ($('#amount').val()=="")?'0.00':$('#amount').val();
+
         if(amount.length>0){
               $(".amount").each(function() {   
-                    total += parseFloat($(this).text().replace(',',''));         
-                    $("#total_amount").text(total.format(2)).addClass("pulse animated green");//animate once amount added
+                    total += parseFloat($(this).text().replace(',',''));
+                   
+                    $("#total_amount").html('&#8369; '+total.format(2)).addClass("pulse animated green");//animate once amount added
+                    $("#total_amount_").val(total);
 
-                     setTimeout(function (){
+                    change(currentVal);
+
+                    setTimeout(function (){
                        $("#total_amount").removeClass("pulse animated green");//remove the animation after 1 sec
-                     }, 1000);          
+                    }, 1000);          
               });
         }else{
-               $("#total_amount").text(total.format(2)).addClass("pulse animated red");//animate once amount added
+                 
+               $("#total_amount").html('&#8369; '+total.format(2)).addClass("pulse animated red");//animate once amount added
+               $("#total_amount_").val(total);
 
-                setTimeout(function (){
+               $('#change').html('&#8369; 0.00');
+
+               setTimeout(function (){
                        $("#total_amount").removeClass("pulse animated red");//remove the animation after 1 sec
-                }, 1000);  
+               }, 1000);  
         }
  }
