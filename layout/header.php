@@ -22,7 +22,7 @@
           <!-- animation css -->
           <link href="./assets/animate.css" rel="stylesheet">
 
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+          <script src="./assets/jquery.1.12.4.min.js"></script>
 
           <style>
               body{

@@ -118,7 +118,7 @@
                                               <div class="col-md-6">
                                                  <div class="form-group">
                                                       <label for="exampleInputLastName">Project Description</label>
-                                                      <textarea rows="4" cols="50" class="form-control " name="project_description" style="margin-top: 0px; margin-bottom: 0px; height: 263px;">
+                                                      <textarea rows="5" class="form-control " name="project_description" style="margin-top: 0px; margin-bottom: 0px;">
                                                         <?php echo($project_description=='')?'':$project_description;?></textarea>
                                                   </div>
 

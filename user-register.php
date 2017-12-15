@@ -54,12 +54,12 @@
                                         </div>
                                       
                                         <div class="form-group">
-                                                  <label for="exampleInputEmail1">Username*</label>
+                                                  <label  >Username*</label>
                                                   <input class="form-control form-control-sm" id="username" name="username" type="text"  placeholder="Enter username" required>
                                         </div>
 
                                         <div class="form-group">
-                                                  <label for="exampleInputEmail1">Access Role*</label>
+                                                  <label  >Access Role*</label>
                                                   <select required class="form-control form-control-sm" id="access_role" name="access_role">
                                                         <option value="">Select type of role</option>
                                                         <option value="1">Project In-Charge</option>
@@ -83,7 +83,7 @@
                                           </div>
                                         </div>
                                         <div class="form-group">
-                                                  <label for="exampleInputEmail1">Login Hint:</label>
+                                                  <label  >Login Hint:</label>
                                                   <input class="form-control form-control-sm" id="hint" name="hint" type="text"  placeholder="Type your password hint here...">
                                         </div>
                                         <div class="form-group">
