@@ -23,7 +23,7 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='user-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a> / Register User</li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href='user-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Users List</a> / Register User</li>
               </ol>
            </nav>
 

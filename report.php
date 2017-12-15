@@ -12,25 +12,33 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Product List</li>
+                    <li class="breadcrumb-item active" aria-current="page"> <i class="fa fa-file-text" ></i> Reports</li>
               </ol>
            </nav>
 
         
          <div class="card">
               <div class="card-header">
-                <i class="fa fa-table"></i> Data Table Example
+                    <div class="row">
+                        
+                           <div class="form-group col-sm-12">
+                                  <label> <b>Search by date:</b></label>                                                     
+                                         <div class="input-daterange input-group" id="datepicker">
+                                            <input type="text" readonly="" data-date-format="yyyy-mm-dd" class="input-sm form-control form-control-sm" name="start" id="datefrom" placeholder="Date From" />
+                                            <span class="input-group-addon"> &nbsp;to&nbsp; </span>
+                                            <input type="text" readonly="" data-date-format="yyyy-mm-dd" class="input-sm form-control form-control-sm" name="end" id="dateto" placeholder="Date To" />
+                                            <span class="input-group-btn">
+                                               <button class="btn btn-secondary" type="button" >Search</button>
+                                            </span>
+                                            <span class="input-group-btn">
+                                               <button class="btn btn-secondary" type="button" id="print"><i class="fa fa-print"></i> </button>
+                                            </span>
+                                        </div>
+                          </div>
+                       </div>    
               </div>
               <div class="card-body">
                        <div class="table-responsive"> 
-                               <label> <b>Search by date:</b></label>                                                     
-                               <div class="input-daterange input-group" id="datepicker">
-                                  <input type="text" readonly="" data-date-format="yyyy-mm-dd" class="input-sm form-control form-control-sm" name="start" id="datefrom" />
-                                  <span class="input-group-addon"> &nbsp;to&nbsp; </span>
-                                  <input type="text" readonly="" data-date-format="yyyy-mm-dd" class="input-sm form-control form-control-sm" name="end" id="dateto" />
-                              </div>
-                               <hr/>
-
                                <table class="table table-striped table-hover table-bordered" id="dataTable" width="100%">
                                   <thead>
                                         <tr>

@@ -60,31 +60,32 @@
 
 </head>
 <body>
-
+    <div style="display:none;" id="current_year"> <?php echo date("Y"); ?></div>
     <div class="alert alert-success" >
           
     </div>
 
     <header>  
           <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">Dashboard</a>
+            <a class="navbar-brand" href="dashboard.php"><img src="img/logo.png" style="width: 137px;" /></a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="index.php")? 'active': '';?>"  href="index.php"> Home </a>
+                </li>
+                 <li class="nav-item">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="buy.php")? 'active': '';?>" href="buy.php"> Buy Product</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">Settings</a>
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")? 'active': '';?>" href="project-list.php"> Products </a>
                 </li>
+               
                 <li class="nav-item">
-                  <a class="nav-link" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">Profile</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="https://getbootstrap.com/docs/4.0/examples/dashboard/#">Help</a>
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php")? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
                 </li>
               </ul>
               <form class="form-inline mt-2 mt-md-0">

@@ -56,7 +56,7 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a> / Project / <h2><?php echo  $project_name;?></h2></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Setting</a> / Project / <h2><?php echo  $project_name;?></h2></li>
               </ol>
            </nav>
 

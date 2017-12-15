@@ -1,297 +1,79 @@
-<?php require_once('layout/header.php');?>
-   
-   <script  type="text/javascript" src="https://www.tutorialrepublic.com/examples/js/typeahead/0.11.1/typeahead.bundle.js"></script>
-   <script type="text/javascript" src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
-   <script type="text/javascript" src="assets/typeahead.js"></script>
-   <link href="assets/typeahead.css" rel="stylesheet">  
-   <style>
-      #total_and_change h1{
-        border-bottom:none;
-        margin-bottom: 0px;
-        text-align: center;
-      }
+<?php 
+    require_once('layout/header.php');
+    require_once('classes/Crud.php');
+    $crud = new Crud();
+    $products = $crud->getData("SELECT product_id, product_name FROM products;"); 
+?>   
 
-      .form-group{
-        margin-bottom: 0px;
+ <link href="assets/bootstrap-datepicker3.min.css" rel="stylesheet">
+ <style>
+      #dateto, #datefrom{
+        background: white;
       }
-
-      #total_amount_cont{
-        background: black;
-        color: #28a745;
-        border-radius:5px;
-        border: 2px solid #28a745;
-      }
-   </style>
+ </style>
+ 
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
               </ol>
-          </nav>
-     <form data-toggle="validator" role="form" id="form">
-       <div class="row">
-          <div class="col-sm-8">
-            <div class="row">
-               <div class="col-sm-6 form-group">
-                    <label>Customer Name:</label>
-                    <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required />
-                                         
-              </div>
-              <div class="col-sm-6 form-group">
-                    <label>Customer Address:</label>
-                    <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
-                    <br/>                
+           </nav>
 
+               <div class="card">
+                    <div class="card-header ">
+                        <b>Product Wise Revenue of Project</b> 
+                        <button onclick="pieChart()" title="Refresh" style="float:right;" class="btn btn-secondary" type="button" id="print"><i class="fa fa-refresh"></i> </button>                                 
+                    </div>
+                    <div class="card-body">
+                        <div id="piechartContainer" style="height: 350px; width: 100%;"></div> 
+                    </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12">
-                    <label>Enter Product Item</label>
-                    <input autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.." />
-                    <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
-                     <br/>
+              <br/>
+               <div class="card">
+                    <div class="card-header ">
+                      <div class="row">
+                            <div class="form-group col-sm-4">
+                                  <label for="exampleInputEmail1"><b>By Product</b></label>
+                                  <select required class="form-control form-control-sm" id="product" name="access_role">
+                                        <option value=""> Select All Products</option>
+                                                              <?php
+                                                                  foreach ($products as $res) {
+                                                              ?>
+                                                              <option value="<?php echo $res['product_name'];?>">
+                                                                <?php echo $res['product_name'];?></option>                                                                         
+                                                              <?php } ?>
+                                  </select>
+                           </div>
+                           <div class="form-group col-sm-7">
+                                  <label> <b>Search by date:</b></label>                                                     
+                                         <div class="input-daterange input-group" id="datepicker">
+                                            <input type="text" readonly="" data-date-format="yyyy-mm-dd" class="input-sm form-control form-control-sm" name="start" id="datefrom" placeholder="Date From" />
+                                            <span class="input-group-addon"> &nbsp;to&nbsp; </span>
+                                            <input type="text" readonly="" data-date-format="yyyy-mm-dd" class="input-sm form-control form-control-sm" name="end" id="dateto" placeholder="Date To" />
+                                            <span class="input-group-btn">
+                                               <button class="btn btn-secondary" type="button" onclick="lineGraphByProduct()">Search</button>
+                                            </span>
+                                            <span class="input-group-btn">
+                                               <button class="btn btn-secondary" type="button" id="print"><i class="fa fa-print"></i> </button>
+                                            </span>
+                                        </div>
+                          </div>
+                       </div>                                   
+                    </div>
+                    <div class="card-body">
+                              <div id="chartContainer" style="height: 400px; width: 100%;"></div> 
+                    </div>
               </div>
-            </div>            
-
-          </div>
-          <div class="col-sm-3" id="total_and_change">
-               <div class="col-sm-12" id="total_amount_cont">
-                  <span>Total Amount</span>
-                  <h1 id="total_amount" >&#8369; 0.00</h1>
-                  <input type='hidden' id="total_amount_" name="total_amount">                 
-               </div>
-              <div class="col-sm-12">
-                  <span>Change:</span>
-                  <h1 id="change">&#8369; 0.00</h1>                 
-               </div>
-          </div>
+              <div>
         </div>
-          
-          <div class="row">
-              <div class="table-responsive col-sm-8" style="height: 408px;overflow-y:auto;">
-                      <table class="table table-hover table-dark table-striped" id="dataTable">
-                        <thead class="thead-dark">
-                          <tr>
-                            <th></th>
-                            <th>Description</th>
-                            <th>Unit Price</th>
-                            <th colspan="2">Quantity</th>
-                            <th>Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>                          
-                        </tbody>
-                      </table>
-              </div>
-              <div class="col-sm-3" style="border:1px solid silver;background: #f8f9f5e6;">                  
-                  <label> OR Number:</label>
-                  <div class="input-group form-group">                
-                    <input autocomplete="off" type="text" class="form-control" placeholder="xxxx-xxx-xxx" name="or" required >
-                  </div>
-                  <hr/>
-                  <label> Amount Tendered:</label>
-                  <div class="input-group form-group">
-                    <span class="input-group-addon" id="basic-addon1">&#8369;</span>
-                    <input autocomplete="off" type="text" id="amount" name="amount_tendered" class="form-control" placeholder="0.00"  required>
-                  </div>
-                  <hr/>
-                  <label> Mode of Payment:</label>
-                  <div class="input-group form-group">
-                      <select name="mode-payment" class="form-control">
-                          <option value="cash">Cash</option>
-                          <option value="check">Check</option>
-                      </select>
-                  </div>
-                  <hr/>
-                 <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Payment</button>
-                 
-                 <button type="button" class="btn btn-danger btn-block" style="padding: .375rem .75rem;font-size: 1rem;" >Print Preview</button>
-                
-              </div>
-            </div>
-          </form>
-        </main>
-          <script src='assets/validator.min.js'></script>   
-          <script src='assets/numberFormat.js'></script>   
-          <script id="empty-template" type="text/x-handlebars-template">
-                <div class="EmptyMessage">Your search turned up 0 results. Maybe because the item is out of stock </div>
-          </script>
+      </main>
 
-          <script id="result-template" type="text/x-handlebars-template">
-                 <div style="border-bottom: 1px solid silver;">                        
-                              <strong style="width:60%">{{product_name}}</strong>
-                              <h6 style="float:right;">&#8369; {{price}}/{{unit_of_measurement}}</h6>
-                        <br/>
-                        <small>Project Name: {{project_name}}</small>            
-                 </div>
-          </script>
-          <script>
-          $(function() {
-                  $('#form').validator();
-                  // when the form is submitted
-                  $('#form').on('submit', function (e) {
-                      // if the validator does not prevent form submit
-                      if (!e.isDefaultPrevented()) {
-                                var url = "phpscript/savePayment/savePayment.php";
-                                var amount=parseFloat($('#amount').val());
-                                var total_amount=parseFloat($('#total_amount_').val());
-                                if(amount<total_amount){
-                                     $('.alert').removeClass('alert-success, alert-danger')
-                                                       .addClass('alert-danger')
-                                                       .html("<b>Amount tendered</b> must be exact or greater than the <b>total amount</b>")
-                                                       .fadeIn(100,function(){
-                                                           $(this).fadeOut(5000);
-                                                       });
-                                }else{
-                                    // POST values in the background the the script URL
-                                    $.ajax({
-                                        type: "POST",
-                                        url: url,
-                                        dataType   : 'json',
-                                        data: $(this).serialize(),
-                                        success: function (data)
-                                        {
-                                            $('.alert').removeClass('alert-success, alert-danger')
-                                                       .addClass(data.type)
-                                                       .html(data.message)
-                                                       .fadeIn(100,function(){
-                                                           $(this).fadeOut(5000);
-                                                       });
-                                            if(data.type=='success'){
-                                               $('#form')[0].reset();
-                                               $('tr[row]').remove();
-                                               total_amount();
-                                            }
-                                            
-                                        }
-                                    });
-                                }
-                                    return false;
-                      }
-                  });
-
-                 
-
-                  $('input#amount').keyup(function (event) {
-                      // skip for arrow keys
-                      if (event.which >= 37 && event.which <= 40) {
-                          event.preventDefault();
-                      }
-
-                      var currentVal = ($(this).val()=="")? '0.00':$(this).val();                    
-
-                      var testDecimal = testDecimals(currentVal);
-                      if (testDecimal.length > 1) {
-                          console.log("You cannot enter more than one decimal point");
-                          currentVal = currentVal.slice(0, -1);
-                      }
-
-                      $(this).val(replaceCommas(currentVal));  
-                      change(currentVal);               
-
-                });
-            });
-
-            function change(value){
-              console.log(value);
-                 
-                      var total_amount = parseFloat($('#total_amount_').val());
-                      var change=parseFloat(value.replace(',',''))-total_amount;
-                      $("#change").html("&#8369; "+change.format(2));
-            }
-</script>
+      
+      <script src="assets/bootstrap-datepicker.min.js"></script>
+      <script src="assets/requiredJS/dashboard.js"></script>
+ 
+      <script type="text/javascript" src="assets/canvasjs.min.js"></script>
+     
 <?php require_once('layout/footer.php');?>      

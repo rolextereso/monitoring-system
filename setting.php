@@ -12,7 +12,7 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Settings /</li>
+                    <li class="breadcrumb-item active" aria-current="page">Settings</li>
               </ol>
            </nav>
 
