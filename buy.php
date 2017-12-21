@@ -1,7 +1,9 @@
 <?php require_once('layout/header.php');?>
    
-   <script  type="text/javascript" src="https://www.tutorialrepublic.com/examples/js/typeahead/0.11.1/typeahead.bundle.js"></script>
-   <script type="text/javascript" src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
+   <!-- <script type="text/javascript" src="https://www.tutorialrepublic.com/examples/js/typeahead/0.11.1/typeahead.bundle.js"></script>
+   <script type="text/javascript" src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script> -->
+   <script type="text/javascript" src="assets/typeahead.bundle.js"></script>
+   <script type="text/javascript" src="assets/handlebars.js"></script>
    <script type="text/javascript" src="assets/typeahead.js"></script>
    <link href="assets/typeahead.css" rel="stylesheet">  
    <style>
@@ -70,7 +72,7 @@
         </div>
           
           <div class="row">
-              <div class="table-responsive col-sm-8" style="height: 408px;overflow-y:auto;">
+              <div class="table-responsive col-sm-8" style="height: 386px;overflow-y:auto;">
                       <table class="table table-hover table-dark table-striped" id="dataTable">
                         <thead class="thead-dark">
                           <tr>
@@ -199,7 +201,6 @@
                   <hr/>
                  <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Payment</button>
                  
-                 <button type="button" class="btn btn-danger btn-block" style="padding: .375rem .75rem;font-size: 1rem;" >Print Preview</button>
                 
               </div>
             </div>

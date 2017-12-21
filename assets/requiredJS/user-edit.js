@@ -7,25 +7,31 @@ $(document).ready(function(){
                   $('#form').on('submit', function (e) {
                       // if the validator does not prevent form submit
                       if (!e.isDefaultPrevented()) {                                
-
-                                // POST values in the background the the script URL
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    dataType   : 'json',
-                                    data: $(this).serialize(),
-                                    success: function (data)
-                                    {
-                                        $('.alert').removeClass('alert-success').removeClass('alert-danger')
-                                                   .addClass('alert-'+data.type)
-                                                   .html(data.message)
-                                                   .fadeIn(100,function(){
-                                                       $(this).fadeOut(5000);
-                                                   });
-                               
-
-                                    }
-                                });
+                           bootbox.confirm({
+                                          size: "small",                                         
+                                          message: "Are you sure?", 
+                                          callback: function(result){ 
+                                            
+                                                if(result){
+                                                      // POST values in the background the the script URL
+                                                      $.ajax({
+                                                          type: "POST",
+                                                          url: url,
+                                                          dataType   : 'json',
+                                                          data: $("#form").serialize(),
+                                                          success: function (data)
+                                                          {
+                                                              $('.alert').removeClass('alert-success').removeClass('alert-danger')
+                                                                         .addClass('alert-'+data.type)
+                                                                         .html(data.message)
+                                                                         .fadeIn(100,function(){
+                                                                             $(this).fadeOut(5000);
+                                                                         });                                            
+                                                          }
+                                                      });
+                                               }
+                                        }
+                                      });
                                 return false;
                       }
                   });

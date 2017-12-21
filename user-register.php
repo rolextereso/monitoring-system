@@ -114,26 +114,35 @@
                   $('#form').on('submit', function (e) {
                       // if the validator does not prevent form submit
                       if (!e.isDefaultPrevented()) {
-                                var url = "phpscript/registerAccount/registerAccount.php";
+                        bootbox.confirm({
+                                          size: "small",                                         
+                                          message: "Are you sure?", 
+                                          callback: function(result){ 
+                                            
+                                                if(result){
+                                                      var url = "phpscript/registerAccount/registerAccount.php";
 
-                                // POST values in the background the the script URL
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    dataType   : 'json',
-                                    data: $(this).serialize(),
-                                    success: function (data)
-                                    {
-                                        $('.alert').removeClass('alert-success, alert-danger')
-                                                   .addClass(data.type)
-                                                   .html(data.message)
-                                                   .fadeIn(100,function(){
-                                                       $(this).fadeOut(5000);
-                                                   });
-                                        $('#form')[0].reset();
+                                                      // POST values in the background the the script URL
+                                                      $.ajax({
+                                                          type: "POST",
+                                                          url: url,
+                                                          dataType   : 'json',
+                                                          data: $("#form").serialize(),
+                                                          success: function (data)
+                                                          {
+                                                              $('.alert').removeClass('alert-success, alert-danger')
+                                                                         .addClass(data.type)
+                                                                         .html(data.message)
+                                                                         .fadeIn(100,function(){
+                                                                             $(this).fadeOut(5000);
+                                                                         });
+                                                              $('#form')[0].reset();
 
-                                    }
-                                });
+                                                          }
+                                                      });
+                                                }
+                                         }
+                                      });
                                 return false;
                       }
                   });

@@ -8,14 +8,16 @@ if(isset($_GET['p']) && isset($_GET['df']) && isset($_GET['dt'])){
 
 	$from=(empty($_GET['df']))?'2015-11-12': $crud->escape_string($_GET['df']);
 	$to =(empty($_GET['dt']))?'2017-12-18': $crud->escape_string($_GET['dt']);
-	$product=(empty($_GET['p']))?"":"OR p.product_name='". $crud->escape_string($_GET['p'])."'";
+
+	$date=(!empty($_GET['df']) && !(empty($_GET['dt'])) )?"WHERE sr.sold_date>='".$from."' AND sr.sold_date<='".$to."'": " WHERE 1=1 ";
+	$product=(empty($_GET['p']))?"":"AND p.product_name='". $crud->escape_string($_GET['p'])."'";
 
 	$query = "SELECT product_name as product, ".
 				"SUM(ss.amount)  as amount, ".
 				"DATE(sr.sold_date) as sold_date FROM products p ".
 				"INNER JOIN sales_specific ss ON ss.product_id=p.product_id ".
 				"INNER JOIN sales_record sr ON ss.or_number=sr.sales_id ".
-				"WHERE sr.sold_date>='".$from."' AND sr.sold_date<='".$to."' ".$product.
+				" ".$date." ".$product.
 				" GROUP BY product_name, MONTH(sr.sold_date), YEAR(sr.sold_date);";
     //echo $query;
 }

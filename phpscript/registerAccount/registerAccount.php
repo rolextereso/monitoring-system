@@ -13,15 +13,25 @@ if(isset($_POST['username'])){
 		$hint	   = $crud->escape_string($_POST['hint']);
 		$access_role  = $crud->escape_string($_POST['access_role']);
 
+		$found_username= $crud->getData("SELECT username FROM users WHERE username='$username' LIMIT 1");
+
 		$result = $crud->execute("INSERT INTO users(firstname,lastname, username, password, hint,user_type) ".
-								 "VALUES ('$firstname', '$lastname', '$username', AES_ENCRYPT('$password',username), '$hint','$access_role');");
+								 "VALUES ('$firstname', '$lastname', '$username', AES_ENCRYPT('$password','$username'), '$hint','$access_role');");
+
 
 		if($result){
 			$response = array('type' => 'success', 'message' => '<strong>Success:</strong> Account successfully save.');
 			echo json_encode($response);
 		}else{
-			$response = array('type' => 'danger', 'message' => '<strong>Error:</strong> Account not saved, please contact the developer.');
-			echo json_encode($response);
+			if(count($found_username)>=1){
+				$response = array('type' => 'danger', 'message' => '<strong>Error:</strong> Username is already taken.');
+			  
+			}else{
+				$response = array('type' => 'danger', 'message' => '<strong>Error:</strong> Account not saved, please contact the developer.');
+				
+			}
+			  echo json_encode($response);
+			
 		}
 
 }

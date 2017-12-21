@@ -138,7 +138,7 @@
                                               <br/><br/>
                                         
                                               <div class="col-md-6">
-                                                  <button id="cancel" class="btn btn-danger btn-block" ><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
+                                                  <button id="cancel" class="btn btn-danger btn-block" data-toggle="confirmation" ><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
                                               </div>
                                           </div>
 
@@ -165,5 +165,6 @@
 <script src="assets/numberFormat.js"></script>  
 <script src="assets/requiredJS/product-register.js">        
 </script>
+
 
 <?php require_once('layout/footer.php');?>      

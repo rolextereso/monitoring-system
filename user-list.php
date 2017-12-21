@@ -36,7 +36,8 @@
                                               <th>First Name</th>
                                               <th>Last Name</th>
                                               <th>Username</th>
-                                               <th>Commands</th>
+                                              <th>Status</th>
+                                              <th>Commands</th>
                                         </tr>
                                   </thead>
                               </table>

@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if(!isset($_SESSION['user_id'])){      
+       header('Location: login.php');
+  }
+?>
+
 <!DOCTYPE html>
 <!-- saved from url=(0054)https://getbootstrap.com/docs/4.0/examples/dashboard/# -->
 <html lang="en">
@@ -23,6 +30,7 @@
           <link href="./assets/animate.css" rel="stylesheet">
 
           <script src="./assets/jquery.1.12.4.min.js"></script>
+          <script src="./assets/requiredJS/openWindow.js"></script>
 
           <style>
               body{
@@ -88,10 +96,19 @@
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php")? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
                 </li>
               </ul>
-              <form class="form-inline mt-2 mt-md-0">
+             <!--  <form class="form-inline mt-2 mt-md-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-              </form>
+              </form> -->
+              <ul class="navbar-nav ml-auto">           
+                <li class="nav-item">
+                      <img src="<?php echo ($_SESSION['pic']=='')? 'img/pic_avatar.jpg':$_SESSION['pic'];?>" width="20" height="20" />
+                      <a class="nav-link " title=" Update Profile Information" style="display: inline-block;" href="user-edit.php?u=<?php echo $_SESSION['user_id'];?>"> <?php echo $_SESSION['lastname'].', '.$_SESSION['firstname'];?> </a>
+                </li>    
+                <li class="nav-item">
+                      <a class="nav-link" href="javascript:void(0)" onclick="logout()"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
+                </li>
+              </ul>
             </div>
           </nav>
     </header>

@@ -90,13 +90,12 @@
                                           { data: 5 },
                                           { data: 6 },
                                    
-                                      ],
-                                      order: [[1, 'asc']],
+                                      ],                                 
                                       rowGroup: {
                                           dataSrc: 1
                                       },
                                       columnDefs: [ {
-                                          targets: [4, 5, 6], // column or columns numbers
+                                          targets: [1,4, 5, 6], // column or columns numbers
                                           orderable: false,  // set orderable for selected columns
                                       }]
                                 } );  

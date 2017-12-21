@@ -14,23 +14,43 @@
  
 <?php require_once('layout/nav.php');?>
 
-        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+      <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
               </ol>
            </nav>
+              <div class="row">
+                  <div class="col-sm-6">
+                        <div class="card">
+                              <div class="card-header ">
+                                  <b>Project Wise Revenue</b> 
+                                  <button onclick="pieChart()" title="Refresh" style="float:right;" class="btn btn-secondary" type="button" id="print"><i class="fa fa-refresh"></i> </button>                                 
+                              </div>
+                              <div class="card-body">
+                                  <div id="piechartContainer" style="height: 350px; width: 100%;"></div> 
+                              </div>
+                        </div>
+                         <br/>
+                  </div>
+                 
 
-               <div class="card">
-                    <div class="card-header ">
-                        <b>Product Wise Revenue of Project</b> 
-                        <button onclick="pieChart()" title="Refresh" style="float:right;" class="btn btn-secondary" type="button" id="print"><i class="fa fa-refresh"></i> </button>                                 
-                    </div>
-                    <div class="card-body">
-                        <div id="piechartContainer" style="height: 350px; width: 100%;"></div> 
-                    </div>
+                  <div class="col-sm-6">
+                      <div class="card">
+                            <div class="card-header ">
+                                <b>User Logs</b> 
+                                <button  title="Refresh" style="float:right;" class="btn btn-secondary" type="button" id="print"><i class="fa fa-refresh"></i> </button>                                 
+                            </div>
+                            <div class="card-body" style="height: 391px;">
+                            
+                            </div>
+
+                      </div>
+                       <br/>
+                  </div>
+                 
               </div>
-              <br/>
+             
                <div class="card">
                     <div class="card-header ">
                       <div class="row">
@@ -75,5 +95,6 @@
       <script src="assets/requiredJS/dashboard.js"></script>
  
       <script type="text/javascript" src="assets/canvasjs.min.js"></script>
+   
      
 <?php require_once('layout/footer.php');?>      

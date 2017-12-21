@@ -7,31 +7,41 @@ $crud = new Crud();
 
 // storing  request (ie, get/post) global array to a variable  
 $requestData= $_REQUEST;
-
+//search variable for project status value 'Y' or 'N'
+$search="";
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'firstname', 
-	1 => 'lastname',
-	2=> 'username'
+	0 =>'or_number', 
+	1 => 'customer_name',
+	2=> 'customer_address'
 );
 
 //fetching data in descending order (lastest entry first)
-$query = "SELECT * FROM users";
+$query = "SELECT or_number FROM sales_record sr ".
+		 "INNER JOIN customer c ON c.customer_id =sr.customer_id";
 $result = $crud->getData($query);
 
 $totalData= count($result);
 $totalFiltered=$totalData;
 
-$sql = "SELECT * ";
-$sql.=" FROM users WHERE 1=1";
+$sql = "SELECT sales_id, or_number, customer_name, customer_address, printing_status FROM sales_record sr ".
+	   "INNER JOIN customer c ON c.customer_id =sr.customer_id ";
+$sql.=" WHERE 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( firstname LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR lastname LIKE '".$requestData['search']['value']."%' ";
 
-	$sql.=" OR username LIKE '".$requestData['search']['value']."%' )";
+	if($requestData['search']['value']=='active'){
+		$search='Y';
+	}else{
+		$search='N';
+	}
+	$sql.=" AND ( customer_name LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR customer_address LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR printing_status LIKE '".$search."%' ";
+	$sql.=" OR or_number LIKE '".$requestData['search']['value']."%' )";
 }
+
 
 $result = $crud->getData($sql);
 $totalFiltered = count($result); 
@@ -41,17 +51,17 @@ $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestD
 $result = $crud->getData($sql);
 
 $data=array();
-
+$count=1;
 foreach($result as $key =>$row){
 	$nestedData=array(); 
-    $nestedData[] = "<img src='".($row["profile_pic"]==''?'img/pic_avatar.jpg':$row["profile_pic"])."' width='20' height='20'/>";
-	$nestedData[] = $row["firstname"];
-	$nestedData[] = $row["lastname"];
-	$nestedData[] = $row["username"];
-	$nestedData[] = ($row["status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 
-	$nestedData[] = "<a title='Edit Profile' href='user-edit.php?u=".$row["user_id"]."' class='edit btn btn-success'><i class='fa fa-pencil-square-o'></i></a>&nbsp;".
-					"<a title='Reset Password' href='user-reset-pass.php?u=".$row["user_id"]."' class='edit btn btn-danger'><i class='fa fa-cog'></i></a> ";
+	$nestedData[] = $row["or_number"];
+    $nestedData[] = $row["customer_name"];
+	$nestedData[] = $row["customer_address"];
+
+	$nestedData[] = ($row["printing_status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
+	
+	$nestedData[] = "<a href='javascript:void(0);' onclick=WindowPopUp('phpscript/gatepass/gatePassPrint.php?or_id=".$row['sales_id']."','print','480','450',windowClose)><i class='fa fa-paper-plane'></i></a>";
 	
 	$data[] = $nestedData;
 }

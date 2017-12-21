@@ -1,49 +1,49 @@
 $(function() {
 
-                  
                   $('#form').validator();
                   // when the form is submitted
-                  $('#form').on('submit', function (e) {
-                      // if the validator does not prevent form submit
-                     if(!e.isDefaultPrevented() ) {
-                                var url = "phpscript/productSetup/registerProduct.php";
+                  $('#form').on('submit', function (e) {                                                                             
 
-                                 
-                                      // POST values in the background the the script URL
-                                      $.ajax({
-                                          type: "POST",
-                                          url: url,
-                                          dataType   : 'json',
-                                          data: $(this).serialize(),
-                                          success: function (data)
-                                          {
-                                              $('.alert').removeClass('alert-success, alert-danger')
-                                                         .addClass(data.type)
-                                                         .html(data.message)
-                                                         .fadeIn(100,function(){
-                                                             $(this).fadeOut(5000);
-                                                         });
-                                              
+                                 if(!e.isDefaultPrevented() ) {
+                                       bootbox.confirm({
+                                          size: "small",                                         
+                                          message: "Are you sure?", 
+                                          callback: function(result){ 
+                                                   if(result){
+                                                        var url = "phpscript/productSetup/registerProduct.php";
+                                                              $.ajax({
+                                                                  type: "POST",
+                                                                  url: url,
+                                                                  dataType   : 'json',
+                                                                  data: $("#form").serialize(),
+                                                                  success: function (data)
+                                                                  {
+                                                                      $('.alert').removeClass('alert-success, alert-danger')
+                                                                                 .addClass(data.type)
+                                                                                 .html(data.message)
+                                                                                 .fadeIn(100,function(){
+                                                                                     $(this).fadeOut(5000);
+                                                                                 });                                         
+                                                                      
+                                                                      if($("#product_id").length==0){
+                                                                          $("#measurement_").html("Measurement");
+                                                                          $("#price_").html("Price");
+                                                                          $("#stat").html("(Unactive)").removeClass("green").removeClass("red").addClass("red");
+                                                                          $('#form')[0].reset();
+                                                                      }                                           
 
-                                              if($("#product_id").length==0){
-                                                  $("#measurement_").html("Measurement");
-                                                  $("#price_").html("Price");
-                                                  $('#form')[0].reset();
-                                              }
-                                             
-
+                                                                  }
+                                                              });                                    
+                                                    } 
                                           }
-                                      });
-                               
-
-                                
-                                return false;
-                      }
+                                       });                                    
+                                       return false;
+                                  }                          
                   });
 
                   $('#cancel').on('click',function(){
                        $("#measurement_").html("Measurement");
-                       $("#price").html("Price");
+                       $("#price").html("Price");                       
                        $('#form')[0].reset();
                   });
 
@@ -54,8 +54,7 @@ $(function() {
                           $('#stat').text('(Active)');
                       }else{
                           $('#stat').removeClass('green').addClass('red');
-                          $('#stat').html('(Unactive)');
-                         
+                          $('#stat').html('(Unactive)');                         
                       }
                   });
 
@@ -66,22 +65,21 @@ $(function() {
                 
 
                   $('input#price').keyup(function (event) {
-                    // skip for arrow keys
-                    if (event.which >= 37 && event.which <= 40) {
-                        event.preventDefault();
-                    }
+                      // skip for arrow keys
+                      if (event.which >= 37 && event.which <= 40) {
+                          event.preventDefault();
+                      }
 
-                    var currentVal = $(this).val();
-                    var testDecimal = testDecimals(currentVal);
-                    if (testDecimal.length > 1) {
-                        console.log("You cannot enter more than one decimal point");
-                        currentVal = currentVal.slice(0, -1);
-                    }
-                    $(this).val(replaceCommas(currentVal));
+                      var currentVal = $(this).val();
+                      var testDecimal = testDecimals(currentVal);
+                      if (testDecimal.length > 1) {
+                          console.log("You cannot enter more than one decimal point");
+                          currentVal = currentVal.slice(0, -1);
+                      }
+                      $(this).val(replaceCommas(currentVal));
 
-                    $("#price_").html(($(this).val()=="")?"Price":$(this).val());
-
-                });
+                      $("#price_").html(($(this).val()=="")?"Price":$(this).val());
+                  });
             });
 
 

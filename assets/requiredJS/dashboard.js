@@ -127,7 +127,7 @@ $(document).ready(function(){
                                   exportEnabled: true,
                                   animationEnabled: true,
                                   title:{
-                                    text: "Product Wise Revenue For "+$("#current_year").text()
+                                    text: "Project Wise Revenue For "+$("#current_year").text()
                                   },
                                   legend:{
                                     cursor: "pointer",
@@ -137,6 +137,7 @@ $(document).ready(function(){
                                 });
                             
                             chart.render();  
+                            setTimeout(function(){pieChart()}, 60000);
               });          
             }
 
