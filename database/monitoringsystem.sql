@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 19, 2017 at 03:43 PM
+-- Generation Time: Dec 21, 2017 at 09:02 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -26,6 +26,20 @@ DELIMITER $$
 --
 -- Functions
 --
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_product_by_month_year` (`product_id` INT, `sold_date` DATE) RETURNS FLOAT BEGIN
+		DECLARE total FLOAT DEFAULT 0.0;
+		SELECT 
+				SUM(ss.amount)  INTO total
+				FROM products pe 
+				inner JOIN sales_specific ss ON ss.product_id=pe.product_id 
+				inner JOIN sales_record sre ON ss.or_number=sre.sales_id   
+				WHERE  pe.product_id=product_id  AND MONTH(sre.sold_date)=MONTH(sold_date)
+				AND YEAR(sre.sold_date)=YEAR(sold_date)
+				GROUP BY product_name, MONTH(sre.sold_date), YEAR(sre.sold_date);
+
+RETURN total;
+END$$
+
 CREATE DEFINER=`root`@`localhost` FUNCTION `total_revenue_all_project` () RETURNS FLOAT BEGIN
    DECLARE total FLOAT DEFAULT 0.0;
    SELECT  
@@ -72,7 +86,18 @@ INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALU
 (13, 'Denie', 'Patong'),
 (14, 'Christine Gondaya', 'Ambacon'),
 (15, 'a', 'a'),
-(16, 'Rolly Tereso', 'Ambacon');
+(16, 'Rolly Tereso', 'Ambacon'),
+(17, 'Rolex', 'Ambacon'),
+(18, 'Rolex', 'Ambacon'),
+(19, 'Rolex', 'Ambacon'),
+(20, 'rolex', 'ambacon'),
+(21, 'rolex', 'ambacon'),
+(22, 'Rolex', 'ambacon'),
+(23, 'Rolly', 'Ambacon'),
+(24, 'Rolex', 'Ambacon'),
+(25, 's', 's'),
+(26, 'r', 'r'),
+(27, 'rolex', 'ambacon');
 
 -- --------------------------------------------------------
 
@@ -187,22 +212,15 @@ CREATE TABLE `sales_record` (
 --
 
 INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_payment`, `sold_date`, `user_id`, `customer_id`, `printing_status`) VALUES
-(1, '1121211', 300, 'cash', '2017-12-15 14:20:28', 1, 1, 'Y'),
-(2, '121132232', 100, 'cash', '2017-12-15 14:24:21', 1, 2, 'Y'),
-(3, '345454333', 400, 'cash', '2017-11-15 14:27:00', 1, 3, 'N'),
-(4, '11121121', 900, 'cash', '2017-12-15 16:51:16', 1, 4, 'Y'),
-(5, '092883-3434', 50, 'cash', '2017-12-18 16:14:47', 1, 5, 'Y'),
-(6, '343422-23', 140, 'cash', '2017-12-18 16:16:12', 1, 6, 'Y'),
-(7, '12233433', 610, 'cash', '2017-12-18 21:37:48', 1, 7, 'Y'),
-(8, '322242433', 210, 'cash', '2017-12-18 21:38:49', 1, 8, 'Y'),
-(9, '345634644', 140, 'cash', '2017-12-18 21:39:33', 1, 9, 'N'),
-(10, '2342343', 500, 'cash', '2017-12-18 21:41:18', 1, 10, 'Y'),
-(11, '2323344', 130, 'cash', '2017-12-18 22:05:05', 1, 11, 'Y'),
-(12, '434242342', 400, 'cash', '2017-12-18 22:17:40', 1, 12, 'N'),
-(13, '435354444', 110, 'cash', '2017-12-18 22:29:57', 1, 13, 'N'),
-(14, '23423455', 220, 'cash', '2017-12-18 22:58:29', 1, 14, 'N'),
-(15, '123123131', 200, 'cash', '2017-12-19 14:15:02', 1, 15, 'N'),
-(16, '123133343', 520, 'cash', '2017-12-19 14:19:27', 1, 16, 'N');
+(19, '1112212121', 300, 'cash', '2017-12-19 19:09:19', 1, 19, 'Y'),
+(20, 'dfdfdfd', 100, 'cash', '2017-12-19 19:10:04', 1, 20, 'N'),
+(21, '131243424', 200, 'cash', '2017-12-19 19:13:31', 1, 21, 'Y'),
+(22, '32323424', 100, 'cash', '2017-12-19 22:52:47', 1, 22, 'Y'),
+(23, '1212121', 100, 'cash', '2017-12-19 22:53:14', 1, 23, 'Y'),
+(24, '433433', 100, 'cash', '2017-12-19 22:54:25', 1, 24, 'N'),
+(25, '342424', 100, 'cash', '2018-03-19 22:57:50', 1, 25, 'N'),
+(26, '3242424', 100, 'cash', '2018-02-19 22:58:08', 1, 26, 'N'),
+(27, '21312313', 300, 'cash', '2017-12-31 16:35:22', 1, 27, 'Y');
 
 -- --------------------------------------------------------
 
@@ -223,42 +241,15 @@ CREATE TABLE `sales_specific` (
 --
 
 INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `amount`, `or_number`) VALUES
-(1, 2, 1, 100, 1),
-(2, 1, 2, 200, 1),
-(3, 1, 1, 100, 2),
-(4, 2, 1, 100, 3),
-(5, 1, 3, 300, 3),
-(6, 2, 9, 900, 4),
-(7, 6, 1, 10, 5),
-(8, 5, 1, 10, 5),
-(9, 3, 1, 30, 5),
-(10, 5, 1, 10, 6),
-(11, 3, 1, 30, 6),
-(12, 2, 1, 100, 6),
-(13, 7, 1, 500, 7),
-(14, 9, 1, 10, 7),
-(15, 2, 1, 100, 7),
-(16, 1, 1, 100, 8),
-(17, 6, 1, 10, 8),
-(18, 2, 1, 100, 8),
-(19, 6, 1, 10, 9),
-(20, 1, 1, 100, 9),
-(21, 3, 1, 30, 9),
-(22, 8, 1, 100, 10),
-(23, 2, 1, 100, 10),
-(24, 1, 3, 300, 10),
-(25, 3, 1, 30, 11),
-(26, 2, 1, 100, 11),
-(27, 8, 1, 100, 12),
-(28, 2, 2, 200, 12),
-(29, 1, 1, 100, 12),
-(30, 9, 1, 10, 13),
-(31, 1, 1, 100, 13),
-(32, 6, 2, 20, 14),
-(33, 10, 1, 200, 14),
-(34, 1, 2, 200, 15),
-(35, 4, 1, 20, 16),
-(36, 1, 5, 500, 16);
+(43, 1, 3, 300, 19),
+(44, 8, 1, 100, 20),
+(45, 10, 1, 200, 21),
+(46, 1, 1, 100, 22),
+(47, 2, 1, 100, 23),
+(48, 2, 1, 100, 24),
+(49, 1, 1, 100, 25),
+(50, 1, 1, 100, 26),
+(51, 1, 3, 300, 27);
 
 -- --------------------------------------------------------
 
@@ -284,8 +275,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`, `hint`, `status`, `profile_pic`, `user_type`, `created_on`) VALUES
-(1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', NULL, 1, '2017-12-15 14:15:39'),
-(2, 'sample', 'sample', 'sample', '·6 À3¼\nM¨\"xÂ¢ÈÍb', 'sample', 'Y', NULL, 1, '2017-12-18 16:05:23');
+(1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37');
 
 --
 -- Indexes for dumped tables
@@ -339,7 +329,8 @@ ALTER TABLE `sales_specific`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username_UNIQUE` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -349,7 +340,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `products`
 --
@@ -369,17 +360,17 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
-  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --
