@@ -12,7 +12,8 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		$password  =$crud->escape_string($_POST['password']);
 		
 		$found= $crud->getData("SELECT * FROM users WHERE password=AES_ENCRYPT('$password',username)  AND username='$username' AND status='Y' LIMIT 1");
-       
+
+		       
 		if(count($found)==1){
 
 				foreach($found as $key =>$row){

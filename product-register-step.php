@@ -107,6 +107,15 @@
     border-color: #2e6da4;
   }
 
+  .tbl-error{
+    border-bottom: 1px solid red !important;
+    background: #2f1d1d;
+  }
+
+  #step2, #step3, #step4{
+    overflow-x: scroll;
+  }
+
 </style>
 
 <?php require_once('layout/nav.php');?>
@@ -229,7 +238,11 @@
                           <div class="row setup-content" id="step-4">
                             <div class="col-md-12 col-md-offset-3">
                               <div class="col-md-12">
-                                <h5> Step 4 : Saving</h5><br/>
+                                <h5> Step 4 : Set Product Price</h5><br/>
+                                <div id="step4">
+                                   
+
+                                 </div>
                                 <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
                                 <button class="btn btn-success submitBtn btn-lg pull-right" type="button">Submit</button>
                               </div>
@@ -250,7 +263,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script>
   $(document).ready(function () {
-1
+
         $('#project_started, #project_ended').datepicker({
                       autoclose: true,    
                       todayHighlight: true,       
@@ -274,7 +287,7 @@
                 $item.addClass('btn-primary');
                 allWells.hide();
                 $target.show();
-                $target.find('input:eq(0)').focus();
+                //$target.find('input:eq(0)').focus();
             }
         });
 
@@ -294,32 +307,18 @@
                 isValid = true;
 
             if(curStepBtn=="step-1"){
-                $('#step2 table').remove();
-                $('#step2').budget({
-                      text:'Production Cost',
-                      dateFrom:  $('#project_started').val(),
-                      dateTo:$('#project_ended').val(),
-                      steps:1
-                }); 
-                
-                
+                renderTable('#step2','Production Costs',$('#project_started').val(),$('#project_ended').val(),1);                
             }else if(curStepBtn=="step-2"){
                 step2_=collectData("#step2");
-                
-                $('#step3 table').remove();
-                $('#step3').budget({
-                      text:'Expenses',
-                      dateFrom:  $('#project_started').val(),
-                      dateTo:$('#project_ended').val(),
-                      steps:2
-                });  
+                renderTable('#step3','Expenses',$('#project_started').val(),$('#project_ended').val(),2); 
                 
             }else if(curStepBtn=="step-3"){
-                step3_=collectData("#step3");               
+                step3_=collectData("#step3");   
+                removeTable("#step4");
+                var table=listProductForPricing("#step2");  
+                $("#step4").prepend(table);
                 
-            }
-
-           
+            }           
             
             $(".form-group").removeClass("has-error");
             for(var i=0; i<curInputs.length; i++){
@@ -336,35 +335,42 @@
             }
 
             if (isValid){
-                nextStepWizard.trigger('click');              
+                nextStepWizard.removeAttr("disabled").trigger('click');              
             }
 
         });
 
         $('div.setup-panel div a.btn-primary').trigger('click');   
 
-         $(".submitBtn").click(function(){
-                var url = "phpscript/projectSetup/registerProjectStep.php";
-                 // POST values in the background the the script URL
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    dataType   : 'json',
-                    data: {
-                           proj_name:$('#proj_name').val(),
-                           proj_incharge:$('#project_incharge').val(),
-                           proj_desc:$('#proj_desc').val(),
-                           prod_cost: step2_,
-                           expenses:  step3_
-                          },
-                    success: function (data)
-                    {
-                          alert("Success");
-                    }
-                });
-            });
-
-
+        $(".submitBtn").click(function(){
+             bootbox.confirm({
+                              size: "small",                                         
+                              message: "Are you sure?", 
+                              callback: function(result){                                 
+                                    if(result){
+                                          var url = "phpscript/projectSetup/registerProjectStep.php";
+                                           // POST values in the background the the script URL
+                                          $.ajax({
+                                              type: "POST",
+                                              url: url,
+                                              dataType   : 'json',
+                                              data: {
+                                                     proj_name:$('#proj_name').val(),
+                                                     proj_incharge:$('#project_incharge').val(),
+                                                     proj_desc:$('#proj_desc').val(),
+                                                     prod_cost: step2_,
+                                                     expenses:  step3_,
+                                                     prod_price: collectData("#step4")
+                                                    },
+                                              success: function (data)
+                                              {
+                                                    alert("Success");
+                                              }
+                                          });
+                                    }
+                               }
+                            });
+          });
 
 });
 // A few jQuery helpers for exporting only
@@ -402,20 +408,21 @@ var collectData=function (selector) {
                 var itemfound = 0;
                 var totalfound=0;
                 $(steps+" tbody tr:not(.hide) ._0").each(function(i, val) {
+                  $(this).removeClass('tbl-error');
                   if ($(this).text() == '') {
+                    $(this).addClass('tbl-error');
                     itemfound++;
                   }
                 });
 
                 $(steps+" table tr#total td[class*='t_']").each(function(i, val) {
-                  console.log(($(this).text() == " 0"));
-                  if ($(this).text() == " 0") {                  
+                  $(this).removeClass('tbl-error');
+                  if ($(this).text() == "0") {  
+                    $(this).addClass('tbl-error');                                  
                     totalfound++;
                   }
-                });
-
-               
-                console.log(totalfound);
+                });               
+                
                 if(itemfound>0){
                    alert("Please don't leave the an item blank");
                    return false;
@@ -425,6 +432,35 @@ var collectData=function (selector) {
                 }else{
                    return true;
                 }
+  }
+
+  var listProductForPricing=function(steps){
+          var edit="contenteditable='true'";
+          var table="<table class='table table-sm table-dark table-striped'> <tr>";
+              table+="  <th data='items'> Product Items </th><th data='Prices'> Prices </th><th data='Unit of Measurement'> Unit of Measurement </th></tr>";
+            
+              $(steps+" tbody tr:not(.hide):not(#total) ._0").each(function(i, val) {
+                    table+="<tr>";
+                    table+="<td >"+$(this).text()+"</td><td "+edit+">0</td><td "+edit+"></td>";
+                    table+="</tr>";
+              });
+             
+              table+="</table>";
+              return table;
+  }
+
+  var renderTable=function(steps, text, dateFrom, dateTo, no){
+          removeTable(steps);
+          $(steps).budget({
+                text:text,
+                dateFrom:dateFrom,
+                dateTo:dateTo,
+                steps:no
+          }); 
+  }
+
+  var removeTable=function(steps){
+     $(steps+' *').remove();
   }
 
 </script>

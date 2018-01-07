@@ -1,5 +1,7 @@
-(function($) {			
+// Principal Author: Rolex Tereso
+// Email: rolexjun098@gmail.com
 
+(function($) {	
 					$.fn.budget = function( options ) {
 
 						// Establish our default settings
@@ -10,9 +12,7 @@
 							steps		 : 1,
 							
 						}, options);
-						var selector=$(this).selector;
-
-						 
+						var selector=$(this).selector;						 
 
 						return this.each( function() {
 							var parent=this;
@@ -48,7 +48,6 @@
 
 						});
 
-
 							 function populateTbl(date,title,step,enable,elementP){
 
 									var step1=["Product 1", "Product 2", "Product 3"];
@@ -65,20 +64,20 @@
 											btn+=         " <span class='table-remove'>&Cross;</span>";
 											
 									       	btn+=	 "</"+element+">";
-
+									    var contenteditable=(editable && !footer)?" contenteditable='true' ": "";
 									    var showBtn=(footer)?"<td class='btn-remove'></td>":btn;
-										var tag=(editable)? showBtn+"<"+element+" contenteditable='true' class='_0'>"+step+"</"+element+">": "";
+										var tag=(editable)? showBtn+"<"+element+" "+contenteditable+" class='_0'>"+step+"</"+element+">": "";
 																
 										var no=1;
 											
 										date.forEach(function(date) {
 
-											var dates=(editable)? "0":  moment(date).format("MMM YYYY");
+											var dates=(editable)?"0":  moment(date).format("MMM YYYY");
 											var formatted=(!editable)? "data='"+moment(date).format("YYYY-DD-MM")+"'": "";
 											var row_number=(footer)? "t_"+no: (footer==null)?"h_"+no : "_"+no;
-											var contenteditable=(editable)?" contenteditable='true' ": "";
+											
 
-									 		 tag+="<"+element+" "+contenteditable+" "+formatted+" class="+row_number+"> "+dates+"</"+element+">";
+									 		 tag+="<"+element+" "+contenteditable+" "+formatted+" class="+row_number+">"+dates+"</"+element+">";
 									 		 no++;
 										});
 										return tag;
@@ -108,7 +107,7 @@
 									}
 
 									var table="<span class='table-add'><i class='fa fa-plus-square'></i> Add Item</span>";
-									table+="<table class='table table-dark table-striped'> <tr>";				     
+									table+="<table class='table table-sm table-dark table-striped'> <tr>";				     
 											table+=" <th colspan='2' data='"+title+"'>"+title+"</th>";
 									    table+=tableData(date,"th",false,null);	//populate dates for the table
 										table+="</tr>";
