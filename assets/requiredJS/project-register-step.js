@@ -73,7 +73,7 @@
 										date.forEach(function(date) {
 
 											var dates=(editable)?"0":  moment(date).format("MMM YYYY");
-											var formatted=(!editable)? "data='"+moment(date).format("YYYY-DD-MM")+"'": "";
+											var formatted=(!editable)? "data='"+moment(date).format("YYYY-MM-DD")+"'": "";
 											var row_number=(footer)? "t_"+no: (footer==null)?"h_"+no : "_"+no;
 											
 
@@ -141,7 +141,7 @@
 									      };
 									  while (currentDate <= endDate) {
 									    dates.push(currentDate);
-									    currentDate = addDays.call(currentDate, 29);
+									    currentDate = addDays.call(currentDate, 30);
 									  }
 									  return dates;
 								};

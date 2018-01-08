@@ -30,13 +30,13 @@ if(isset($_POST['product_name'])){
 			 }
 
 		}else{
-			$crud->executeUnAutoCommit("INSERT INTO product_price(price, created_by) ".
+			 $result=$crud->executeUnAutoCommit("INSERT INTO product_price(price, created_by) ".
 								 "VALUES ('$price', '');");
 
 			 $lastInsertedId= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
 
-			 $result=false;
-			 if($lastInsertedId>0){
+			 
+			 if(count($lastInsertedId)>0){
 			 		$lastId=$lastInsertedId[0]['insert_id'];
 			 		$result = $crud->executeUnAutoCommit("INSERT INTO products(product_name,product_price, project_id, unit_of_measurement,product_status) ".
 									 "VALUES ('$product_name', '$lastId', '$project', '$measurement','$status');");		

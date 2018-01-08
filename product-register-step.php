@@ -130,7 +130,7 @@
         
          <div class="card">
               <div class="card-header">
-                    <i class="fa fa-cube" aria-hidden="true"></i>   Product
+                    <i class="fa fa-cube" aria-hidden="true"></i>   Project Setup
               </div>
               <div class="card-body">
                       <div class="stepwizard col-md-offset-3">
@@ -243,6 +243,7 @@
                                    
 
                                  </div>
+                                 <br/>
                                 <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
                                 <button class="btn btn-success submitBtn btn-lg pull-right" type="button">Submit</button>
                               </div>
@@ -262,6 +263,7 @@
 <script src="assets/requiredJS/project-register-step.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script>
+  var $proj_started,$proj_ended;
   $(document).ready(function () {
 
         $('#project_started, #project_ended').datepicker({
@@ -313,7 +315,8 @@
                 renderTable('#step3','Expenses',$('#project_started').val(),$('#project_ended').val(),2); 
                 
             }else if(curStepBtn=="step-3"){
-                step3_=collectData("#step3");   
+                step3_=collectData("#step3");
+                
                 removeTable("#step4");
                 var table=listProductForPricing("#step2");  
                 $("#step4").prepend(table);
@@ -357,14 +360,19 @@
                                               data: {
                                                      proj_name:$('#proj_name').val(),
                                                      proj_incharge:$('#project_incharge').val(),
-                                                     proj_desc:$('#proj_desc').val(),
-                                                     prod_cost: step2_,
+                                                     proj_desc:$('#proj_desc').val(),  
+                                                     prod_cost:  step2_,                                                 
                                                      expenses:  step3_,
                                                      prod_price: collectData("#step4")
                                                     },
                                               success: function (data)
                                               {
-                                                    alert("Success");
+                                                     $('.alert').removeClass('alert-success, alert-danger')
+                                                                                 .addClass(data.type)
+                                                                                 .html(data.message)
+                                                                                 .fadeIn(100,function(){
+                                                                                     $(this).fadeOut(5000);
+                                                                                 });
                                               }
                                           });
                                     }
@@ -395,9 +403,10 @@ var collectData=function (selector) {
                   // Use the headers from earlier to name our hash keys
                   headers.forEach(function (header, i) {
                     h[header] = $td.eq(i).text();   
+
                   });
-                  
-                  data.push(h);
+                   data.push(h);
+                    
                 });
 
                 return data;
@@ -405,14 +414,28 @@ var collectData=function (selector) {
   }
 
   var validate=function(steps){
+                var items=[];
+                var itemDup=0;
                 var itemfound = 0;
                 var totalfound=0;
                 $(steps+" tbody tr:not(.hide) ._0").each(function(i, val) {
                   $(this).removeClass('tbl-error');
-                  if ($(this).text() == '') {
+                  
+                  var val=$(this).text();
+                  if(items.indexOf(val)>=0){
+                    
+                      $(this).addClass('tbl-error');
+                      itemDup++;
+                  }else{
+                    items.push(val);
+                  }
+
+
+                  if (val== '') {
                     $(this).addClass('tbl-error');
                     itemfound++;
                   }
+
                 });
 
                 $(steps+" table tr#total td[class*='t_']").each(function(i, val) {
@@ -428,6 +451,9 @@ var collectData=function (selector) {
                    return false;
                 }else if(totalfound>0){
                    alert("Please set an amount in every month");
+                   return false;
+                }else if(itemDup>0){
+                   alert("System don't allow duplicate name");
                    return false;
                 }else{
                    return true;
