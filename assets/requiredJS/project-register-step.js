@@ -77,8 +77,8 @@
 											var row_number=(footer)? "t_"+no: (footer==null)?"h_"+no : "_"+no;
 											
 
-									 		 tag+="<"+element+" "+contenteditable+" "+formatted+" class="+row_number+">"+dates+"</"+element+">";
-									 		 no++;
+									 		tag+="<"+element+" "+contenteditable+" "+formatted+" class="+row_number+">"+dates+"</"+element+">";
+									 		no++;
 										});
 										return tag;
 									}
@@ -130,20 +130,47 @@
 										$(elementP).prepend(table);
 								};
 
+
+
 								// Returns an array of dates between the two dates
 								function getDates(startDate, endDate) {
-									  var dates = [],
-									      currentDate = startDate,
-									      addDays = function(days) {
-									        var date = new Date(this.valueOf());
-									        date.setDate(date.getDate() + days);
-									        return date;
-									      };
-									  while (currentDate <= endDate) {
-									    dates.push(currentDate);
-									    currentDate = addDays.call(currentDate, 30);
-									  }
-									  return dates;
+
+										Date.isLeapYear = function (year) { 
+										    return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
+										};
+
+										Date.getDaysInMonth = function (year, month) {
+										    return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+										};
+
+										Date.prototype.isLeapYear = function () { 
+										    return Date.isLeapYear(this.getFullYear()); 
+										};
+
+										Date.prototype.getDaysInMonth = function () { 
+										    return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+										};
+
+										Date.prototype.addMonths = function (value) {
+										    var n = this.getDate();
+										    this.setDate(1);
+										    this.setMonth(this.getMonth() + value);
+										    this.setDate(Math.min(n, this.getDaysInMonth()));
+										    return this;
+										};
+
+										  var dates = [],
+										      currentDate = startDate,
+										      _addMonths = function(days) {
+										        var date = new Date(this.valueOf());
+										        //date.setDate(date.getDate() + days);
+										        return date.addMonths(1);
+										      };
+										  while (currentDate <= endDate) {
+										    dates.push(currentDate);
+										    currentDate = _addMonths.call(currentDate);
+										  }
+										  return dates;
 								};
 
 								function totalAmount(attr){

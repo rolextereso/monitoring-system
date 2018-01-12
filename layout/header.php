@@ -86,10 +86,10 @@
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="index.php")? 'active': '';?>"  href="index.php"> Home </a>
                 </li>
                  <li class="nav-item">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="buy.php")? 'active': '';?>" href="buy.php"> Buy Product</a>
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php")? 'active': '';?>" href="item-selection.php"> Item Selection</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")? 'active': '';?>" href="project-list.php"> Products </a>
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")|| (basename($_SERVER['PHP_SELF'])=="project-list-spec.php")? 'active': '';?>" href="project-list.php"> Project List </a>
                 </li>
                
                 <li class="nav-item">

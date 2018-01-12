@@ -1,11 +1,15 @@
-<?php require_once('layout/header.php');?>
+<?php 
+  require_once('layout/header.php'); 
+?>
    
    <!-- <script type="text/javascript" src="https://www.tutorialrepublic.com/examples/js/typeahead/0.11.1/typeahead.bundle.js"></script>
    <script type="text/javascript" src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script> -->
    <script type="text/javascript" src="assets/typeahead.bundle.js"></script>
    <script type="text/javascript" src="assets/handlebars.js"></script>
-   <script type="text/javascript" src="assets/typeahead.js"></script>
-   <link href="assets/typeahead.css" rel="stylesheet">  
+   <script type="text/javascript" src="assets/typeahead-rental.js"></script>
+   <link href="assets/typeahead.css" rel="stylesheet">
+    <link href="assets/bootstrap-datepicker3.min.css" rel="stylesheet">  
+    <script src="assets/bootstrap-datepicker.min.js"></script>
    <style>
       #total_and_change h1{
         border-bottom:none;
@@ -29,7 +33,9 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-shopping-basket" ></i> Buy Product</li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      
+                      <i class="fa fa-hand-pointer-o" ></i> Item Selection</li>
               </ol>
           </nav>
      <form data-toggle="validator" role="form" id="form">
@@ -51,7 +57,7 @@
             <div class="row">
               <div class="col-sm-12">
                     <label>Enter Product Item</label>
-                    <input autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.." />
+                    <input  autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.." />
                     <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
                      <br/>
               </div>
@@ -59,15 +65,13 @@
 
           </div>
           <div class="col-sm-3" id="total_and_change">
+            <br/><br/>
                <div class="col-sm-12" id="total_amount_cont">
                   <span>Total Amount</span>
                   <h1 id="total_amount" >&#8369; 0.00</h1>
                   <input type='hidden' id="total_amount_" name="total_amount">                 
                </div>
-              <div class="col-sm-12">
-                  <span>Change:</span>
-                  <h1 id="change">&#8369; 0.00</h1>                 
-               </div>
+                <br/>
           </div>
         </div>
           
@@ -81,125 +85,106 @@
                             <th>Unit Price</th>
                             <th colspan="2">Quantity</th>
                             <th>Amount</th>
+                            <th>Date Return</th>
                           </tr>
                         </thead>
                         <tbody>
                           
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
                           </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>
-                          <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th colspan="2"></th>
-                            <th></th>
-                          </tr>                          
+                         
+                                                
                         </tbody>
                       </table>
               </div>
-              <div class="col-sm-3" style="border:1px solid silver;background: #f8f9f5e6;">                  
-                  <label> OR Number:</label>
+              <div class="col-sm-3" style="height: 184px;border:1px solid silver;background: #f8f9f5e6;">   
+                  <br/>               
+                  <label> Transaction ID:</label>
                   <div class="input-group form-group">                
-                    <input autocomplete="off" type="text" class="form-control" placeholder="xxxx-xxx-xxx" name="or" required >
+                    <input style="font-weight: bolder;" autocomplete="off" readonly="" type="text" class="form-control"  name="transaction_id" value="<?php echo date('ymd-si');?>" >
+                    
                   </div>
                   <hr/>
-                  <label> Amount Tendered:</label>
-                  <div class="input-group form-group">
-                    <span class="input-group-addon" id="basic-addon1">&#8369;</span>
-                    <input autocomplete="off" type="text" id="amount" name="amount_tendered" class="form-control" placeholder="0.00"  required>
-                  </div>
-                  <hr/>
-                  <label> Mode of Payment:</label>
-                  <div class="input-group form-group">
-                      <select name="mode-payment" class="form-control">
-                          <option value="cash">Cash</option>
-                          <option value="check">Check</option>
-                      </select>
-                  </div>
-                  <hr/>
-                 <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Payment</button>
+                  
+                 <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Save Selection</button>
                  
                 
               </div>
@@ -220,5 +205,15 @@
                         <small>Project Name: {{project_name}}</small>            
                  </div>
           </script>
-          <script src="assets/requiredJS/buy.js"></script>
+          <script src="assets/requiredJS/item_selection.js"></script>
+          <script>
+
+            $(document).ready(function(){
+              $('.date_').datepicker({
+                      autoclose: true,
+                      clearBtn: true
+              });
+            })
+          
+          </script>
 <?php require_once('layout/footer.php');?>      

@@ -40,26 +40,5 @@
                       });
                 });
 
-function logout(){
-            bootbox.confirm({
-                      size: "small",                                         
-                      message: "Are you sure you want to log-out?", 
-                      callback: function(result){                         
-                            if(result){
-                                  var url = "phpscript/login/logout.php";
-                                  // POST values in the background the the script URL
-                                  $.ajax({
-                                      type: "GET",
-                                      url: url,                                                                      
-                                      success: function (data)
-                                      {
-                                         if(data=="logout"){                                                    
-                                              window.location.href="login.php";                                                   
-                                         }
-                                      }
-                                  });
-                            }
-                     }
-                    });
-         }    
+  
                          

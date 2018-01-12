@@ -10,7 +10,7 @@ $(function() {
                                           message: "Are you sure?", 
                                           callback: function(result){ 
                                                    if(result){
-                                                        var url = "phpscript/productSetup/registerProduct.php";
+                                                        var url = "phpscript/rental/registerRental.php";
                                                               $.ajax({
                                                                   type: "POST",
                                                                   url: url,
@@ -42,13 +42,13 @@ $(function() {
                   });
 
                   $('#cancel').on('click',function(){
-                       $("#measurement_").html("Measurement");
-                       $("#price").html("Price");                       
+                       $("#measurement_").html("Unit");
+                       $("#rental").html("Rental Fee");                       
                        $('#form')[0].reset();
                   });
 
                    //script for the checkbox account status
-                  $('#product_status').on('change',function(){
+                  $('#status').on('change',function(){
                       if($(this).is(':checked')){
                           $('#stat').removeClass('red').addClass('green');
                           $('#stat').text('(Active)');
@@ -59,12 +59,12 @@ $(function() {
                   });
 
                   $("input#measurement").keyup(function(e){
-                      $("#measurement_").html(($(this).val()=="")?"Measurement":$(this).val());
+                      $("#measurement_").html(($(this).val()=="")?"Unit":$(this).val());
                   });
 
                 
 
-                  $('input#price').keyup(function (event) {
+                  $('input#rental').keyup(function (event) {
                       // skip for arrow keys
                       if (event.which >= 37 && event.which <= 40) {
                           event.preventDefault();
@@ -78,7 +78,7 @@ $(function() {
                       }
                       $(this).val(replaceCommas(currentVal));
 
-                      $("#price_").html(($(this).val()=="")?"Price":$(this).val());
+                      $("#rental_").html(($(this).val()=="")?"Rental Fee":$(this).val());
                   });
             });
 

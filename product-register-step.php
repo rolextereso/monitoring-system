@@ -9,34 +9,34 @@
     $project_id= "";
     $project_name= "";
     $project_description  = "";
-    $project_status="";
     $project_incharge ="";
-    $project_started ="";
-    $project_ended ="";
+    $project_type="";
     $found=false;
-    $add=true;
+    $add_item=false;
+    $disabled="";
 
-    if(isset($_GET['edit'])){
+    if(isset($_GET['p_id'])){
 
-       $id = $crud->escape_string($_GET['edit']);
+       $id = $crud->escape_string($_GET['p_id']);
 
        if(is_numeric($id) && $id!=''){
-            $projects = $crud->getData("SELECT * FROM projects WHERE project_id=".$_GET['edit']);
+            $projects = $crud->getData("SELECT * FROM projects WHERE project_id=".$id );
 
             $found=(count($projects)==1)?true:false;
-
-            $add=false;
+            $disabled=($found)?"disabled":"";
+            $add_item=true;
             
             foreach ($projects as $res) {
                 $project_id   = $res['project_id'];
                 $project_name = $res['project_name'];
-                $project_description  = $res['project_description'];
-                $project_status  = $res['project_status'];
+                $project_description  = $res['project_description'];                
                 $project_incharge =$res['project_incharge'];
-                $project_started =$res['project_started'];
-                $project_ended =$res['project_ended'];          
+                $project_type =$res['project_type'];
+                   
             }
       }
+    }else{
+       $found=true;
     }
     
 ?>     
@@ -123,11 +123,11 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Setting</a> / Product /<h2></h2> </li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href='<?php echo ($add_item)? "project-list-spec.php?id=$project_id":"setting.php";?>'><i class="fa fa-arrow-left" aria-hidden="true"></i><?php echo ($add_item)? " Go back ":" Go to Setting";?> </a> / Project /<h2></h2> </li>
               </ol>
            </nav>
 
-        
+         <?php if($found){?>
          <div class="card">
               <div class="card-header">
                     <i class="fa fa-cube" aria-hidden="true"></i>   Project Setup
@@ -157,17 +157,25 @@
                         <form role="form" action="" method="post">
                           <div class="row setup-content" id="step-1">
                             <div class="col-md-12 col-md-offset-3 ">
-                             
+                                <input type="hidden" id="proj_id" value="<?php echo $project_id;?>"/>
                                 <h5> Step 1 : Enter Project Information</h5><br/>
                                  <div class="row">
                                 <div class="col-md-6">
                                 <div class="form-group">
                                   <label class="control-label">Project Name *</label>
-                                  <input  maxlength="100" type="text" required="required" class="form-control form-control-sm" placeholder="Enter project name"  id="proj_name" />
+                                  <input <?php echo $disabled;?> maxlength="100" type="text" required="required" class="form-control form-control-sm" placeholder="Enter project name"  id="proj_name" value="<?php echo $project_name;?>" />
+                                </div>
+                                <div class="form-group">
+                                  <label class="control-label">Project Type *</label>
+                                  <select <?php echo $disabled;?> id="project_type" name="project_type" class="form-control form-control-sm" required="required">
+                                      <option value="">Select type</option>
+                                      <option value="Agricultural" <?php echo($project_type=='Agricultural')?'Selected':'';?> >Agricultural</option>
+                                      <option value="Non-Agricultural" <?php echo($project_type=='Non-Agricultural')?'Selected':'';?>>Non-Agricultural</option>
+                                  </select>
                                 </div>
                                 <div class="form-group">
                                   <label class="control-label">Project In-charge*</label>
-                                  <select  class="form-control form-control-sm" id="project_incharge" name="project_incharge" required="required">
+                                  <select <?php echo $disabled;?>  class="form-control form-control-sm" id="project_incharge" name="project_incharge" required="required">
                                                               <option value=""> Select Person In-charge</option>
                                                               <?php
                                                                   foreach ($users as $res) {
@@ -180,11 +188,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label >Project Started* (yyyy-mm-dd)</label>
-                                    <input class="form-control form-control-sm" id="project_started" name="project_started" type="text"  placeholder="Date Started" data-date-format="yyyy-mm-dd" required value="<?php echo $project_started;?>">
+                                    <input class="form-control form-control-sm" id="project_started" name="project_started" type="text"  placeholder="Date Started" data-date-format="yyyy-mm-dd" required value="">
                                 </div>
                                 <div class="form-group">
                                     <label >Project Ended (yyyy-mm-dd)</label>
-                                    <input required data-date-format="yyyy-mm-dd" class="form-control form-control-sm" id="project_ended" name="project_ended" type="text"  placeholder="Date Ended" value="<?php echo ($project_ended=='0000-00-00')?'':$project_ended;?>">
+                                    <input required data-date-format="yyyy-mm-dd" class="form-control form-control-sm" id="project_ended" name="project_ended" type="text"  placeholder="Date Ended" value="">
                                 </div>
 
                                 <!-- <div class="form-group">
@@ -198,7 +206,7 @@
                               <div class="col-md-6">
                                  <div class="form-group">
                                       <label>Project Description</label>
-                                      <textarea rows="5" class="form-control " id="proj_desc" name="project_description" style="margin-top: 0px; margin-bottom: 0px;">
+                                      <textarea <?php echo $disabled;?> rows="5" class="form-control " id="proj_desc" name="project_description" style="margin-top: 0px; margin-bottom: 0px;">
                                         <?php echo($project_description=='')?'':$project_description;?></textarea>
                                   </div>
 
@@ -244,7 +252,7 @@
 
                                  </div>
                                  <br/>
-                                <button class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
+                                <button id="last_prev" class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
                                 <button class="btn btn-success submitBtn btn-lg pull-right" type="button">Submit</button>
                               </div>
                             </div>
@@ -252,6 +260,11 @@
                         </form>
               </div>
         </div>
+          <?php }else{?>
+                         <h2 style="text-align: center;width: 100%;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>ID Not Found, maybe because project is not exist.</small></h2>
+
+
+           <?php } ?>
         </div>
       </main>
 
@@ -261,10 +274,15 @@
 <script src="assets/numberFormat.js"></script>  
 
 <script src="assets/requiredJS/project-register-step.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script src="assets/moment.min.js"></script>
 <script>
   var $proj_started,$proj_ended;
   $(document).ready(function () {
+
+         // var a = moment('2010-11-7','YYYY-DD-MM');
+         //  var b = moment('2010-14-7','YYYY-DD-MM');
+         //  var diffDays = b.diff(a, 'days');
+         //  alert(diffDays);
 
         $('#project_started, #project_ended').datepicker({
                       autoclose: true,    
@@ -305,7 +323,7 @@
             var curStep = $(this).closest(".setup-content"),
                 curStepBtn = curStep.attr("id"),
                 nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                curInputs = curStep.find("input[type='text'],input[type='url']"),
+                curInputs = curStep.find("input[type='text'],input[type='url'], select"),
                 isValid = true;
 
             if(curStepBtn=="step-1"){
@@ -344,6 +362,9 @@
         });
 
         $('div.setup-panel div a.btn-primary').trigger('click');   
+        $(".addNew").click(function(){
+            document.location.reload(true);
+        });
 
         $(".submitBtn").click(function(){
              bootbox.confirm({
@@ -358,9 +379,11 @@
                                               url: url,
                                               dataType   : 'json',
                                               data: {
+                                                     project_id:$('#proj_id').val(),
                                                      proj_name:$('#proj_name').val(),
                                                      proj_incharge:$('#project_incharge').val(),
                                                      proj_desc:$('#proj_desc').val(),  
+                                                     proj_type:$('#project_type').val(),  
                                                      prod_cost:  step2_,                                                 
                                                      expenses:  step3_,
                                                      prod_price: collectData("#step4")
@@ -373,12 +396,19 @@
                                                                                  .fadeIn(100,function(){
                                                                                      $(this).fadeOut(5000);
                                                                                  });
+                                                     if(data.type=="alert-success"){
+                                                        $(".submitBtn").remove();
+                                                        $("#last_prev").after("<button onClick='document.location.reload(true)' class='btn btn-success btn-lg pull-right' type='button'>Add New</button>");
+                                                     }
                                               }
                                           });
                                     }
                                }
                             });
           });
+     
+
+        
 
 });
 // A few jQuery helpers for exporting only

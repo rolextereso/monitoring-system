@@ -10,7 +10,7 @@ $query = "SELECT project_name, ".
 			 "	INNER JOIN sales_specific ss ON ss.product_id=p.product_id  ".
 			 "	INNER JOIN sales_record sr ON ss.or_number=sr.sales_id ".
 			 "  INNER JOIN projects pr ON pr.project_id = p.project_id ".
-			 "	WHERE YEAR(sr.sold_date)=YEAR(CURRENT_DATE()) ".
+			 "	WHERE YEAR(sr.date_save)=YEAR(CURRENT_DATE()) AND ss.paid='Y' ".
 			 "	GROUP BY project_name;";
     
 
