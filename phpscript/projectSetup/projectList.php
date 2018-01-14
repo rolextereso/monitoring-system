@@ -13,24 +13,23 @@ $search="";
 $columns = array( 
 // datatable column index  => database column name
 	0 =>'project_name', 
-	1 => 'project_description',
+	1 => 'project_type',
 	2=> 'project_status', 
 	3=> 'project_incharge'
 );
 
-//fetching data in descending order (lastest entry first)
-$query = "SELECT * FROM projects";
-$result = $crud->getData($query);
 
+$sql = "SELECT pd.product_id,pr.project_id, price, product_name, project_name, project_type, CONCAT(firstname,' ',lastname) AS incharge, pd.product_status  ";
+$sql.=" FROM projects pr";
+$sql.=" LEFT JOIN products pd ON pd.project_id= pr.project_id ";
+$sql.=" LEFT JOIN product_price pc ON pc.price_id= pd.product_price ";
+$sql.=" LEFT JOIN users u ON u.user_id= pr.project_incharge ";
+
+$result = $crud->getData($sql);
 $totalData= count($result);
 $totalFiltered=$totalData;
 
-$sql = "SELECT pd.product_id,pr.project_id, price, product_name, project_name, project_description, CONCAT(firstname,' ',lastname) AS incharge, pd.product_status  ";
-$sql.=" FROM projects pr";
-$sql.=" INNER JOIN products pd ON pd.project_id= pr.project_id ";
-$sql.=" INNER JOIN product_price pc ON pc.price_id= pd.product_price ";
-$sql.=" INNER JOIN users u ON u.user_id= pr.project_incharge ";
-$sql.=" WHERE 1=1";
+$sql=$sql;
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
@@ -39,19 +38,21 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	}else{
 		$search='N';
 	}
-	$sql.=" AND ( project_name LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" WHERE project_name LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR project_description LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR project_status LIKE '".$search."%' ";
-	$sql.=" OR project_incharge LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" OR project_incharge LIKE '".$requestData['search']['value']."%' ";
 }
 
 
 $result = $crud->getData($sql);
-$totalFiltered = count($result); 
+$totalFiltered=$totalData;
 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
+
 $result = $crud->getData($sql);
+
 
 $data=array();
 $count=1;
@@ -59,8 +60,12 @@ foreach($result as $key =>$row){
 	$nestedData=array(); 
 
 	$nestedData[] = $row["product_name"];
-    $nestedData[] = $row["project_name"]." <small><a href='project-register.php?edit=".$row['project_id']."'>[edit]</a></small>";
-	$nestedData[] = $row["project_description"];
+    $nestedData[] = $row["project_name"]." <small><a href='project-register.php?edit=".$row['project_id']."'>[edit]</a></small>".
+    				"<span class='view-project'>".
+    					"<a title='View Budgeted List' href='project-list-spec.php?id=".$row['project_id']."'>".
+    						"<i class='fa fa-ellipsis-h'></i>".
+    					"</a></span>";
+	$nestedData[] = $row["project_type"];
 	$nestedData[] = $row["incharge"];
 	$nestedData[] = ($row["product_status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] = "&#8369; ".$row["price"];

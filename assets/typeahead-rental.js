@@ -1,4 +1,7 @@
   $(document).ready(function(){
+
+              
+
               var product, template, empty; 
 
               /* below code is for typeahead once user type text on the textbox*/
@@ -33,14 +36,23 @@
               }
               }).on('typeahead:selected', function(e,suggestion){
                   input_.typeahead('val','');
+
+                  var current_date = moment().format('YYYY-MM-DD'),
+                      date_return =  moment($(".date_return").val(),'YYYY-MM-DD'),
+                      diffDays = date_return.diff(current_date, 'days');
+                  
                   //console.log('Selection: ' + suggestion.value);
-                  if($("[row='_"+suggestion.id+"']").length==1){
-                       addQuantity($("[row='_"+suggestion.id+"']").attr('num'));
+                  if($(".date_return").val()==""){
+                      alert("Please select the date to return");
+                  }else if($("[row='_"+suggestion.id+"']").length==1){
+                      alert("Item already selected");
                   }else{
-                       $(".table tbody").prepend(render(suggestion));                  
+                       $(".table tbody").prepend(render(suggestion,diffDays,$(".date_return").val()));   
+                        addQuantity($("[row='_"+suggestion.id+"']").attr('num'), diffDays);
+                        totalAmount();             
                   }
 
-                  totalAmount();
+                  
               }).on('typeahead:asyncrequest', function() {
                  $('.Typeahead-spinner').show();
               }).on('typeahead:asynccancel typeahead:asyncreceive', function() {
@@ -56,7 +68,8 @@
         return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
   };
 
-  function render(object){
+  function render(object, no_day_to_return, date_){
+
         var price=object.price.replace(',','');
         count++;//increase the count value by 1
         return "<tr id='row"+count+"' row='_"+object.id+"' num='"+count+"'><td> "+
@@ -64,10 +77,10 @@
                   +"</td><td>"+object.product_name
                   +"</td><td>"+object.price+"/"+object.unit_of_measurement
                   +"</td><td ><input type='hidden' id='q_"+count+"' name='quantity[]' value='1' /><div id='_"+count+"'>1</div>"
-                  +"</td><td><button type='button' onclick='addQuantity("+(count)+")' class='btn btn-primary'>&plus;</button> "
-                  +"<button type='button' onclick=subtractQuantity("+(count)+") class='btn btn-primary'>&ndash;</button>"
+                  +"</td><td>"
+              
                   +"</td><input type='hidden' id='a_"+count+"' name='amount[]' value='"+object.price+"'/><td class='amount' amount='"+price+"' a_id="+count+">"+object.price
-              +"</td></tr>";
+              +"</td><td><input type='hidden' name='date_to_return[]' value='"+date_+"'/>"+moment(date_).format('MMM DD, YYYY')+"</td></tr>";
                  
   }
 
@@ -76,9 +89,9 @@
         totalAmount();
   }
 
- function addQuantity(index){  
+ function addQuantity(index, diffDays){  
 
-        var quantity=parseInt($("div#_"+index).text())+1;
+        var quantity=parseInt($("div#_"+index).text())+diffDays;
         var presentAmount=parseFloat($("[a_id="+index+"]").attr("amount"));//actual amount per item
         var amount=quantity*presentAmount;//multiplied by the number of quantity
         $('#q_'+index).val(quantity); 

@@ -10,14 +10,14 @@ if(isset($_POST['datefrom']) && isset($_POST['dateto']) ){
 
 	$query= "SELECT ".
 			"	 product_name as product, ".
-			"	 report_product_by_month_year(p.product_id,sr.sold_date) as amount, ".
-			"		DATE_FORMAT(sr.sold_date,'%b. %Y') as sold_date ,".
-			"		DATE(sr.sold_date) as date ".
+			"	 report_product_by_month_year(p.product_id,sr.date_save) as amount, ".
+			"		DATE_FORMAT(sr.date_save,'%b. %Y') as sold_date ,".
+			"		DATE(sr.date_save) as date ".
 			"		FROM products p ".
 			"		CROSS JOIN sales_specific ss ".
 			"		CROSS JOIN sales_record sr ".
 					$where
-			."		GROUP BY  p.product_name, MONTH(sr.sold_date), YEAR(sr.sold_date) ORDER BY sr.sold_date;";
+			."		GROUP BY  p.product_name, MONTH(sr.date_save), YEAR(sr.date_save) ORDER BY sr.date_save;";
 	$result = $crud->getData($query);
 	
 	$storage_date=array();

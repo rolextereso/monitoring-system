@@ -48,7 +48,8 @@
                             <tr> 
                                   <th>OR Number</th>
                                   <th>Customer Name</th>
-                                  <th>Customer Address</th>                                             
+                                  <th>Customer Address</th>     
+                                  <th>Date Saved</th>                                              
                                   <th>Printing Status</th>                                  
                                   <th>Commands</th>
                             </tr>
@@ -69,15 +70,9 @@
                                       "processing": true,
                                       "serverSide": true,
                                       "searching" : true,
+                                      "stateSave": true,
                                       "ajax":{
-                                        url :"phpscript/gatePass/gatePassList.php", // json datasource                                
-                                        
-                                        error: function(){  // error handling
-                                          $(".employee-grid-error").html("");
-                                          $("#employee-grid").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                          $("#employee-grid_processing").css("display","none");
-                                          
-                                        }
+                                        url :"phpscript/gatePass/gatePassList.php", 
                                       },
                                       columnDefs: [ {
                                               targets: [3, 4], // column or columns numbers

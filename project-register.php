@@ -11,8 +11,7 @@
     $project_description  = "";
     $project_status="";
     $project_incharge ="";
-    $project_started ="";
-    $project_ended ="";
+    $project_type ="";
     $found=false;
     $add=true;
 
@@ -32,9 +31,9 @@
                 $project_name = $res['project_name'];
                 $project_description  = $res['project_description'];
                 $project_status  = $res['project_status'];
+                $project_type  = $res['project_type'];
                 $project_incharge =$res['project_incharge'];
-                $project_started =$res['project_started'];
-                $project_ended =$res['project_ended'];          
+                        
             }
       }
     }
@@ -56,7 +55,7 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Setting</a> / Project / <h2><?php echo  $project_name;?></h2></li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href='project-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Project List</a> / Project / <h2><?php echo  $project_name;?></h2></li>
               </ol>
            </nav>
 
@@ -99,16 +98,15 @@
                                                         </select>
                                                   </div>
 
-                                                   <div class="form-group">
-                                                        <label >Project Started* (yyyy-mm-dd)</label>
-                                                        <input class="form-control form-control-sm" id="project_started" name="project_started" type="text"  placeholder="Date Started" data-date-format="yyyy-mm-dd" required value="<?php echo $project_started;?>">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label >Project Ended (yyyy-mm-dd)</label>
-                                                        <input data-date-format="yyyy-mm-dd" class="form-control form-control-sm" id="project_ended" name="project_ended" type="text"  placeholder="Date Ended" value="<?php echo ($project_ended=='0000-00-00')?'':$project_ended;?>">
-                                                    </div>
-
-                                                    <div class="form-group">
+                                                  <div class="form-group">
+                                                  <label>Project Type*</label>
+                                                        <select required class="form-control form-control-sm" id="project_type" name="project_type">
+                                                              <option value=""> Select type</option>
+                                                              <option value="Agricultural" <?php echo($project_type=='Agricultural')?'selected':'';?>>Agricultural</option>
+                                                              <option value="Non-Agricultural" <?php echo($project_type=='Non-Agricultural')?'selected':'';?>>Non-Agricultural</option>
+                                                        </select>
+                                                  </div>
+                                                  <div class="form-group">
                                                               <label for="check">Project Status</label>                                                  
                                                               <input  id="project_status" name="project_status" type="checkbox" 
                                                               <?php echo($project_status=='Y')?'checked':'';?> />
@@ -130,7 +128,7 @@
                                         <div class="form-group">
                                           <div class="form-row">
                                               <div class="col-md-6">
-                                                  <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Register Project</button>
+                                                  <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Project</button>
                                               </div>
                                               <br/><br/>
                                         

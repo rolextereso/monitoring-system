@@ -200,3 +200,45 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:fir
 div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:last-child {
   padding-right: 0;
 }
+
+.view-project{
+  float:right;
+}
+
+.view-project a{
+  color:#212529;
+  font-size: 20px;
+}
+
+tr[role='row'] .view-project{
+  display:none;
+}
+
+a.btn{
+      text-decoration: none;
+      color:white !important;
+    }
+
+    #dataTable tr td {
+        height: 30px;
+        padding-bottom:0.1rem ;
+        padding-top:0.1rem ;
+    }
+
+    .edit{
+          padding: 0px 6px;
+    }
+
+    tr[role='row'] td small {
+        display: none;
+    }
+
+    tr.group.group-start td {
+        background: #e9ecef;
+        font-weight: bold;
+    }  
+
+    tr.group.group-start td small {
+        color:blue;
+        font-style: italic;
+    }    
