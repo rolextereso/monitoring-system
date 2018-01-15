@@ -55,11 +55,17 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-6 form-group">
                     <label>Enter Product Item</label>
                     <input  autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.." />
                     <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
                      <br/>
+              </div>
+              <div class="col-sm-6 form-group">
+                    <label>Date Return:</label>
+                    <input type="text" class="form-control-sm form-control date_"  required/>    
+                    <br/>                
+
               </div>
             </div>            
 
@@ -83,9 +89,9 @@
                             <th></th>
                             <th>Description</th>
                             <th>Unit Price</th>
-                            <th colspan="2">Quantity</th>
+                            <th colspan="2">Date Return</th>
                             <th>Amount</th>
-                            <th>Date Return</th>
+                            
                           </tr>
                         </thead>
                         <tbody>
@@ -96,7 +102,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                           
                           </tr>
                           <tr>
                             <td></td>
@@ -104,7 +110,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                         
                           </tr>
                           <tr>
                             <td></td>
@@ -112,7 +118,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                          
                           </tr>
                           <tr>
                             <td></td>
@@ -120,7 +126,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                           
                           </tr>
                           <tr>
                             <td></td>
@@ -128,7 +134,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                          
                           </tr>
                           <tr>
                             <td></td>
@@ -136,7 +142,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                           
                           </tr>
                           <tr>
                             <td></td>
@@ -144,7 +150,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                            
                           </tr>
                           <tr>
                             <td></td>
@@ -152,7 +158,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                            
                           </tr>
                           <tr>
                             <td></td>
@@ -160,7 +166,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                            
                           </tr>
                           <tr>
                             <td></td>
@@ -168,7 +174,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            <td></td>
+                           
                           </tr>
                          
                                                 

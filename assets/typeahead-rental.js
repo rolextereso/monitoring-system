@@ -70,7 +70,7 @@
                   +"</td><td><button type='button' onclick='addQuantity("+(count)+")' class='btn btn-primary'>&plus;</button> "
                   +"<button type='button' onclick=subtractQuantity("+(count)+") class='btn btn-primary'>&ndash;</button>"
                   +"</td><input type='hidden' id='a_"+count+"' name='amount[]' value='"+object.price+"'/><td class='amount' amount='"+price+"' a_id="+count+">"+object.price
-              +"</td><td><input type='text' class='date_'/></td></tr>";
+              +"</td></tr>";
                  
   }
 
