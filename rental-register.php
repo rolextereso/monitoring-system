@@ -5,38 +5,41 @@
     $crud = new Crud();
 
     
-
     $item_id   = "";
-    $item_name = "";
+    $item_name="";
     $item_code = "";
-    $rental= "";
-    $item_description="";
-    $price_id="";
-    $unit_of_measurement ="";
+    $item_description= "";
+    $rental_fee="";
+    $unit_of_measurement   = "";
+    $per_day ="";
+    $need_gate_pass="";
     $status="";
     $found=false;
     $add=true;
 
-    if(isset($_GET['edit'])){
+    if(isset($_GET['r_id'])){
 
-        $id = $crud->escape_string($_GET['edit']);
+        $id = $crud->escape_string($_GET['r_id']);
 
        if(is_numeric($id) && $id!=''){
-              $products = $crud->getData("SELECT * FROM products p ".
-                                         "INNER JOIN product_price pp ON pp.price_id= p.product_price WHERE product_id=".$_GET['edit']);
+              $rental = $crud->getData("SELECT * FROM rental_items r ".
+                                         " WHERE rental_id=".$id);
 
-              $found=(count($products)==1)?true:false;
+              $found=(count($rental)==1)?true:false;
 
               $add=false;
               
-              foreach ($products as $res) {
-                  $item_id      = $res['product_id'];
-                  $item_name    = $res['product_name'];
-                  $rental       =$res['price'];
-                  $price_id     = $res['product_price'];
-                  $item_code    = $res['item_code'];
-                  $unit_of_measurement =$res['unit_of_measurement'];
-                  $product_status =$res['product_status'];
+              foreach ($rental as $res) {
+                $item_id=$res['rental_id'];
+                $item_name=$res['item_name'];
+                $item_code=$res['item_code'];
+                $item_description=$res['item_description'];
+                $rental_fee=$res['rental_fee'];
+                $unit_of_measurement=$res['unit'];
+                $status=$res['status'];
+                $per_day=$res['per_day'];
+                $need_gate_pass=$res['need_gate_pass'];
+                  
                   
               }
         }
@@ -58,11 +61,11 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Setting</a> / Rental /<h2><?php echo  $item_name;?></h2> </li>
+                    <li class="breadcrumb-item active" aria-current="page"><a href='rental-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Rental Item List</a> / Rental /<h2><?php echo  $item_name;?></h2> </li>
               </ol>
            </nav>
 
-        
+      
          <div class="card">
               <div class="card-header">
                     <i class="fa fa-cube" aria-hidden="true"></i>  <?php echo($add)?'Add':'Edit';?> Item for Rental
@@ -76,7 +79,7 @@
                                           if($found){
                                         ?>
                                             <input id="item_id" type="hidden" name="item_id" value="<?php echo $item_id;?>">
-                                            <input type="hidden" name="price_id" value="<?php echo $price_id;?>">
+                                         
                                         <?php } ?>
 
                                         
@@ -84,7 +87,7 @@
                                               <div class="col-md-6">
                                                  <div class="form-group">
                                                         <label>Item Code </label>
-                                                        <input type="text"  class="form-control form-control-sm" readonly="" name="item_code" value="<?php echo date('yms-is');?>">
+                                                        <input type="text"  class="form-control form-control-sm" readonly="" name="item_code" value="<?php  echo($item_code=="")?date('yms-is'):$item_code;?>">
                                                   </div>
                                                   <div class="form-group">
                                                         <label >Machinery or Facilities *</label>
@@ -94,18 +97,17 @@
 
                                                    <div class="form-group">
                                                    <label>Item Description</label>
-                                                        <textarea  rows="5" class="form-control " id="item_desc" name="item_desc" style="margin-top: 0px; margin-bottom: 0px;">
-                                                          <?php echo($item_description=='')?'':$item_description;?></textarea>
+                                                        <textarea  rows="5" cols="1" class="form-control " id="item_description" name="item_description" ><?php echo($item_description=='')?'': $item_description;?></textarea>
                                                   </div>
 
                                                   <div class="form-group">
                                                         <label >Unit *</label>
-                                                        <input class="form-control form-control-sm" id="measurement" name="measurement" type="text"  placeholder="example: set" required value="<?php echo $unit_of_measurement;?>">
+                                                        <input class="form-control form-control-sm" id="measurement" name="unit" type="text"  placeholder="example: set" required value="<?php echo $unit_of_measurement;?>">
                                                   </div>
 
                                                   <div class="form-group">
                                                         <label >Rental Fee*</label>
-                                                        <input class="form-control form-control-sm" id="rental" name="rental" type="text"  placeholder="0.00" required value="<?php echo $rental;?>">
+                                                        <input class="form-control form-control-sm" id="rental_fee" name="rental_fee" type="text"  placeholder="0.00" required value="<?php echo $rental_fee;?>">
                                                   </div>
 
                                                  
@@ -114,12 +116,23 @@
                                                               <input  id="status" name="status" type="checkbox"
                                                               <?php echo($status=='Y')?'checked':'';?> />
                                                               <span id="stat" class="italic <?php echo($status=='Y')?'green':'red';?>"><?php echo($status=='Y')?'(Active)':'(Unactive)';?></span>
+
+
+                                                              <label for="check">Need Gate Pass?</label>                                                  
+                                                              <input  id="gate_pass" name="gate_pass" type="checkbox"
+                                                              <?php echo($need_gate_pass=='Y')?'checked':'';?> />
+                                                              <span id="gpass" class="italic <?php echo($need_gate_pass=='Y')?'green':'red';?>"><?php echo($need_gate_pass=='Y')?'(Yes)':'(No)';?></span>
+
+                                                              <label for="check">Rental Fee Per Day?</label>                                                  
+                                                              <input  id="per_day" name="per_day" type="checkbox"
+                                                              <?php echo($per_day=='Y')?'checked':'';?> />
+                                                              <span id="perD" class="italic <?php echo($per_day=='Y')?'green':'red';?>"><?php echo($per_day=='Y')?'(Yes)':'(No)';?></span>
                                                   </div>
                                               </div>
                                               <div class="col-md-6">
                                                  <div class="form-group">
                                                       <label>Item per Unit</label>
-                                                      <h1><span id="rental_"><?php echo ($rental=="")?'Rental Fee':$rental;?></span>/<span id="measurement_"><?php echo ($unit_of_measurement=="")?'Unit':$unit_of_measurement;?></span></h1>
+                                                      <h1><span id="rental_"><?php echo ($rental_fee=="")?'Rental Fee':$rental_fee;?></span>/<span id="measurement_"><?php echo ($unit_of_measurement=="")?'Unit':$unit_of_measurement;?></span></h1>
                                                   </div>
 
                                               </div>

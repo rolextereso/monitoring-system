@@ -279,10 +279,14 @@
   var $proj_started,$proj_ended;
   $(document).ready(function () {
 
+       //this is for the datepicker
+
+
          // var a = moment('2010-11-7','YYYY-DD-MM');
          //  var b = moment('2010-14-7','YYYY-DD-MM');
          //  var diffDays = b.diff(a, 'days');
          //  alert(diffDays);
+
 
         $('#project_started, #project_ended').datepicker({
                       autoclose: true,    
@@ -310,7 +314,7 @@
                 //$target.find('input:eq(0)').focus();
             }
         });
-
+        //this method is trigger once previous button is clicked
         allPrevBtn.click(function(){
             var curStep = $(this).closest(".setup-content"),
                 curStepBtn = curStep.attr("id"),
@@ -319,6 +323,7 @@
                 prevStepWizard.removeAttr('disabled').trigger('click');
         });
 
+        //this method is trigger once next button is clicked
         allNextBtn.click(function(){
             var curStep = $(this).closest(".setup-content"),
                 curStepBtn = curStep.attr("id"),
@@ -327,13 +332,14 @@
                 isValid = true;
 
             if(curStepBtn=="step-1"){
+               //this will render the table by calling the function
                 renderTable('#step2','Production Costs',$('#project_started').val(),$('#project_ended').val(),1);                
             }else if(curStepBtn=="step-2"){
-                step2_=collectData("#step2");
-                renderTable('#step3','Expenses',$('#project_started').val(),$('#project_ended').val(),2); 
+                step2_=collectData("#step2");//it will get the data in each row and column in the table
+                renderTable('#step3','Expenses',$('#project_started').val(),$('#project_ended').val(),2);//this will render the table by calling the function for step 3
                 
             }else if(curStepBtn=="step-3"){
-                step3_=collectData("#step3");
+                step3_=collectData("#step3");//it will get the data in each row and column in the table
                 
                 removeTable("#step4");
                 var table=listProductForPricing("#step2");  
@@ -350,9 +356,9 @@
             }
 
             if(curStepBtn=="step-2"){
-                isValid=validate("#step2");
+                isValid=validate("#step2");//call the function if empty table data is empty or total amount of column is 0
             }else if(curStepBtn=="step-3"){
-                isValid=validate("#step3");
+                isValid=validate("#step3");//call the function if empty table data is empty or total amount of column is 0
             }
 
             if (isValid){
@@ -384,7 +390,7 @@
                                                      proj_incharge:$('#project_incharge').val(),
                                                      proj_desc:$('#proj_desc').val(),  
                                                      proj_type:$('#project_type').val(),  
-                                                     prod_cost:  step2_,                                                 
+                                                     prod_cost:  step2_,                                            
                                                      expenses:  step3_,
                                                      prod_price: collectData("#step4")
                                                     },
@@ -414,7 +420,7 @@
 // A few jQuery helpers for exporting only
 jQuery.fn.pop = [].pop;
 jQuery.fn.shift = [].shift;
-
+//this function collect the data in the table
 var collectData=function (selector) {
                 var $rows = $(selector+" table").find('tr:not(:hidden):not(#total)');
                 var headers = [];
@@ -442,12 +448,13 @@ var collectData=function (selector) {
                 return data;
           
   }
-
+ 
   var validate=function(steps){
                 var items=[];
                 var itemDup=0;
                 var itemfound = 0;
                 var totalfound=0;
+                 //loop through to find if the production cost and expenses is empty then add class tbl-error
                 $(steps+" tbody tr:not(.hide) ._0").each(function(i, val) {
                   $(this).removeClass('tbl-error');
                   
@@ -467,7 +474,7 @@ var collectData=function (selector) {
                   }
 
                 });
-
+                //loop through to find if the total amount is 0 then add class tbl-error
                 $(steps+" table tr#total td[class*='t_']").each(function(i, val) {
                   $(this).removeClass('tbl-error');
                   if ($(this).text() == "0") {  
@@ -489,7 +496,7 @@ var collectData=function (selector) {
                    return true;
                 }
   }
-
+  //this function get the product items from step 2 to display in step 4 for product pricing
   var listProductForPricing=function(steps){
           var edit="contenteditable='true'";
           var table="<table class='table table-sm table-dark table-striped'> <tr>";

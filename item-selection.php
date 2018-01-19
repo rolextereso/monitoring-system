@@ -30,12 +30,18 @@
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                      
-                      <i class="fa fa-hand-pointer-o" ></i> Item Selection</li>
-              </ol>
+               <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                         <a class="nav-link" href="item-selection-rental.php"><i class="fa fa-hand-pointer-o" ></i> Rental Selection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="item-selection.php"> <i class="fa fa-hand-pointer-o" ></i> Product Selection</a>
+                    </li>
+                   
+              </ul>
+              
           </nav>
+      <br/>
      <form data-toggle="validator" role="form" id="form">
        <div class="row">
           <div class="col-sm-8">

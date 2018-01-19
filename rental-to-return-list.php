@@ -1,5 +1,7 @@
 <?php require_once('layout/header.php');?> 
- 
+<?php
+    require_once('layout/header.php');    
+?>   
  
  <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
@@ -9,10 +11,11 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Transaction List</li>
+                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Rented Items</li>
+                     
               </ol>
            </nav>
-          
+         
            <div class="table-responsive"> 
                     
                     <input type="hidden" value="<?php echo $project_id;?>" id="id" />                         
@@ -22,7 +25,9 @@
                                   <th>Transaction ID</th>
                                   <th>Customer Name</th>
                                   <th>Customer Address</th>
-                                  <th>Commands</th>
+                                  <th>Rented Items</th>
+                                  
+                                  <th>Command</th>
                             </tr>
                       </thead>
                   </table>
@@ -43,10 +48,10 @@
                                                       "searching" : true,                                  
                                                       "bLengthChange": true,
                                                       "ajax":{
-                                                        url :"phpscript/savePayment/selectionList.php",
+                                                        url :"phpscript/rental/rentalToReturnList.php",
                                                       },
                                                       columnDefs: [ {
-                                                              targets: [3], // column or columns numbers
+                                                              targets: [3,4], // column or columns numbers
                                                               orderable: false,  // set orderable for selected columns
                                                       }]
                                   });  

@@ -6,10 +6,12 @@
    <script type="text/javascript" src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script> -->
    <script type="text/javascript" src="assets/typeahead.bundle.js"></script>
    <script type="text/javascript" src="assets/handlebars.js"></script>
+     <script src="assets/moment.min.js"></script>
    <script type="text/javascript" src="assets/typeahead-rental.js"></script>
    <link href="assets/typeahead.css" rel="stylesheet">
     <link href="assets/bootstrap-datepicker3.min.css" rel="stylesheet">  
     <script src="assets/bootstrap-datepicker.min.js"></script>
+
    <style>
       #total_and_change h1{
         border-bottom:none;
@@ -32,12 +34,17 @@
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                      
-                      <i class="fa fa-hand-pointer-o" ></i> Item Selection</li>
-              </ol>
+              <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                         <a class="nav-link active" href="item-selection-rental.php"><i class="fa fa-hand-pointer-o" ></i> Rental Selection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="item-selection.php"> <i class="fa fa-hand-pointer-o" ></i> Product Selection</a>
+                    </li>
+                   
+              </ul>
           </nav>
+    <br/>
      <form data-toggle="validator" role="form" id="form">
        <div class="row">
           <div class="col-sm-8">
@@ -55,17 +62,15 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-6 form-group">
-                    <label>Enter Product Item</label>
-                    <input  autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.." />
+              <div class="col-sm-6">
+                    <label>Enter Rental Item</label>
+                    <input  autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm"  spellcheck="false" data-provide="typeahead" placeholder="Type here.." />
                     <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
                      <br/>
               </div>
-              <div class="col-sm-6 form-group">
-                    <label>Date Return:</label>
-                    <input type="text" class="form-control-sm form-control date_"  required/>    
-                    <br/>                
-
+              <div class="col-sm-6">
+                    <label>Date Return (YYYY-MM-DD)</label>
+                    <input required="" style="background:white;" readonly="" type="text" data-date-format="yyyy-mm-dd" class="date_return form-control form-control-sm"  placeholder="" />
               </div>
             </div>            
 
@@ -89,9 +94,9 @@
                             <th></th>
                             <th>Description</th>
                             <th>Unit Price</th>
-                            <th colspan="2">Date Return</th>
+                            <th colspan="2"># of Days</th>
                             <th>Amount</th>
-                            
+                            <th>Date Return</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -102,7 +107,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                           
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -110,7 +115,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                         
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -118,7 +123,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                          
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -126,7 +131,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                           
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -134,7 +139,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                          
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -142,7 +147,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                           
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -150,7 +155,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -158,7 +163,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -166,7 +171,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                            
+                            <td></td>
                           </tr>
                           <tr>
                             <td></td>
@@ -174,7 +179,7 @@
                             <td></td>
                             <td colspan="2"></td>
                             <td></td>
-                           
+                            <td></td>
                           </tr>
                          
                                                 
@@ -185,7 +190,7 @@
                   <br/>               
                   <label> Transaction ID:</label>
                   <div class="input-group form-group">                
-                    <input style="font-weight: bolder;" autocomplete="off" readonly="" type="text" class="form-control"  name="transaction_id" value="<?php echo date('ymd-si');?>" >
+                    <input style="font-weight: bolder;" autocomplete="off" readonly="" type="text" class="form-control"  name="transaction_id" value="<?php echo "RE".date('ymd-si');?>" >
                     
                   </div>
                   <hr/>
@@ -205,21 +210,35 @@
 
           <script id="result-template" type="text/x-handlebars-template">
                  <div style="border-bottom: 1px solid silver;">                        
-                              <strong style="width:60%">{{product_name}}</strong>
-                              <h6 style="float:right;">&#8369; {{price}}/{{unit_of_measurement}}</h6>
+                              <strong style="width:60%">{{item_name}}</strong>
+                              <label>{{item_description}}</label>
+                              <h6 style="float:right;">&#8369; {{rental_fee}}/{{unit}}</h6>
+
                         <br/>
-                        <small>Project Name: {{project_name}}</small>            
+                        <small>ITEM CODE: {{item_code}}</small> 
+                        <small class="{{#if_eq availability 'Available'}} badge badge-success {{else}} badge badge-danger {{/if_eq}}" style="float:right;">{{availability}}</small>           
                  </div>
           </script>
-          <script src="assets/requiredJS/item_selection.js"></script>
+          <script src="assets/requiredJS/rental-selection.js"></script>
           <script>
 
             $(document).ready(function(){
-              $('.date_').datepicker({
+
+              $('.date_return').datepicker({
                       autoclose: true,
-                      clearBtn: true
+                      clearBtn: true,
+                      todayHighlight: true,
+                      startDate: new Date()    
               });
             })
+
+             Handlebars.registerHelper('if_eq', function(a, b, opts) {
+                  if (a == b) {
+                      return opts.fn(this);
+                  } else {
+                      return opts.inverse(this);
+                  }
+              }); 
           
           </script>
 <?php require_once('layout/footer.php');?>      

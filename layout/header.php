@@ -21,7 +21,7 @@
           <link href="./assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
           <!-- Bootstrap core CSS -->
-          <link href="./assets/bootstrap.min.css" rel="stylesheet">
+          <link href="./assets/bootstrap.css" rel="stylesheet">
 
           <!-- Custom styles for this template -->
           <link href="./assets/dashboard.css" rel="stylesheet">
@@ -82,18 +82,39 @@
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
+                <li class="nav-item header-nav">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="index.php")? 'active': '';?>"  href="index.php"> Home </a>
                 </li>
-                 <li class="nav-item">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php")? 'active': '';?>" href="item-selection.php"> Item Selection</a>
+                 <li class="nav-item header-nav">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"> Rental or Product Selection</a>
                 </li>
-                <li class="nav-item">
+
+                 <li class="nav-item header-nav">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php">Transaction List</a>
+                </li>
+
+                <li class="nav-item header-nav">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")|| (basename($_SERVER['PHP_SELF'])=="project-list-spec.php")? 'active': '';?>" href="project-list.php"> Project List </a>
                 </li>
+
+                 <li class="nav-item header-nav">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"></i> Rental Item List</a>
+                </li>
+
+                <li class="nav-item header-nav">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-to-return-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-return.php")? 'active': '';?>" href="rental-to-return-list.php"> Rented Items</a>
+                </li>
+
+                <li class="nav-item header-nav ">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="report.php")? 'active': '';?>" href="report.php"> Reports</a>
+                </li>
                
-                <li class="nav-item">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php")? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
+                <li class="nav-item header-nav">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="gatepass.php")? 'active': '';?>" href="gatepass.php">Gate Pass</a>
+                </li>
+               
+                <li class="nav-item header-nav">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php") || (basename($_SERVER['PHP_SELF'])=="product-register-step.php") || (basename($_SERVER['PHP_SELF'])=="user-list.php") || (basename($_SERVER['PHP_SELF'])=="user-register.php") || (basename($_SERVER['PHP_SELF'])=="user-reset-pass.php") || (basename($_SERVER['PHP_SELF'])=="user-edit.php") ? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
                 </li>
               </ul>
              <!--  <form class="form-inline mt-2 mt-md-0">

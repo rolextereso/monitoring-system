@@ -18,7 +18,14 @@
         $id = $crud->escape_string($_GET['u']);
 
         if(is_numeric($id) && $id!=''){
-       
+
+            if($id==1){
+                $where_clause=" AND user_type_id=1";
+            }else{
+                $where_clause=" AND user_type_id!=1";
+            }
+
+            $user_type_ = $crud->getData("SELECT * FROM user_type WHERE status='Y' $where_clause");
             //selecting data associated with this particular id
             $result = $crud->getData("SELECT * FROM users WHERE user_id=$id LIMIT 1");
             
@@ -85,9 +92,18 @@
                                                   <label for="exampleInputEmail1">Access Role*</label>
                                                   <select required class="form-control form-control-sm" id="access_role" name="access_role">
                                                         <option value="">Select type of role</option>
-                                                        <option value="1" <?php echo ($user_type=="1")?'selected': '';?>>Project In-Charge</option>
-                                                        <option value="2" <?php echo ($user_type=="2")?'selected': '';?>>Campus Dean</option>
-                                                        <option value="3" <?php echo ($user_type=="3")?'selected': '';?>>Accounting</option>
+                                                        <?php 
+                                                              foreach($user_type_ as $user){
+                                                        ?>
+                                                                <option value="<?php echo $user['user_type_id'] ?>" <?php echo ($user_type==$user['user_type_id'])?'selected': '';?>>
+                                                                  <?php echo $user['user_type'] ?>
+                                                                </option>
+
+                                                        <?php
+                                                              }
+                                                        ?>
+                                                        
+                                                        
                                                   </select>
                                         </div>
 

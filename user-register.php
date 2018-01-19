@@ -1,4 +1,11 @@
-<?php require_once('layout/header.php');?>   
+<?php require_once('layout/header.php');
+      require_once('classes/Crud.php');
+
+     $crud = new Crud();
+
+     $user_type_ = $crud->getData("SELECT * FROM user_type WHERE status='Y' AND user_type_id!=1;");          
+
+?>   
 <style>
   #profile-container{
       width: 300px;
@@ -62,9 +69,16 @@
                                                   <label  >Access Role*</label>
                                                   <select required class="form-control form-control-sm" id="access_role" name="access_role">
                                                         <option value="">Select type of role</option>
-                                                        <option value="1">Project In-Charge</option>
-                                                        <option value="2">Campus Dean</option>
-                                                        <option value="3">Accounting</option>
+                                                        <?php 
+                                                              foreach($user_type_ as $user){
+                                                        ?>
+                                                                <option value="<?php echo $user['user_type_id'] ?>" >
+                                                                  <?php echo $user['user_type'] ?>
+                                                                </option>
+
+                                                        <?php
+                                                              }
+                                                        ?>
                                                   </select>
                                         </div>
                                         

@@ -9,7 +9,7 @@ $(function() {
                                           message: "Are you sure?", 
                                           callback: function(result){ 
                                                    if(result){
-                                                          var url = "phpscript/savePayment/saveSelection.php";
+                                                          var url = "phpscript/rental/saveRentalSelection.php";
                                                           
                                                               // POST values in the background the the script URL
                                                               $.ajax({
@@ -38,7 +38,7 @@ $(function() {
 
                                                                          $('#form')[0].reset();
                                                                          $('tr[row]').remove();
-                                                                         $("[name='transaction_id']").val(""+seconds+year+month+day+"-"+minute+seconds);
+                                                                         $("[name='transaction_id']").val("RE"+seconds+year+month+day+"-"+minute+seconds);
                                                                          totalAmount();
 
                                                                          bootbox.confirm({
@@ -46,7 +46,7 @@ $(function() {
                                                                                             message: "Would you like to print the certification?", 
                                                                                             callback: function(result){ 
                                                                                                      if(result){
-                                                                                                        WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=sales','print','480','450')
+                                                                                                        WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=rental','print','480','450')
                                                                                                      }
                                                                                             }
                                                                          });

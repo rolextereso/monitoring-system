@@ -37,6 +37,8 @@ $(function() {
 
                                                                       var or_number=$("[name='or']").val();
                                                                       var amount_tendered=$("#amount").val();
+                                                                      var selection_for=$("[name='selection_for']").val();
+                                                                      
                                                                       if(data.type=='alert-success'){
                                                                          $('#form')[0].reset();
                                                                          $('tr[row]').remove();
@@ -47,7 +49,7 @@ $(function() {
                                                                                             message: "Would you like to print reciept?", 
                                                                                             callback: function(result){ 
                                                                                                      if(result){
-                                                                                                        WindowPopUp('phpscript/savePayment/printReciept.php?or='+or_number+'&a='+amount_tendered,'print','480','450',windowClose)
+                                                                                                        WindowPopUp('phpscript/savePayment/printReciept.php?or='+or_number+'&a='+amount_tendered+'&paid_for='+selection_for,'print','480','450',windowClose)
                                                                                                      }
                                                                                             }
                                                                          });

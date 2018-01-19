@@ -25,10 +25,12 @@ $(function() {
                                                                                      $(this).fadeOut(5000);
                                                                                  });                                         
                                                                       
-                                                                      if($("#product_id").length==0){
-                                                                          $("#measurement_").html("Measurement");
-                                                                          $("#price_").html("Price");
+                                                                      if($("#item_id").length==0){
+                                                                          $("#measurement_").html("Unit");
+                                                                          $("#rental_").html("Rental Fee");
                                                                           $("#stat").html("(Unactive)").removeClass("green").removeClass("red").addClass("red");
+                                                                          $("#per_day").html("(No)").removeClass("green").removeClass("red").addClass("red");
+                                                                          $("#gpass").html("(No)").removeClass("green").removeClass("red").addClass("red");
                                                                           $('#form')[0].reset();
                                                                       }                                           
 
@@ -58,13 +60,34 @@ $(function() {
                       }
                   });
 
+                    //script for the checkbox account need gatepass and per day
+                  $('#gate_pass').on('change',function(){
+                      if($(this).is(':checked')){
+                          $('#gpass').removeClass('red').addClass('green');
+                          $('#gpass').text('(Yes)');
+                      }else{
+                          $('#gpass').removeClass('green').addClass('red');
+                          $('#gpass').html('(No)');                         
+                      }
+                  });
+
+                  $('#per_day').on('change',function(){
+                      if($(this).is(':checked')){
+                          $('#perD').removeClass('red').addClass('green');
+                          $('#perD').text('(Yes)');
+                      }else{
+                          $('#perD').removeClass('green').addClass('red');
+                          $('#perD').html('(No)');                         
+                      }
+                  });
+
                   $("input#measurement").keyup(function(e){
                       $("#measurement_").html(($(this).val()=="")?"Unit":$(this).val());
                   });
 
                 
 
-                  $('input#rental').keyup(function (event) {
+                  $('input#rental_fee').keyup(function (event) {
                       // skip for arrow keys
                       if (event.which >= 37 && event.which <= 40) {
                           event.preventDefault();

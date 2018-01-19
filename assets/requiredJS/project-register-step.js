@@ -18,13 +18,13 @@
 							var parent=this;
 							var dates = getDates(new Date(settings.dateFrom), new Date(settings.dateTo));
 							populateTbl(dates,settings.text,settings.steps,true,this);
-
+							//this will remove the row of once x is click
 							$('.table-remove').click(function () {
 							   $(this).parents('tr').detach();
-							   totalAllcol();
+							   totalAllcol();//update the total amount
 
 							});
-
+							//this will add row or item once + add item is clicked
 							$(selector+' .table-add').click(function () {
 							 				
 							  var $clone = $(selector).find('table tr.hide').clone(true).removeClass('hide table-line');
@@ -47,7 +47,7 @@
 		               		 });
 
 						});
-
+							//this function population the rows of the table
 							 function populateTbl(date,title,step,enable,elementP){
 
 									var step1=["Product 1", "Product 2", "Product 3"];
@@ -172,7 +172,7 @@
 										  }
 										  return dates;
 								};
-
+								//This function get and set the total amount of each column in the table
 								function totalAmount(attr){
 										var total=0.00;
 
@@ -186,7 +186,7 @@
 					                    		
 					                    });
 								};  
-
+								//this function get the total of all columns
 							    function totalAllcol(){
 													
 										for(var i=1; i<=$(selector+" .table th").length-1;i++){

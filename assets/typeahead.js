@@ -125,7 +125,9 @@
                     $("#total_amount").html('&#8369; '+total.format(2)).addClass("pulse animated green");//animate once amount added
                     $("#total_amount_").val(total);
 
-                    change(currentVal);
+                    if($('#change').length==1){
+                        change(currentVal);
+                    }
 
                     setTimeout(function (){
                        $("#total_amount").removeClass("pulse animated green");//remove the animation after 1 sec
@@ -143,3 +145,4 @@
                }, 1000);  
         }
  }
+

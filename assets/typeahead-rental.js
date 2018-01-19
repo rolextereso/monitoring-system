@@ -1,8 +1,6 @@
   $(document).ready(function(){
 
-              
-
-              var product, template, empty; 
+            var product, template, empty; 
 
               /* below code is for typeahead once user type text on the textbox*/
 
@@ -11,11 +9,13 @@
               
               // Constructing the suggestion engine
               var product = new Bloodhound({
-                  datumTokenizer: Bloodhound.tokenizers.whitespace,
+                 datumTokenizer: Bloodhound.tokenizers.whitespace,
                   queryTokenizer: Bloodhound.tokenizers.whitespace,
+
                   remote: {
-                  url: 'phpscript/ProductSelection/getProduct.php?query=%QUERY',
-                  wildcard: '%QUERY'
+                  url: 'phpscript/rental/getRental.php?query=%QUERY',
+                  wildcard: '%QUERY',
+                  cache:false
                 }
               });
               
@@ -23,34 +23,57 @@
               var input_ =$('.typeahead').typeahead({
                   hint: false,
                   highlight: false, /* Enable substring highlighting */
-                  minLength: 1 /* Specify minimum characters required for showing result */
+                  minLength: 1, /* Specify minimum characters required for showing result */
               },
               {
-                  name: 'product_name',
-                  source: product,
-                  display: 'product_name',
-                  limit: 6,
+                  name: 'item_name',
+                  source:  product,
+                  display: 'item_name',
+                  limit: 9,
                   templates: {
                   notFound: empty,
                   suggestion: template
               }
               }).on('typeahead:selected', function(e,suggestion){
                   input_.typeahead('val','');
-                  //console.log('Selection: ' + suggestion.value);
-                  if($("[row='_"+suggestion.id+"']").length==1){
-                       addQuantity($("[row='_"+suggestion.id+"']").attr('num'));
+
+                  var current_date = moment().format('YYYY-MM-DD'),
+                      date_return =  moment($(".date_return").val(),'YYYY-MM-DD'),
+                      diffDays = date_return.diff(current_date, 'days');
+                  
+                  if(suggestion.availability=='Unavailable'){
+                      alert("The Item is still unavailable");
+                  }else if($(".date_return").val()==""){
+                      alert("Please select the date to return");
+                  }else if($("[row='_"+suggestion.id+"']").length==1){
+                      alert("Item already selected");
                   }else{
-                       $(".table tbody").prepend(render(suggestion));                  
+
+                      if(suggestion.per_day=='Y'){
+                            $(".table tbody").prepend(render(suggestion,diffDays,$(".date_return").val()));   
+                            addQuantity($("[row='_"+suggestion.id+"']").attr('num'), diffDays);
+                            totalAmount();  
+                      }else{
+                           $(".table tbody").prepend(render(suggestion,diffDays,$(".date_return").val()));
+                            addQuantityNotPerDay($("[row='_"+suggestion.id+"']").attr('num'), diffDays);
+                            totalAmount();  
+                      }
+                                  
                   }
 
-                  totalAmount();
+                  
               }).on('typeahead:asyncrequest', function() {
                  $('.Typeahead-spinner').show();
               }).on('typeahead:asynccancel typeahead:asyncreceive', function() {
                  $('.Typeahead-spinner').hide();
               });
 
-});  
+              
+
+
+}); 
+
+  
 
   var  count=1;
 
@@ -59,18 +82,22 @@
         return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
   };
 
-  function render(object){
-        var price=object.price.replace(',','');
+  function render(object, no_day_to_return, date_){
+
+        var rental_fee=object.rental_fee.replace(',','');
+        var per_day=(object.per_day=='Y')?"day":"rent";
         count++;//increase the count value by 1
         return "<tr id='row"+count+"' row='_"+object.id+"' num='"+count+"'><td> "+
-                  "<input type='hidden' value='"+object.id+"' name='product_id[]' /> <h5 class='close_item' onclick='remove("+count+")'>&Cross;</h5>"
-                  +"</td><td>"+object.product_name
-                  +"</td><td>"+object.price+"/"+object.unit_of_measurement
-                  +"</td><td ><input type='hidden' id='q_"+count+"' name='quantity[]' value='1' /><div id='_"+count+"'>1</div>"
-                  +"</td><td><button type='button' onclick='addQuantity("+(count)+")' class='btn btn-primary'>&plus;</button> "
-                  +"<button type='button' onclick=subtractQuantity("+(count)+") class='btn btn-primary'>&ndash;</button>"
-                  +"</td><input type='hidden' id='a_"+count+"' name='amount[]' value='"+object.price+"'/><td class='amount' amount='"+price+"' a_id="+count+">"+object.price
-              +"</td></tr>";
+                  "<input type='hidden' value='"+object.id+"' name='rental_id[]' /> <h5 class='close_item' onclick='remove("+count+")'>&Cross;</h5>"
+                  +"</td><td>"+object.item_name+" ("+object.item_description+")"
+                  +"</td><td>"+object.rental_fee+"/"+per_day
+                  +"</td><td ><input type='hidden' id='q_"+count+"' name='no_of_days[]' value='1' /><div id='_"+count+"'>1</div>"
+                  +"</td><td>"
+              
+                  +"</td><input type='hidden' id='a_"+count+"' name='amount[]' value='"+object.rental_fee+"'/><td class='amount' amount='"+rental_fee+"' a_id="+count+">"+object.rental_fee
+
+              +"</td><td><input type='hidden' name='date_to_return[]' value='"+date_+"'/>"+moment(date_).format('MMM DD, YYYY')+"</td></tr>";
+
                  
   }
 
@@ -79,9 +106,23 @@
         totalAmount();
   }
 
- function addQuantity(index){  
+   function addQuantityNotPerDay(index, diffDays){  
 
-        var quantity=parseInt($("div#_"+index).text())+1;
+        var quantity=parseInt($("div#_"+index).text())+diffDays;
+        var presentAmount=parseFloat($("[a_id="+index+"]").attr("amount"));//actual amount per item
+        var amount=quantity*presentAmount;//multiplied by the number of quantity
+        $('#q_'+index).val(quantity); 
+
+        $("[a_id="+index+"]").html(presentAmount.format(2));
+        $("div#_"+index).html(quantity);
+
+         $("#a_"+index).val(presentAmount);
+        totalAmount();
+ }
+
+ function addQuantity(index, diffDays){  
+
+        var quantity=parseInt($("div#_"+index).text())+diffDays;
         var presentAmount=parseFloat($("[a_id="+index+"]").attr("amount"));//actual amount per item
         var amount=quantity*presentAmount;//multiplied by the number of quantity
         $('#q_'+index).val(quantity); 
@@ -128,7 +169,7 @@
                     $("#total_amount").html('&#8369; '+total.format(2)).addClass("pulse animated green");//animate once amount added
                     $("#total_amount_").val(total);
 
-                    change(currentVal);
+                   
 
                     setTimeout(function (){
                        $("#total_amount").removeClass("pulse animated green");//remove the animation after 1 sec
@@ -139,10 +180,12 @@
                $("#total_amount").html('&#8369; '+total.format(2)).addClass("pulse animated red");//animate once amount added
                $("#total_amount_").val(total);
 
-               $('#change').html('&#8369; 0.00');
+               
 
                setTimeout(function (){
                        $("#total_amount").removeClass("pulse animated red");//remove the animation after 1 sec
                }, 1000);  
         }
  }
+
+

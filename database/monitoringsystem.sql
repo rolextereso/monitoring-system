@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2018 at 11:56 PM
+-- Generation Time: Jan 20, 2018 at 12:08 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -119,7 +119,68 @@ INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALU
 (46, 'cddd', 'c'),
 (47, 'd', 'd'),
 (48, 'g', 'g'),
-(49, 'sfd', 'sdf');
+(49, 'sfd', 'sdf'),
+(50, 't', 't'),
+(51, 't', 't'),
+(52, 'y', 'y'),
+(53, 'y', 'y'),
+(59, 'd', 'd'),
+(61, 'df', 'df'),
+(62, 'g', 'g'),
+(63, 'g', 'g'),
+(64, 's', 's'),
+(65, 's', 's'),
+(66, 's', 's'),
+(67, 's', 's'),
+(68, 's', 's'),
+(69, 'd', 'd'),
+(70, 's', 's'),
+(71, 'f', 'f'),
+(72, 'f', 'f'),
+(73, 's', 's'),
+(74, 'xxxxx', 'xxxx'),
+(75, 'sss', 'sss'),
+(76, 'sss', 'sss'),
+(77, 'sss', 'sss'),
+(78, 'hhh', 'hh'),
+(79, 's', 's'),
+(80, 'f', 'f'),
+(81, 's', 's'),
+(82, 's', 'df'),
+(83, 's', 'df'),
+(84, 'f', 'd'),
+(85, 'df', 'df'),
+(86, 'df', 'dd'),
+(87, 'gs', 'gs'),
+(88, 'df', 'df'),
+(89, 'fgf', 'fgfgf'),
+(90, 'ddd', 'ddd'),
+(91, 'ghgh', 'ghgh'),
+(92, 'ddfd', 'dfdf'),
+(93, 'sss', 'sss'),
+(94, 'gggg', 'ggg'),
+(95, 'sdf', 'dfs');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `owner_info`
+--
+
+CREATE TABLE `owner_info` (
+  `id` int(11) NOT NULL,
+  `owner_name` varchar(145) DEFAULT NULL,
+  `owner_address` varchar(145) DEFAULT NULL,
+  `contact_no` varchar(45) DEFAULT NULL,
+  `logo` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `owner_info`
+--
+
+INSERT INTO `owner_info` (`id`, `owner_name`, `owner_address`, `contact_no`, `logo`) VALUES
+(1, 'Southern Leyte State University-CAES', 'Brgy. Ambacon, Hinunangan, Southern Leyte', '0865754344', 'img/setting_assets/logo.png');
 
 -- --------------------------------------------------------
 
@@ -136,50 +197,48 @@ CREATE TABLE `products` (
   `project_id` int(11) DEFAULT NULL,
   `unit_of_measurement` varchar(45) DEFAULT NULL,
   `product_status` enum('Y','N') DEFAULT 'Y',
-  `project_specific_id` varchar(45) DEFAULT NULL,
-  `item_code` varchar(45) DEFAULT NULL,
-  `item_description` varchar(245) DEFAULT NULL
+  `project_specific_id` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `created_on`, `created_by`, `project_id`, `unit_of_measurement`, `product_status`, `project_specific_id`, `item_code`, `item_description`) VALUES
-(1, 'Coconut Seedling', 1, '2017-12-15 14:18:40', NULL, 1, 'Seedling', 'Y', NULL, NULL, NULL),
-(2, 'Vinegar/Suka', 2, '2017-12-15 14:19:30', NULL, 1, 'Gallon', 'Y', NULL, NULL, NULL),
-(3, 'Charcoal', 3, '2017-12-18 14:26:56', NULL, 1, 'Taro', 'N', NULL, NULL, NULL),
-(4, 'Bunot', 4, '2017-12-18 14:27:19', NULL, 1, 'pieces', 'N', NULL, NULL, NULL),
-(5, 'Lukay', 5, '2017-12-18 14:27:59', NULL, 1, 'pieces', 'N', NULL, NULL, NULL),
-(6, 'bagol', 6, '2017-12-18 14:28:26', NULL, 1, 'pieces', 'Y', NULL, NULL, NULL),
-(7, 'Vermi Worm', 7, '2017-12-18 14:31:34', NULL, 3, 'kilo', 'Y', NULL, NULL, NULL),
-(8, 'Vermi Compost', 8, '2017-12-18 14:38:06', NULL, 3, 'kilo', 'Y', NULL, NULL, NULL),
-(9, 'Vermi mud', 9, '2017-12-18 14:39:27', NULL, 3, 'kilo', 'Y', NULL, NULL, NULL),
-(10, 'Goat Meat', 10, '2017-12-18 22:57:44', NULL, 4, 'kilo', 'Y', NULL, NULL, NULL),
-(17, 'Product 1', 17, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL, NULL, NULL),
-(18, 'Product 2', 18, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL, NULL, NULL),
-(19, 'Product 3', 19, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL, NULL, NULL),
-(23, 'Product 1', 23, '2018-01-08 18:18:16', 1, 10, 'g', 'Y', NULL, NULL, NULL),
-(24, 'Product 2', 24, '2018-01-08 18:18:16', 1, 10, 'g', 'Y', NULL, NULL, NULL),
-(25, 'Product 3', 25, '2018-01-08 18:18:16', 1, 10, 'g', 'Y', NULL, NULL, NULL),
-(26, 'Product 1', 26, '2018-01-11 14:34:34', 1, 11, 'Kg', 'Y', NULL, NULL, NULL),
-(27, 'Product 2', 27, '2018-01-11 14:34:34', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(28, 'Product 3', 28, '2018-01-11 14:34:34', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(29, 'Product 1', 29, '2018-01-12 16:45:45', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(30, 'Product 2', 30, '2018-01-12 16:45:45', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(31, 'Product 3', 31, '2018-01-12 16:45:45', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(32, 'Product 1', 32, '2018-01-12 16:48:50', 1, 11, 'g', 'Y', NULL, NULL, NULL),
-(33, 'Product 2', 33, '2018-01-12 16:48:50', 1, 11, 'g', 'Y', NULL, NULL, NULL),
-(34, 'Product 3', 34, '2018-01-12 16:48:50', 1, 11, 'g', 'Y', NULL, NULL, NULL),
-(35, 'Product 1', 35, '2018-01-12 16:54:20', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(36, 'Product 2', 36, '2018-01-12 16:54:20', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(37, 'Product 3', 37, '2018-01-12 16:54:20', 1, 11, 'kg', 'Y', NULL, NULL, NULL),
-(50, 'Product 1', 50, '2018-01-12 18:16:08', 1, 15, '', 'Y', '18-01120816', NULL, NULL),
-(51, 'Product 2', 51, '2018-01-12 18:16:08', 1, 15, '', 'Y', '18-01120816', NULL, NULL),
-(52, 'Product 3', 52, '2018-01-12 18:16:08', 1, 15, '', 'Y', '18-01120816', NULL, NULL),
-(59, 'Product 1', 59, '2018-01-12 18:21:43', 1, 18, '', 'Y', '18-01124321', NULL, NULL),
-(60, 'Product 2', 60, '2018-01-12 18:21:43', 1, 18, '', 'Y', '18-01124321', NULL, NULL),
-(61, 'Product 3', 61, '2018-01-12 18:21:43', 1, 18, '', 'Y', '18-01124321', NULL, NULL);
+INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `created_on`, `created_by`, `project_id`, `unit_of_measurement`, `product_status`, `project_specific_id`) VALUES
+(1, 'Coconut Seedling', 1, '2017-12-15 14:18:40', NULL, 1, 'Seedling', 'Y', NULL),
+(2, 'Vinegar/Suka', 2, '2017-12-15 14:19:30', NULL, 1, 'Gallon', 'N', NULL),
+(3, 'Charcoal', 3, '2017-12-18 14:26:56', NULL, 1, 'Taro', 'N', NULL),
+(4, 'Bunot', 4, '2017-12-18 14:27:19', NULL, 1, 'pieces', 'N', NULL),
+(5, 'Lukay', 5, '2017-12-18 14:27:59', NULL, 1, 'pieces', 'N', NULL),
+(6, 'bagol', 6, '2017-12-18 14:28:26', NULL, 1, 'pieces', 'Y', NULL),
+(7, 'Vermi Worm', 7, '2017-12-18 14:31:34', NULL, 3, 'kilo', 'Y', NULL),
+(8, 'Vermi Compost', 8, '2017-12-18 14:38:06', NULL, 3, 'kilo', 'Y', NULL),
+(9, 'Vermi mud', 9, '2017-12-18 14:39:27', NULL, 3, 'kilo', 'Y', NULL),
+(10, 'Goat Meat', 10, '2017-12-18 22:57:44', NULL, 4, 'kilo', 'Y', NULL),
+(17, 'Product 1', 17, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL),
+(18, 'Product 2', 18, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL),
+(19, 'Product 3', 19, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL),
+(23, 'Product 1', 23, '2018-01-08 18:18:16', 1, 10, 'g', 'Y', NULL),
+(24, 'Product 2', 24, '2018-01-08 18:18:16', 1, 10, 'g', 'Y', NULL),
+(25, 'Product 3', 25, '2018-01-08 18:18:16', 1, 10, 'g', 'Y', NULL),
+(26, 'Product 1', 26, '2018-01-11 14:34:34', 1, 11, 'Kg', 'Y', NULL),
+(27, 'Product 2', 27, '2018-01-11 14:34:34', 1, 11, 'kg', 'Y', NULL),
+(28, 'Product 3', 28, '2018-01-11 14:34:34', 1, 11, 'kg', 'Y', NULL),
+(29, 'Product 1', 29, '2018-01-12 16:45:45', 1, 11, 'kg', 'Y', NULL),
+(30, 'Product 2', 30, '2018-01-12 16:45:45', 1, 11, 'kg', 'Y', NULL),
+(31, 'Product 3', 31, '2018-01-12 16:45:45', 1, 11, 'kg', 'Y', NULL),
+(32, 'Product 1', 32, '2018-01-12 16:48:50', 1, 11, 'g', 'Y', NULL),
+(33, 'Product 2', 33, '2018-01-12 16:48:50', 1, 11, 'g', 'Y', NULL),
+(34, 'Product 3', 34, '2018-01-12 16:48:50', 1, 11, 'g', 'Y', NULL),
+(35, 'Product 1', 35, '2018-01-12 16:54:20', 1, 11, 'kg', 'Y', NULL),
+(36, 'Product 2', 36, '2018-01-12 16:54:20', 1, 11, 'kg', 'Y', NULL),
+(37, 'Product 3', 37, '2018-01-12 16:54:20', 1, 11, 'kg', 'Y', NULL),
+(50, 'Product 1', 50, '2018-01-12 18:16:08', 1, 15, '', 'Y', '18-01120816'),
+(51, 'Product 2', 51, '2018-01-12 18:16:08', 1, 15, '', 'Y', '18-01120816'),
+(52, 'Product 3', 52, '2018-01-12 18:16:08', 1, 15, '', 'Y', '18-01120816'),
+(59, 'Product 1', 59, '2018-01-12 18:21:43', 1, 18, '', 'Y', '18-01124321'),
+(60, 'Product 2', 60, '2018-01-12 18:21:43', 1, 18, '', 'Y', '18-01124321'),
+(61, 'Product 3', 61, '2018-01-12 18:21:43', 1, 18, '', 'Y', '18-01124321');
 
 -- --------------------------------------------------------
 
@@ -383,6 +442,96 @@ INSERT INTO `project_duration` (`project_duration_id`, `project_specific_id`, `p
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rental_items`
+--
+
+CREATE TABLE `rental_items` (
+  `rental_id` int(11) NOT NULL,
+  `item_name` varchar(45) DEFAULT NULL,
+  `item_code` varchar(45) DEFAULT NULL,
+  `item_description` varchar(100) DEFAULT NULL,
+  `rental_fee` double DEFAULT NULL,
+  `unit` varchar(45) DEFAULT NULL,
+  `per_day` enum('Y','N') DEFAULT 'N',
+  `need_gate_pass` enum('N','Y') DEFAULT 'N',
+  `created_by` int(11) DEFAULT NULL,
+  `status` enum('N','Y') DEFAULT NULL,
+  `availability` enum('N','Y') DEFAULT 'Y',
+  `transaction_id` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='			';
+
+--
+-- Dumping data for table `rental_items`
+--
+
+INSERT INTO `rental_items` (`rental_id`, `item_name`, `item_code`, `item_description`, `rental_fee`, `unit`, `per_day`, `need_gate_pass`, `created_by`, `status`, `availability`, `transaction_id`) VALUES
+(4, 'Tractor', '180106-4206', 'Blue                                                                                   ', 100, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180118-0044'),
+(6, 'Tractor', '180109-4209', 'Red', 100, 'Set', 'N', 'Y', 1, 'Y', 'N', 'RE180118-4106'),
+(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180118-3130');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rental_specific`
+--
+
+CREATE TABLE `rental_specific` (
+  `rental_specific_id` int(11) NOT NULL,
+  `rental_id` int(11) DEFAULT NULL,
+  `date_return` date DEFAULT NULL,
+  `rental_fee_amount` double DEFAULT NULL,
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` int(11) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `transaction_id` varchar(45) DEFAULT NULL,
+  `date_returned` date DEFAULT NULL,
+  `sales_id` int(11) DEFAULT NULL,
+  `paid` enum('N','Y') DEFAULT 'N',
+  `no_of_days` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `rental_specific`
+--
+
+INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`, `rental_fee_amount`, `created_on`, `created_by`, `customer_id`, `transaction_id`, `date_returned`, `sales_id`, `paid`, `no_of_days`) VALUES
+(13, 6, '2018-01-19', 100, '2018-01-16 14:44:20', 1, 59, '180116-4033', '2018-01-17', NULL, 'Y', NULL),
+(14, 4, '2018-01-19', 400, '2018-01-16 14:44:20', 1, 59, '180116-4033', '2018-01-17', NULL, 'Y', NULL),
+(17, 4, '2018-01-18', 200, '2018-01-16 19:16:06', 1, 61, '180116-5015', '2018-01-17', NULL, 'Y', NULL),
+(18, 4, '2018-01-18', 200, '2018-01-16 19:21:37', 1, 62, '180116-1721', '2018-01-17', NULL, 'Y', NULL),
+(19, 4, '2018-01-18', 200, '2018-01-16 19:23:54', 1, 63, '180116-4223', '2018-01-17', NULL, 'Y', NULL),
+(20, 6, '2018-01-18', 100, '2018-01-16 19:27:47', 1, 64, '180116-2527', '2018-01-17', NULL, 'Y', NULL),
+(21, 6, '2018-01-19', 100, '2018-01-16 19:32:21', 1, 65, '180116-0632', '2018-01-17', NULL, 'Y', NULL),
+(22, 4, '2018-01-19', 300, '2018-01-16 19:51:09', 1, 66, '180116-4850', '2018-01-17', NULL, 'Y', NULL),
+(23, 4, '2018-01-19', 300, '2018-01-16 19:56:02', 1, 67, '180116-4555', '2018-01-17', NULL, 'Y', NULL),
+(24, 6, '2018-01-18', 100, '2018-01-16 19:56:34', 1, 68, '180116-1656', '2018-01-17', NULL, 'Y', NULL),
+(25, 4, '2018-01-18', 200, '2018-01-16 19:58:31', 1, 69, '180116-1958', '2018-01-17', NULL, 'Y', NULL),
+(26, 6, '2018-01-18', 100, '2018-01-16 20:06:22', 1, 70, '180116-0106', '2018-01-17', NULL, 'Y', NULL),
+(27, 4, '2018-01-19', 300, '2018-01-17 15:39:43', 1, 71, '180117-1430', '2018-01-17', 52, 'Y', NULL),
+(28, 4, '2018-01-19', 300, '2018-01-17 15:39:49', 1, 72, '180117-1430', '2018-01-17', 53, 'Y', NULL),
+(29, 4, '2018-01-19', 300, '2018-01-17 15:41:26', 1, 73, '180117-1141', '2018-01-17', 54, 'Y', NULL),
+(30, 6, '2018-01-19', 100, '2018-01-17 15:45:44', 1, 74, '262018023-4126', '2018-01-18', 55, 'Y', 3),
+(31, 4, '2018-01-19', 300, '2018-01-17 15:45:44', 1, 74, '262018023-4126', '2018-01-18', 55, 'Y', 3),
+(34, 7, '2018-01-24', 700, '2018-01-17 16:47:11', 1, 77, 'RE180117-0146', '2018-01-18', 58, 'Y', 7),
+(35, 4, '2018-01-19', 200, '2018-01-17 17:53:09', 1, 78, '11201800-4711', '2018-01-18', 59, 'Y', 2),
+(36, 6, '2018-01-19', 100, '2018-01-17 17:53:09', 1, 78, '11201800-4711', '2018-01-18', 59, 'Y', 2),
+(37, 4, '2018-01-20', 300, '2018-01-17 18:37:13', 1, 79, 'RE180117-5536', '2018-01-18', 60, 'Y', 3),
+(38, 7, '2018-01-20', 300, '2018-01-17 18:39:14', 1, 80, 'RE180117-0139', '2018-01-18', 61, 'Y', 3),
+(39, 6, '2018-01-20', 100, '2018-01-17 18:52:02', 1, 81, 'RE180117-4351', '2018-01-18', 62, 'Y', 3),
+(40, 4, '2018-01-20', 300, '2018-01-17 18:57:11', 1, 82, 'RE180117-0157', '2018-01-18', 63, 'Y', 3),
+(41, 6, '2018-01-20', 100, '2018-01-17 19:06:04', 1, 84, 'RE180117-4905', '2018-01-18', 65, 'Y', 3),
+(42, 6, '2018-01-20', 100, '2018-01-17 19:07:45', 1, 85, 'RE180117-3407', '2018-01-18', 66, 'Y', 3),
+(43, 7, '2018-01-20', 300, '2018-01-18 14:33:50', 1, 86, 'RE180118-2933', '2018-01-18', 67, 'Y', 3),
+(44, 4, '2018-01-20', 300, '2018-01-18 14:33:50', 1, 86, 'RE180118-2933', '2018-01-18', 67, 'Y', 3),
+(45, 6, '2018-01-20', 100, '2018-01-18 14:53:04', 1, 87, 'RE180118-4952', '2018-01-18', 68, 'Y', 3),
+(46, 4, '2018-01-20', 300, '2018-01-18 14:53:04', 1, 87, 'RE180118-4952', '2018-01-18', 68, 'Y', 3),
+(47, 4, '2018-01-20', 300, '2018-01-18 15:44:13', 1, 89, 'RE180118-0044', NULL, 70, 'N', 3),
+(48, 6, '2018-01-20', 100, '2018-01-18 16:06:49', 1, 90, 'RE180118-4106', NULL, 71, 'N', 2),
+(49, 7, '2018-01-22', 400, '2018-01-18 18:30:40', 1, 95, 'RE180118-3130', NULL, 76, 'N', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sales_record`
 --
 
@@ -430,9 +579,34 @@ INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_pa
 (44, '111121', 360, 'cash', '2018-01-10 17:16:39', 1, 44, 'N'),
 (45, '556564343', 200, 'cash', '2018-01-10 17:17:13', 1, 45, 'N'),
 (46, '23223333', 100, 'cash', '2018-01-12 20:23:16', 1, 46, 'N'),
-(47, '', 100, '', '2018-01-12 21:55:11', 1, 47, 'N'),
-(48, '', 100, '', '2018-01-12 21:56:02', 1, 48, 'N'),
-(49, '', 200, '', '2018-01-12 21:56:12', 1, 49, 'N');
+(47, '342424322322', 100, 'cash', '2018-01-12 21:55:11', 1, 47, 'N'),
+(48, '567575657', 100, 'cash', '2018-01-12 21:56:02', 1, 48, 'N'),
+(49, '242423444', 200, 'cash', '2018-01-12 21:56:12', 1, 49, 'N'),
+(50, '3535353', 100, 'cash', '2018-01-15 22:13:16', 1, 50, 'N'),
+(51, '33453444', 100, 'cash', '2018-01-15 22:13:29', 1, 51, 'N'),
+(52, '', 300, '', '2018-01-17 15:39:43', 1, 71, 'N'),
+(53, '', 300, '', '2018-01-17 15:39:49', 1, 72, 'N'),
+(54, '', 300, '', '2018-01-17 15:41:26', 1, 73, 'N'),
+(55, '324334645555', 400, 'cash', '2018-01-17 15:45:44', 1, 74, 'N'),
+(58, '546433222', 700, 'cash', '2018-01-17 16:47:11', 1, 77, 'N'),
+(59, '546465433', 300, 'cash', '2018-01-17 17:53:09', 1, 78, 'N'),
+(60, '234242424', 300, 'cash', '2018-01-17 18:37:13', 1, 79, 'N'),
+(61, '', 300, '', '2018-01-17 18:39:14', 1, 80, 'N'),
+(62, '', 100, '', '2018-01-17 18:52:02', 1, 81, 'N'),
+(63, '', 300, '', '2018-01-17 18:57:11', 1, 82, 'N'),
+(64, '23424555555333', 10, 'cash', '2018-01-17 18:58:26', 1, 83, 'N'),
+(65, '', 100, '', '2018-01-17 19:06:04', 1, 84, 'N'),
+(66, '', 100, '', '2018-01-17 19:07:45', 1, 85, 'N'),
+(67, '123344444444442', 600, 'cash', '2018-01-18 14:33:50', 1, 86, 'N'),
+(68, '56464562342424242424', 400, 'cash', '2018-01-18 14:53:04', 1, 87, 'N'),
+(69, '234234545433333', 20, 'cash', '2018-01-18 15:30:13', 1, 88, 'N'),
+(70, '', 300, '', '2018-01-18 15:44:13', 1, 89, 'N'),
+(71, '', 100, '', '2018-01-18 16:06:49', 1, 90, 'N'),
+(72, '', 100, '', '2018-01-18 18:26:45', 1, 91, 'N'),
+(73, '', 10, '', '2018-01-18 18:27:50', 1, 92, 'N'),
+(74, '', 30, '', '2018-01-18 18:28:08', 1, 93, 'N'),
+(75, '', 30, '', '2018-01-18 18:30:21', 1, 94, 'N'),
+(76, '', 400, '', '2018-01-18 18:30:40', 1, 95, 'N');
 
 -- --------------------------------------------------------
 
@@ -495,9 +669,18 @@ INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `am
 (80, 2, 1, 100, 45, '180110-0017', 'Y'),
 (81, 1, 1, 100, 45, '180110-0017', 'Y'),
 (82, 1, 1, 100, 46, '180112-5122', 'Y'),
-(83, 1, 1, 100, 47, '180112-2652', 'N'),
-(84, 2, 1, 100, 48, '180112-5655', 'N'),
-(85, 10, 1, 200, 49, '180112-0556', 'N');
+(83, 1, 1, 100, 47, '180112-2652', 'Y'),
+(84, 2, 1, 100, 48, '180112-5655', 'Y'),
+(85, 10, 1, 200, 49, '180112-0556', 'Y'),
+(86, 1, 1, 100, 50, '180115-0613', 'Y'),
+(87, 1, 1, 100, 51, '180115-2213', 'Y'),
+(88, 29, 1, 10, 64, '180117-1758', 'Y'),
+(89, 52, 1, 10, 69, '180118-0330', 'Y'),
+(90, 26, 1, 10, 69, '180118-0330', 'Y'),
+(91, 1, 1, 100, 72, '180118-3626', 'N'),
+(92, 50, 1, 10, 73, '45201802-2645', 'N'),
+(93, 6, 3, 30, 74, '180118-5827', 'N'),
+(94, 6, 3, 30, 75, '180118-0730', 'N');
 
 -- --------------------------------------------------------
 
@@ -523,7 +706,55 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`, `hint`, `status`, `profile_pic`, `user_type`, `created_on`) VALUES
-(1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37');
+(1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37'),
+(2, 'Sample', 'Sample', 'Sample', '96ÀžY‰ì:Wü¯D	‚', '098', 'Y', 'img/logo2.png', 2, '2018-01-18 22:34:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_role`
+--
+
+CREATE TABLE `user_role` (
+  `user_role` int(11) NOT NULL,
+  `module` varchar(45) DEFAULT NULL,
+  `view_page` enum('Y','N') DEFAULT 'N',
+  `view_command` enum('Y','N') DEFAULT 'N',
+  `edit_command` enum('Y','N') DEFAULT 'N',
+  `add_command` enum('Y','N') DEFAULT 'N',
+  `delete_command` enum('Y','N') DEFAULT 'N',
+  `user_type_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_role`
+--
+
+INSERT INTO `user_role` (`user_role`, `module`, `view_page`, `view_command`, `edit_command`, `add_command`, `delete_command`, `user_type_id`) VALUES
+(1, 'payment', 'N', 'N', 'Y', 'Y', 'Y', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_type`
+--
+
+CREATE TABLE `user_type` (
+  `user_type_id` int(11) NOT NULL,
+  `user_type` varchar(45) DEFAULT NULL,
+  `status` enum('Y','N') DEFAULT 'Y'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_type`
+--
+
+INSERT INTO `user_type` (`user_type_id`, `user_type`, `status`) VALUES
+(1, 'Administrator', 'Y'),
+(2, 'IGP Director', 'Y'),
+(3, 'Campus Dean', 'Y'),
+(4, 'Accounting', 'Y'),
+(5, 'Project Assistant', 'Y');
 
 --
 -- Indexes for dumped tables
@@ -534,6 +765,12 @@ INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`,
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `owner_info`
+--
+ALTER TABLE `owner_info`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `products`
@@ -566,6 +803,23 @@ ALTER TABLE `project_duration`
   ADD KEY `fkproject_idx` (`project_id`);
 
 --
+-- Indexes for table `rental_items`
+--
+ALTER TABLE `rental_items`
+  ADD PRIMARY KEY (`rental_id`),
+  ADD UNIQUE KEY `item_code_UNIQUE` (`item_code`);
+
+--
+-- Indexes for table `rental_specific`
+--
+ALTER TABLE `rental_specific`
+  ADD PRIMARY KEY (`rental_specific_id`),
+  ADD KEY `fkusers_idx` (`created_by`),
+  ADD KEY `fk_id_idx` (`rental_id`),
+  ADD KEY `fkcustomer_idx` (`customer_id`),
+  ADD KEY `fkor_idx` (`sales_id`);
+
+--
 -- Indexes for table `sales_record`
 --
 ALTER TABLE `sales_record`
@@ -586,7 +840,21 @@ ALTER TABLE `sales_specific`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `username_UNIQUE` (`username`);
+  ADD UNIQUE KEY `username_UNIQUE` (`username`),
+  ADD KEY `fk_user_type_idx` (`user_type`);
+
+--
+-- Indexes for table `user_role`
+--
+ALTER TABLE `user_role`
+  ADD PRIMARY KEY (`user_role`),
+  ADD KEY `fkuser_type_idx` (`user_type_id`);
+
+--
+-- Indexes for table `user_type`
+--
+ALTER TABLE `user_type`
+  ADD PRIMARY KEY (`user_type_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -596,17 +864,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+--
+-- AUTO_INCREMENT for table `owner_info`
+--
+ALTER TABLE `owner_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
-  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 --
 -- AUTO_INCREMENT for table `projects`
 --
@@ -616,22 +889,42 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT for table `project_duration`
 --
 ALTER TABLE `project_duration`
-  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+--
+-- AUTO_INCREMENT for table `rental_items`
+--
+ALTER TABLE `rental_items`
+  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `rental_specific`
+--
+ALTER TABLE `rental_specific`
+  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
-  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `user_role`
+--
+ALTER TABLE `user_role`
+  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `user_type`
+--
+ALTER TABLE `user_type`
+  MODIFY `user_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
@@ -657,6 +950,15 @@ ALTER TABLE `project_duration`
   ADD CONSTRAINT `fkproject` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`);
 
 --
+-- Constraints for table `rental_specific`
+--
+ALTER TABLE `rental_specific`
+  ADD CONSTRAINT `fk_id` FOREIGN KEY (`rental_id`) REFERENCES `rental_items` (`rental_id`),
+  ADD CONSTRAINT `fkcustomer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
+  ADD CONSTRAINT `fkor` FOREIGN KEY (`sales_id`) REFERENCES `sales_record` (`sales_id`),
+  ADD CONSTRAINT `fkusers` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`);
+
+--
 -- Constraints for table `sales_record`
 --
 ALTER TABLE `sales_record`
@@ -669,6 +971,18 @@ ALTER TABLE `sales_record`
 ALTER TABLE `sales_specific`
   ADD CONSTRAINT `fk_pro` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale` FOREIGN KEY (`or_number`) REFERENCES `sales_record` (`sales_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `fk_user_type` FOREIGN KEY (`user_type`) REFERENCES `user_type` (`user_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `user_role`
+--
+ALTER TABLE `user_role`
+  ADD CONSTRAINT `fkuser_type` FOREIGN KEY (`user_type_id`) REFERENCES `user_type` (`user_type_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,16 +1,18 @@
 <?php 
    require_once('layout/header.php');
    require_once('classes/Crud.php');
+   require_once('classes/function.php');
 
     $crud = new Crud();     
     $found=false;
     $sales_id="";
+    $selection_for="";
 
     if(isset($_GET['transaction_id'])){
         //getting id from url
         $id = $crud->escape_string($_GET['transaction_id']);
         //selecting data associated with this particular id
-        $result = $crud->getData("SELECT sr.sales_id, "
+        $sales = $crud->getData("SELECT sr.sales_id, "
                                  ."           customer_name,"
                                  ."           customer_address,"
                                  ."           p.product_name,"
@@ -23,14 +25,45 @@
                                  ."   INNER JOIN products p ON p.product_id=ss.product_id"
                                  ."  INNER JOIN product_price pp ON pp.price_id=p.product_id"
                                  ."  WHERE ss.paid='N' AND sr.or_number ='' AND transaction_id='$id';");
-        
-        $found=(count($result)>=1)?true:false;  
-        $total_amount=0;
+        $rental=$crud->getData("SELECT 
+                                  ri.transaction_id,   
+                                  ri.item_name,
+                                  ri.item_description,
+                                  ri.rental_fee,
+                                  ri.per_day,
+                                  rs.rental_fee_amount,
+                                  rs.no_of_days,
+                                  c.customer_name,
+                                  c.customer_address,
+                                  rs.sales_id
+                                  FROM rental_items ri
+                                LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
+                                LEFT JOIN customer c ON c.customer_id=rs.customer_id 
+                                WHERE rs.paid='N' AND ri.transaction_id='$id';");
 
-        foreach($result as $res_){
-            $total_amount+=$res_['amount'];
-            $sales_id=$res_['sales_id'];
-        } 
+       
+
+        if(count($sales)>=1){
+            $found=true;
+            $selection_for="sales";
+            $total_amount=0;
+
+            foreach($sales as $res_){
+                $total_amount+=$res_['amount'];
+                $sales_id=$res_['sales_id'];
+            } 
+        }else if(count($rental)>=1){
+            $found=true;
+            $total_amount=0;
+            $selection_for="rental";
+
+            foreach($rental as $res_){
+                $total_amount+=$res_['rental_fee_amount'];
+                $sales_id=$res_['sales_id'];
+            } 
+        }
+       
+       
     }
 ?>
    
@@ -67,24 +100,29 @@
                     <li class="breadcrumb-item active" aria-current="page"></li>
               </ol>
           </nav>
-      <?php if($found){ ?>
+    <?php 
+        if(!access_role("payment","view_page",$_SESSION['user_type'])){
+    ?>
+           <h2 style="text-align: center;width: 100%;"><span style='color:red;'>Unauthorized Access:</span><br/><small>You don't have permission to open this page.</small></h2>
+    <?php }else if($found){ ?>
      <form data-toggle="validator" role="form" id="form">
        <div class="row">
           <div class="col-sm-8">
             <div class="row">
                <div class="col-sm-6 form-group">
                     <label>Customer Name:</label>
-                    <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo $result[0]['customer_name'];?>" />
+                    <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_name']:$rental[0]['customer_name'];?>" />
                                          
               </div>
               <div class="col-sm-6 form-group">
                     <label>Customer Address:</label>
-                    <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo $result[0]['customer_address'];?>"/>    
+                    <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_address']:$rental[0]['customer_address'];?>"/>    
                     <br/>                
 
               </div>
             </div>
             <div class="row">
+              <input type="hidden" name="selection_for" value="<?php echo $selection_for;?>"/>
               <input type="hidden" name="sales_id" value="<?php echo $sales_id;?>">
               <div class="col-sm-12">
                     <label>Enter Product Item</label>
@@ -116,26 +154,47 @@
                             <th></th>
                             <th>Description</th>
                             <th>Unit Price</th>
-                            <th colspan="2">Quantity</th>
+                            <th colspan="2"><?php echo ($selection_for=="sales")?"Quantity":"# of days";?></th>
                             <th>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <?php
-                              $i=2;
-                              foreach($result as $res){
-                          ?>                          
-                          <tr id="row<?php echo $i;?>" row="_<?php echo $i;?>" num="<?php echo $i;?>">
-                                <td></td>
-                                <td><?php echo $res['product_name'];?></td>
-                                <td><?php echo number_format($res['amount'],2);?>/<?php echo $res['unit_of_measurement'];?></td>
-                                <td>                                  
-                                  <div id="_<?php echo $i;?>"><?php echo $res['quantity'];?></div>
-                                </td>
-                                <td></td>                                
-                                <td><?php echo number_format($res['amount'],2);?></td>
-                          </tr>
-                          <?php $i++; } ?>
+
+                          <?php if($selection_for=="sales"){ ?>
+                                        <?php
+                                            $i=2;
+                                            foreach($sales as $res){
+                                        ?>                          
+                                        <tr id="row<?php echo $i;?>" row="_<?php echo $i;?>" num="<?php echo $i;?>">
+                                              <td></td>
+                                              <td><?php echo $res['product_name'];?></td>
+                                              <td><?php echo number_format($res['amount'],2);?>/<?php echo $res['unit_of_measurement'];?></td>
+                                              <td>                                  
+                                                <div id="_<?php echo $i;?>"><?php echo $res['quantity'];?></div>
+                                              </td>
+                                              <td></td>                                
+                                              <td><?php echo number_format($res['amount'],2);?></td>
+                                        </tr>
+                                        <?php $i++; } ?>
+
+                          <?php } else if($selection_for=="rental"){?>
+                                       <?php
+                                            $i=2;
+                                            foreach($rental as $res){
+                                        ?>                          
+                                        <tr id="row<?php echo $i;?>" row="_<?php echo $i;?>" num="<?php echo $i;?>">
+                                              <td></td>
+                                              <td><?php echo $res['item_name']."(".$res['item_description'].")";?></td>
+                                              <td><?php echo number_format($res['rental_fee'],2);?>/<?php echo ($res['per_day']=='Y')?'day':'rent';?></td>
+                                              <td>                                  
+                                                <div id="_<?php echo $i;?>"><?php echo $res['no_of_days'];?></div>
+                                              </td>
+                                              <td></td>                                
+                                              <td><?php echo number_format($res['rental_fee_amount'],2);?></td>
+                                        </tr>
+                                        <?php $i++; } ?>
+
+                          <?php } ?>
                           <tr>
                             <td></td>
                             <td></td>

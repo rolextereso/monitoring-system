@@ -46,33 +46,66 @@
 <?php 
    
     require_once('../../classes/Crud.php');
+    require_once('../../classes/function.php');
+
+   
 
     $crud = new Crud();
+
+     $header=header_info();
     
-    if(isset($_GET['id'])){
+    if(isset($_GET['id']) && isset($_GET['for'])){
         //getting id from url
         $id = $crud->escape_string($_GET['id']);
+        $paid_for = $crud->escape_string($_GET['for']);
        
              
-            //selecting data associated with this particular id
-            $result = $crud->getData("SELECT ".
-									"	p.product_name, ".
-									"		sp.quantity, ".							
-									"		sp.amount  ".
-									"		FROM sales_specific sp ".
-									"		INNER JOIN sales_record sr ON sp.or_number=sr.sales_id ".
-									"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".
-									"		INNER JOIN products p ON p.product_id=sp.product_id ".
-									"		WHERE sp.transaction_id='".$id."'");
-  
-             $customer = $crud->getData("SELECT ".
+
+            if($paid_for=="rental"){
+             	       $result=$crud->getData("SELECT                                 
+				                                  ri.item_name,
+				                                  ri.item_description,
+				                                  ri.rental_fee,
+				                                  ri.per_day,
+				                                  rs.rental_fee_amount,
+				                                  rs.no_of_days			                                  
+			                                  FROM rental_items ri
+			                                LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
+			                                LEFT JOIN sales_record sr ON sr.sales_id=rs.sales_id
+			                                WHERE  rs.transaction_id='".$id."'");
+
+             	        $customer = $crud->getData("SELECT ".
+									"	rs.transaction_id, ".
+									"		c.customer_name, ".							
+									"		c.customer_address  ".
+									"		FROM rental_specific rs ".							
+									"		INNER JOIN customer c ON c.customer_id =rs.customer_id ".
+													
+									"		WHERE rs.transaction_id='".$id."' LIMIT 1"); 
+
+             }else{
+					    //selecting data associated with this particular id
+			            $result = $crud->getData("SELECT ".
+												"	p.product_name, ".
+												"		sp.quantity, ".							
+												"		sp.amount  ".
+												"		FROM sales_specific sp ".
+												"		INNER JOIN sales_record sr ON sp.or_number=sr.sales_id ".
+												"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".
+												"		INNER JOIN products p ON p.product_id=sp.product_id ".
+												"		WHERE sp.transaction_id='".$id."'");
+
+			              $customer = $crud->getData("SELECT ".
 									"	sp.transaction_id, ".
 									"		c.customer_name, ".							
 									"		c.customer_address  ".
 									"		FROM sales_record sr ".							
 									"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".
 									"		INNER JOIN sales_specific sp ON sp.or_number=sr.sales_id  ".							
-									"		WHERE sp.transaction_id='".$id."' LIMIT 1");  
+									"		WHERE sp.transaction_id='".$id."' LIMIT 1"); 
+             }
+  
+            
             
 
     }
@@ -82,11 +115,11 @@
 		
 			<div id="content" >
 				<div id="header">
-					<img src="../../img/setting_assets/logo.png" width="50" height="50" style="float:left;">
+					<img src="<?php echo "../../".$header['logo'];?>" width="50" height="50" style="float:left;">
 					<div style="float:right;" >
-						<h4>SOUTHERN LEYTE STATE UNIVERSITY-HINUNANGAN</h4>
-						<p> College of Agricultural and Environment Sciences</p>
-						<p> Hinunangan, Southern Leyte</p>
+						<h4><?php echo $header['company_name'];?></h4>
+						<p> <?php echo $header['company_address'];?></p>
+						<p> <?php echo $header['contact_no'];?></p>
 					</div>
 				</div>
 				<div class="clearfix"></div>
@@ -102,19 +135,28 @@
 				<table border="1">
 					<tr>
 						<th> Particulars</th>
-						<th> Quantity </th>
+						<th> <?php echo ($paid_for=="rental")?"# of day(s)":"Quantity";?> </th>
 						<th> Amount </th>
 					</tr>
 					<?php   
 						$total_amount=0;
 						foreach ($result as $res) {?>
 					<tr>
-						<td>&nbsp;<?php echo $res['product_name'];?></td>
-						<td>&nbsp;<?php echo $res['quantity'];?> </td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['amount'];?></td>
+						<?php if($paid_for!="rental"){ ?>
+							<td>&nbsp;<?php echo $res['product_name'];?></td>
+							<td>&nbsp;<?php echo $res['quantity'];?> </td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['amount'];?></td>
+							<?php $total_amount+=$res['amount']; ?>
+						 <?php } else { ?>
+						 	<td>&nbsp;<?php echo $res['item_name']."(".$res['item_description'].")";?></td>
+							<td>&nbsp;<?php echo $res['no_of_days'];?> </td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['rental_fee_amount'];?></td>
+							<?php $total_amount+=$res['rental_fee_amount']; ?>
+
+						 <?php } ?>
 					</tr>
 					<?php 
-						$total_amount+=$res['amount'];
+						
 					 	} 
 					 ?>
 					<tr>

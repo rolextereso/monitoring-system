@@ -57,9 +57,9 @@
                           <div class="card ">
                               <img class="card-img-top img-fluid" src="img/setting_assets/user-setting.jpg" alt="Card image cap">
                               <div class="card-body" style="text-align: center;">
-                                    <h4 class="card-title">Owner Information</h4>
+                                    <h4 class="card-title">Company Info</h4>
                                     <p class="card-text">This module used to add, edit and set user role and status of the user.</p>
-                                    <a href="#" class="btn btn-primary">View Setting</a>
+                                    <a href="owner-info.php" class="btn btn-primary">View Setting</a>
                               </div>
                           </div>
                         </div>
