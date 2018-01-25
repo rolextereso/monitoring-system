@@ -31,7 +31,10 @@ function access_role($module,$access_role,$user_type_id){
 
 	$access = $crud->getData("SELECT $access_role as access FROM user_role ur
 								INNER JOIN user_type ut ON ut.user_type_id =ur.user_type_id
-								WHERE ur.user_type_id='$user_type_id' LIMIT 1;"); 
+								INNER JOIN module m ON ur.module_id =m.module_id
+								WHERE ur.user_type='$user_type_id' AND module_name='$module' LIMIT 1;"); 
+
+	
 
 	if($access[0]['access']=='N'){
 		return false;

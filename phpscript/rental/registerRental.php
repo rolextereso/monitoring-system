@@ -1,4 +1,5 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
@@ -39,7 +40,7 @@ if(isset($_POST['item_code'])){
 			 																	  unit='$unit', 
 			 																	  per_day= '$per_day', 
 			 																	  need_gate_pass='$gate_pass', 
-			 																	  created_by='1', 
+			 																	  created_by='{$_SESSION['user_id']}', 
 			 																	  status='$status' WHERE rental_id='$item_id'");			
 			 
 		}else{
@@ -60,7 +61,7 @@ if(isset($_POST['item_code'])){
 																			          '$unit',
 																			          '$per_day',
 																			      	  '$gate_pass',
-																			      	  '1',
+																			      	  '{$_SESSION['user_id']}',
 																			      	  '$status');");		
 			 
 		}

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -168,7 +169,7 @@
 				<br/>
 				<br/>
 				<div id="footer">
-					<label>Printed by: </label><span> ROLLY TERESO </span><br/>
+					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
 					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
 				</div>
 		</div>

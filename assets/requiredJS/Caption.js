@@ -8,103 +8,202 @@
 			    targetID="#location",
 			    positionClass=".position",
 			    locationContainerID="label-container",
-				addLocationBtn='<button class="btn btn-primary" id="'+addLocBtnID+'">+</button>',
-				locationContainer='<div id="'+locationContainerID+'"></div>';
+			    msgId="msg",
+				addLocationBtn='<div id="control-container">'+
+							   '<button class="btn btn-primary" id="'+addLocBtnID+'">+</button>'+
+							   '<span id="'+msgId+'"></span>'+
+							   '</div>',
+				locationContainer='<div id="'+locationContainerID+'"></div>'
+				message=[" Click the map to mark the location"," Click the button again to mark another location"];
 			
 
 			// Establish our default settings
 			var settings = $.extend({
 				register_temp: '#register-template',
 				closeBtn: '#close-btn',
-				registerBtn: '#register-btn'
+				registerBtn: '#register-btn',
+				editMark:true,
+				deleteMark:true,
+				addMark:true
 			}, options);
 							 
 			$(".location-position").hide();
+			var delete_=(settings.deleteMark)?"<label class='yellow delete_' id='' >&#x2715;</label>":"";		
+
 			return this.each( function() {
 				var parent=this;
-				
-				$(addLocationBtn).insertBefore(parent);
-				$(locationContainer).insertAfter(parent);
+				loadSaveMarks();//load location marks
 
+				if(settings.addMark){
+					$(addLocationBtn).insertBefore(parent);
+				}
+				$(locationContainer).insertAfter(parent);			
+
+				//if add location is click this method will function
 				$("#"+addLocBtnID).click(function(){
 					
-					removeLocationID();
+					removeLocationID();//invoke the function to remove the id attribute	
 
-					$(this).attr("disabled","disabled");//disabled the add button
+					// $(parent).css("cursor","crosshair");//cursor pointer to crosshair
+
+
+					$(this).attr("disabled","disabled");//disabled the add location button 
+					$(this).next().html(message[0]).addClass("yellow"); 
 					var register_temp=$(settings.register_temp).html();//get the content of register_temp: '#register-template'
 				   
 					var div= "<div class='position' id='location' style='display:none;'>"+register_temp+"</div>";
 					$("#"+locationContainerID).prepend(div);
 
-					var top=this;
+					var btn_mark=this;
 					
 					$(targetID+" #closebtn").click(function(){
 						 $(targetID).remove();
-						 $(top).removeAttr("disabled");
+						 $(btn_mark).removeAttr("disabled");//enable add location btn
+						 $("#"+msgId).html(message[1]);
+
+						 //$(parent).css("cursor","pointer");//cursor pointer to pointer
 
 					});
 
 					$(targetID+" #uploadForm").on('submit',(function(e) {
 							e.preventDefault();
-							// alert("hello");
+							
+							
 							$.ajax({
-					        	url: "phpscript/location-map/upload.php",
+					        	url: "phpscript/location-map/register.php",
 								type: "POST",
 								data:  new FormData(this),								
 								contentType: false,
 					    	    processData:false,
+					    	    dataType   : 'json',
 								success: function(data)
-							    {
-									$("#targetLayer").html(data);
-									$("#targetLayer").css('opacity','1');
-									setInterval(function() {$("#body-overlay").hide(); },500);
+							    {		
+							    							
+									$('.alert').removeClass('alert-success, alert-danger')
+                                         .addClass(data.type)
+                                         .html(data.message)
+                                         .fadeIn(100,function(){
+                                             $(this).fadeOut(5000);
+                                         });
 
-									 var establisment=$(targetID+" #establisment").val();
-									 $(targetID+" span").html(establisment);
-									 appendRegisteredLocation(targetID);
-									 //$(targetID+" .row").remove();
-									 
-									 $(top).removeAttr("disabled");
-									 removeLocationID();
+
+							    	if(data.type=="alert-success"){
+										 $("#targetLayer").css('opacity','1');
+										
+										 var establisment=$(targetID+" #establisment").val()+" "+delete_;
+										 $(targetID+" span").html(establisment).attr("id",data.data.id);
+
+										 $(targetID+" .row").remove();
+										 appendRegisteredLocation(targetID,data.data.image,data.data.establisment);
+										
+										 
+										 $(btn_mark).removeAttr("disabled");
+										 removeLocationID();
+
+										  $("#"+msgId).html(message[1]);
+								 	}
+
+								 	delete_loc();
 								},
 							  	error: function() 
 						    	{
-
+						    		alert("Error: Please contact the developer");
 						    	} 	        
 						   });
 					}));
-						
-
-			
-
-					$(".position span").hover(function(){
-						$(this).prev().show();
-					},function(){
-						$(this).prev().hide();
-					});
-				
+					popup();
 				});	
 
 				$(parent).click( function(event) {				
-				     $(targetID).show().css( {position:"absolute", top:event.offsetY-3, left: event.offsetX+7});
-				});
-				
+				     $(targetID).show().css( {position:"absolute", top:event.offsetY-17, left: event.offsetX-5}); 				     
+					 $(targetID+" #uploadForm #location-mark").val(" top:"+(event.offsetY-17)+"px;left:"+(event.offsetX-5)+"px");
+
+				});			
 
 			});
 
+			function sub_string(str){
+				return (str.length>24)?str.substring(0,24)+"...":str;
+			}
+
+			function delete_loc(){
+				$(".delete_").click(function(){
+						var parent=$(this).parent();
+						deleteMark(parent.attr('id'));
+				});	
+			}
+			
 			function removeLocationID(){
 				if($(targetID).length==1){
 						 $(positionClass).removeAttr("id");
 				}
 			}
 
-			function appendRegisteredLocation(targetID){
+			function appendRegisteredLocation(targetID,image,establisment){
 
-				var registered=$("#registered-location").html();
-				$(targetID).prepend(registered);
+				var $temp= "<div class='location-position'> "+
+									"		<label class=bldgImage style=background-image:url("+image+")></label>"+
+									"		<span class='bldgName'>"+sub_string(establisment)+"</span>"+
+									"</div> ";
+				$(targetID).append($temp);
 			}
 
+			function deleteMark(_id){
+				$.ajax({
+					        	url: "phpscript/location-map/register.php",
+								type: "POST",
+								data:  {id:_id,indicator:"delete"},
+					    	    dataType   : 'json',
+								success: function(data)
+							    {								    							
+									$('.alert').removeClass('alert-success, alert-danger')
+                                         .addClass(data.type)
+                                         .html(data.message)
+                                         .fadeIn(100,function(){
+                                             $(this).fadeOut(5000);
+                                         });
+
+                                    if(data.type=="alert-success"){
+                                    	 var parent=$("#"+_id).parent();
+										 parent.remove();
+                                    }                                        
+								},
+							  	error: function() 
+						    	{
+						    		alert("Error: Please contact the developer");
+						    	} 	        
+						   });
+			}			
+
+			function loadSaveMarks(){
+
+				var $temp="";
+				$.getJSON("phpscript/location-map/loadMarks.php", function(data) {
+					$.each(data, function(key,value){
+                         $temp="<div class='position' style='position: absolute;"+value.position_marks+"'>"+
+								     "<span id="+value.id_marks+">"+value.establisment+" "+delete_+"</span>"+
+								    "<div class='location-position'> "+
+									"		<label class=bldgImage style=background-image:url("+value.image+")></label>"+
+									"		<span class='bldgName'>"+sub_string(value.establisment)+" </span>"+
+									"</div> ";
+								   
+							    "</div";
+					     $("#"+locationContainerID).prepend($temp);
+					});		
+
+					delete_loc();
+					popup();
+				});
+				
+			}
 			
+			function popup(){
+				$(".position span").hover(function(){
+						$(this).next().stop(true, false).fadeIn();
+				},function(){
+						$(this).next().stop(true, false).fadeOut();
+				});
+			}			
 	};
 
 }(jQuery));

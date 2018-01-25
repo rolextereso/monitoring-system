@@ -9,36 +9,52 @@
 	    background-size: 16px 23px;
 	    height: 23px;
 		width: 16px;
-		z-index: 4;
+		z-index: 1;
 	}
+
+
 
 	.position span{
 		margin-left: 16px;
-	    width: 300px;
+	    width:  150px;
 	    position: absolute;
 	    font-family: Roboto, Arial, sans-serif;
 	   /* -webkit-text-stroke: 0.5px black;*/
 	    color:white;
 	    font-size: 12px;
+
+	}
+
+	.position span:hover{
+	    color: #edf59e;
+	   /* font-family: Roboto, Arial, sans-serif;*/
+	    cursor:pointer;
+	    font-size: 12px;
+
 	}
 
 	#map:hover{
 		cursor: crosshair;
 	}
 
-	#add-location{
-		   position: absolute;
+	#control-container{
+		   position: fixed;
 		   width:auto;
-		   margin-top:3px;
-		   margin-left:3px;
+		   margin-top:9px;
+		   margin-left:9px;
 	}
+
+	#control-container input, #control-container button{
+		 display:inline-block;
+	}
+
 
 	.detail{
 			height: auto;
 		    width: 266px;
 		    background: #f6f6f2;
 		    margin-top: 0px;
-		    opacity: 0.8;
+		    opacity: 0.9;
 		    margin-left: 18px;
 		    border-top: 3px solid #e94b36;
 
@@ -78,33 +94,49 @@
 	}
 
 	.location-position{
-		 
-	    background:  yellow;
-	    height: 66px;
+		height: 66px;
 	    width: 278px;
 	    position:  absolute;
 	    margin-top: -67px;
 	    margin-left: 17px;
-	    z-index: 3;
+	    z-index: 10;
+	    background: whitesmoke;
+	    display: none;
 
 	}
 
+	.location-position span{
+		color: black;
+		margin-top:7px;
+	}
+	.bldgImage{
+		background-size:100% 100%;
+		height: 100%;
+		width: 80px;
+
+
+	}
+	.bldgName{
+		width: auto;
+		font-weight: bold;
+
+	}
+	#location{
+		z-index: 15;
+	}
 
 </style>
 
-  <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">	 
-              
-			
-			<img src="img/setting_assets/slsu-map.jpg" id="map" />
+  <main role="main" class="col-sm-9 ml-sm-auto col-md-10" style="padding-left:0px;" >	
+  			
+				
+			<img src="img/setting_assets/slsu-map.jpg" id="map" />		
 
 			<div id="registered-location"  class="hide-temp">
 				<div class="location-position">
-						<div class="col-sm-3" style="background:blue;height: 100%;">
+						<div class="bldgImage"></div>
 
-						</div>
-
-						<div class="col-sm-9">
-
+						<div class="bldgNameCont">
 						</div>
 					</div>
 			</div>
@@ -118,10 +150,11 @@
 								<div class="col-sm-12">
 									<br/>
 									<form id="uploadForm" action="post">
+								    <input id="location-mark" name="location-mark" type="hidden">
 			                        <div class="form-group">
 			                        	                              
 			                              <input class="form-control form-control-sm" id="establisment"  type="text" 
-			                              placeholder="Establisment Name"/>
+			                              placeholder="Establisment Name" name="establisment" />
 			                        </div>
 			                         <div id="targetOuter">
 									    
@@ -154,30 +187,10 @@
 </main>
 	
 	<script>
-		$(document).ready(function(){
-				// $("#label-container .position").hide();
-				$("#map").Caption();
-
-				// $("#add-location").click(function(){
-				// 	if($("#location").length==1){
-				// 		 $(".position").attr("id","");
-				// 	}
-
-				// 	$(this).attr("disabled","disabled");
-				// 	var register_temp=$("#register-template").html();
-				// 	var div= "<div class='position' id='location' style='display:none;'>"+register_temp+"</div>";
-				// 	$("#label-container").prepend(div);
-				// });
-
-
-				// $("#map").click( function(event) {				
-				//      $("#location").show().css( {position:"absolute", top:event.offsetY-3, left: event.offsetX+7});
-				// });
+		$(document).ready(function(){				
+				$("#map").Caption({deleteMark:false,addMark:true});	
 				
-		});
-
-		
-		
+		});		
 	</script> 
 	
 <script type="text/javascript" src="assets/requiredJS/Caption.js"></script>

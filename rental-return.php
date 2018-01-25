@@ -1,10 +1,7 @@
 <?php
     require_once('layout/header.php');
     require_once('classes/Crud.php');
-
-    $crud = new Crud();
-
-    
+    $crud = new Crud();    
     $customer_name   = "";
     $customer_address="";
     $transaction_id = "";

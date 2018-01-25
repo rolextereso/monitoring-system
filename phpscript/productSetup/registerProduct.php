@@ -1,4 +1,5 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
@@ -19,7 +20,7 @@ if(isset($_POST['product_name'])){
 		}
 		
 		if(isset($_POST['product_id'])){
-			 $result=$crud->executeUnAutoCommit("UPDATE product_price SET price='$price', created_by='' WHERE price_id=".$_POST['price_id']);								
+			 $result=$crud->executeUnAutoCommit("UPDATE product_price SET price='$price', created_by='{$_SESSION['user_id']}' WHERE price_id=".$_POST['price_id']);								
 		
 			 if($result){			 		
 			 		$result = $crud->executeUnAutoCommit("UPDATE products SET product_name='$product_name', ".
@@ -31,7 +32,7 @@ if(isset($_POST['product_name'])){
 
 		}else{
 			 $result=$crud->executeUnAutoCommit("INSERT INTO product_price(price, created_by) ".
-								 "VALUES ('$price', '');");
+								 "VALUES ('$price', '{$_SESSION['user_id']}');");
 
 			 $lastInsertedId= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
 

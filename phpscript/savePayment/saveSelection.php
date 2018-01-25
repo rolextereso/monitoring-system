@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
@@ -29,7 +29,7 @@ if(isset($_POST['product_id'])){
 
 		 		$lastId=$lastInsertedId[0]['insert_id'];
 		 		$result = $crud->executeUnAutoCommit("INSERT INTO sales_record(or_number, total_amount, mode_of_payment,user_id,customer_id) ".
-					" VALUES ('', '$total_amount', '', '1','$lastId');");
+					" VALUES ('', '$total_amount', '', '{$_SESSION['user_id']}','$lastId');");
 
 
 				$or_id= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");

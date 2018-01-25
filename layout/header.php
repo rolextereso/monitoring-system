@@ -85,6 +85,9 @@
                 <li class="nav-item header-nav">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="index.php")? 'active': '';?>"  href="index.php"> Home </a>
                 </li>
+                <li class="nav-item header-nav">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="location-map.php")? 'active': '';?>"  href="location-map.php"> Location Map </a>
+                </li>
                  <li class="nav-item header-nav">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"> Rental or Product Selection</a>
                 </li>

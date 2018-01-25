@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
@@ -47,7 +47,7 @@ if(isset($_POST['rental_id'])){
 				$i=0;
 				while($i<count($rental_id)){
 					$result[] = $crud->executeUnAutoCommit("INSERT INTO rental_specific(rental_id, date_return, rental_fee_amount,created_by,customer_id,transaction_id,sales_id,no_of_days) ".
-					    " VALUES ('{$rental_id[$i]}', '{$date_to_return[$i]}', '{$amount[$i]}', '1','$customer_id','$transaction_id','$or_id','$number_of_days[$i]');");
+					    " VALUES ('{$rental_id[$i]}', '{$date_to_return[$i]}', '{$amount[$i]}', '{$_SESSION['user_id']}','$customer_id','$transaction_id','$or_id','$number_of_days[$i]');");
 					$i++;
 				}
 				

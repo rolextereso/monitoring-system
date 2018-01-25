@@ -1,4 +1,5 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
@@ -67,7 +68,7 @@ if(isset($_POST['proj_name'])){
 		$production_cost = $_POST['prod_cost'];
 		$expenses = $_POST['expenses'];
 		$product_price = $_POST['prod_price'];
-		$created_by=1;		
+		$created_by=$_SESSION['user_id'];		
 		$spec_id=date('y-mdsi');
 
 		//add new project

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2018 at 12:08 AM
+-- Generation Time: Jan 25, 2018 at 11:45 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -36,6 +36,34 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `report_product_by_month_year` (`prod
 				WHERE  pe.product_id=product_id  AND MONTH(sre.date_save)=MONTH(date_save)
 				AND YEAR(sre.date_save)=YEAR(date_save)
 				GROUP BY product_name, MONTH(sre.date_save), YEAR(sre.date_save);
+
+RETURN total;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_project_by_month_year` (`project_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+		DECLARE total FLOAT DEFAULT 0.0;
+		SELECT 
+				SUM(ss.amount)  INTO total
+				FROM products pe 
+				inner JOIN sales_specific ss ON ss.product_id=pe.product_id 
+				inner JOIN sales_record sre ON ss.or_number=sre.sales_id   
+				WHERE  pe.project_id=project_id  AND MONTH(sre.date_save)=MONTH(date_save)
+				AND YEAR(sre.date_save)=YEAR(date_save)
+				GROUP BY project_id, MONTH(sre.date_save), YEAR(sre.date_save);
+
+RETURN total;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_rental_by_month_year` (`rental_id_` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+		DECLARE total FLOAT DEFAULT 0.0;
+		SELECT 
+				SUM(rs.rental_fee_amount)  INTO total
+				FROM rental_specific rs 
+				inner JOIN rental_items ri ON rs.rental_id=ri.rental_id
+				inner JOIN sales_record sr ON rs.sales_id=sr.sales_id   
+				WHERE  ri.rental_id=rental_id_ AND MONTH(sr.date_save)=MONTH(date_save)
+				AND YEAR(sr.date_save)=YEAR(date_save) AND rs.paid='Y'
+				GROUP BY ri.rental_id, MONTH(sr.date_save), YEAR(sr.date_save);
 
 RETURN total;
 END$$
@@ -160,6 +188,60 @@ INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALU
 (93, 'sss', 'sss'),
 (94, 'gggg', 'ggg'),
 (95, 'sdf', 'dfs');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `location_marks`
+--
+
+CREATE TABLE `location_marks` (
+  `id_marks` int(11) NOT NULL,
+  `position_marks` varchar(45) DEFAULT NULL,
+  `image` varchar(245) DEFAULT NULL,
+  `establisment_name` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `location_marks`
+--
+
+INSERT INTO `location_marks` (`id_marks`, `position_marks`, `image`, `establisment_name`) VALUES
+(4, ' top:661px;left:416px', 'img/location_map_pic/SCSU_ani.gif', 'Art and Science Building'),
+(5, ' top:572px;left:641px', 'img/location_map_pic/buley-library.jpeg', 'Administration Building'),
+(7, ' top:713px;left:696px', 'img/location_map_pic/social_hall.jpg', 'Social Hall'),
+(9, ' top:733px;left:610px', 'img/location_map_pic/buley-library.jpeg', 'Supply Office'),
+(10, ' top:450px;left:546px', 'img/location_map_pic/social_hall.jpg', 'HomeTech Building');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `module`
+--
+
+CREATE TABLE `module` (
+  `module_id` int(11) NOT NULL,
+  `module_name` varchar(45) DEFAULT NULL,
+  `status` enum('Y','N') DEFAULT 'Y'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `module`
+--
+
+INSERT INTO `module` (`module_id`, `module_name`, `status`) VALUES
+(1, 'Payment', 'Y'),
+(2, 'Location Map', 'Y'),
+(3, 'Rental or Product Selection', 'Y'),
+(4, 'Transaction List', 'Y'),
+(5, 'Project List', 'Y'),
+(6, 'Rental Item List', 'Y'),
+(7, 'Rented Items', 'Y'),
+(8, 'Reports', 'Y'),
+(9, 'Gate Pass', 'Y'),
+(10, 'Setting', 'Y'),
+(11, 'Setting User Role', 'Y'),
+(12, 'Setting Company Info', 'Y');
 
 -- --------------------------------------------------------
 
@@ -442,6 +524,33 @@ INSERT INTO `project_duration` (`project_duration_id`, `project_specific_id`, `p
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `purchase_request`
+--
+
+CREATE TABLE `purchase_request` (
+  `pr_id` int(11) NOT NULL,
+  `entity_name` varchar(145) DEFAULT NULL,
+  `fund_cluster` varchar(105) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `responsibility_center_code` varchar(45) DEFAULT NULL,
+  `stock_no` varchar(45) DEFAULT NULL,
+  `unit` varchar(45) DEFAULT NULL,
+  `item_description` varchar(105) DEFAULT NULL,
+  `unit_cost` double DEFAULT NULL,
+  `quantity` double DEFAULT NULL,
+  `total_cost` double DEFAULT NULL,
+  `purpose` text,
+  `created_by` int(11) DEFAULT NULL,
+  `accounting_approved` enum('Y','N') DEFAULT 'N',
+  `date_time_approved` datetime DEFAULT NULL,
+  `submitted_for_approval` enum('Y','N') DEFAULT 'N',
+  `date_supply_submitted` datetime DEFAULT NULL,
+  `date_submitted_by_head` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rental_items`
 --
 
@@ -467,7 +576,8 @@ CREATE TABLE `rental_items` (
 INSERT INTO `rental_items` (`rental_id`, `item_name`, `item_code`, `item_description`, `rental_fee`, `unit`, `per_day`, `need_gate_pass`, `created_by`, `status`, `availability`, `transaction_id`) VALUES
 (4, 'Tractor', '180106-4206', 'Blue                                                                                   ', 100, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180118-0044'),
 (6, 'Tractor', '180109-4209', 'Red', 100, 'Set', 'N', 'Y', 1, 'Y', 'N', 'RE180118-4106'),
-(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180118-3130');
+(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'Y', ''),
+(8, 'Screw Driver', '180139-3739', 'Yellow', 20, 'set', 'Y', 'Y', 1, 'Y', 'Y', NULL);
 
 -- --------------------------------------------------------
 
@@ -480,7 +590,7 @@ CREATE TABLE `rental_specific` (
   `rental_id` int(11) DEFAULT NULL,
   `date_return` date DEFAULT NULL,
   `rental_fee_amount` double DEFAULT NULL,
-  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `transaction_id` varchar(45) DEFAULT NULL,
@@ -494,19 +604,7 @@ CREATE TABLE `rental_specific` (
 -- Dumping data for table `rental_specific`
 --
 
-INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`, `rental_fee_amount`, `created_on`, `created_by`, `customer_id`, `transaction_id`, `date_returned`, `sales_id`, `paid`, `no_of_days`) VALUES
-(13, 6, '2018-01-19', 100, '2018-01-16 14:44:20', 1, 59, '180116-4033', '2018-01-17', NULL, 'Y', NULL),
-(14, 4, '2018-01-19', 400, '2018-01-16 14:44:20', 1, 59, '180116-4033', '2018-01-17', NULL, 'Y', NULL),
-(17, 4, '2018-01-18', 200, '2018-01-16 19:16:06', 1, 61, '180116-5015', '2018-01-17', NULL, 'Y', NULL),
-(18, 4, '2018-01-18', 200, '2018-01-16 19:21:37', 1, 62, '180116-1721', '2018-01-17', NULL, 'Y', NULL),
-(19, 4, '2018-01-18', 200, '2018-01-16 19:23:54', 1, 63, '180116-4223', '2018-01-17', NULL, 'Y', NULL),
-(20, 6, '2018-01-18', 100, '2018-01-16 19:27:47', 1, 64, '180116-2527', '2018-01-17', NULL, 'Y', NULL),
-(21, 6, '2018-01-19', 100, '2018-01-16 19:32:21', 1, 65, '180116-0632', '2018-01-17', NULL, 'Y', NULL),
-(22, 4, '2018-01-19', 300, '2018-01-16 19:51:09', 1, 66, '180116-4850', '2018-01-17', NULL, 'Y', NULL),
-(23, 4, '2018-01-19', 300, '2018-01-16 19:56:02', 1, 67, '180116-4555', '2018-01-17', NULL, 'Y', NULL),
-(24, 6, '2018-01-18', 100, '2018-01-16 19:56:34', 1, 68, '180116-1656', '2018-01-17', NULL, 'Y', NULL),
-(25, 4, '2018-01-18', 200, '2018-01-16 19:58:31', 1, 69, '180116-1958', '2018-01-17', NULL, 'Y', NULL),
-(26, 6, '2018-01-18', 100, '2018-01-16 20:06:22', 1, 70, '180116-0106', '2018-01-17', NULL, 'Y', NULL),
+INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`, `rental_fee_amount`, `updated_on`, `created_by`, `customer_id`, `transaction_id`, `date_returned`, `sales_id`, `paid`, `no_of_days`) VALUES
 (27, 4, '2018-01-19', 300, '2018-01-17 15:39:43', 1, 71, '180117-1430', '2018-01-17', 52, 'Y', NULL),
 (28, 4, '2018-01-19', 300, '2018-01-17 15:39:49', 1, 72, '180117-1430', '2018-01-17', 53, 'Y', NULL),
 (29, 4, '2018-01-19', 300, '2018-01-17 15:41:26', 1, 73, '180117-1141', '2018-01-17', 54, 'Y', NULL),
@@ -527,7 +625,7 @@ INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`,
 (46, 4, '2018-01-20', 300, '2018-01-18 14:53:04', 1, 87, 'RE180118-4952', '2018-01-18', 68, 'Y', 3),
 (47, 4, '2018-01-20', 300, '2018-01-18 15:44:13', 1, 89, 'RE180118-0044', NULL, 70, 'N', 3),
 (48, 6, '2018-01-20', 100, '2018-01-18 16:06:49', 1, 90, 'RE180118-4106', NULL, 71, 'N', 2),
-(49, 7, '2018-01-22', 400, '2018-01-18 18:30:40', 1, 95, 'RE180118-3130', NULL, 76, 'N', 4);
+(49, 7, '2018-01-22', 400, '2018-01-18 18:30:40', 1, 95, 'RE180118-3130', '2018-01-23', 76, 'Y', 4);
 
 -- --------------------------------------------------------
 
@@ -606,7 +704,7 @@ INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_pa
 (73, '', 10, '', '2018-01-18 18:27:50', 1, 92, 'N'),
 (74, '', 30, '', '2018-01-18 18:28:08', 1, 93, 'N'),
 (75, '', 30, '', '2018-01-18 18:30:21', 1, 94, 'N'),
-(76, '', 400, '', '2018-01-18 18:30:40', 1, 95, 'N');
+(76, '12313131323131', 400, 'cash', '2018-01-18 18:30:40', 1, 95, 'N');
 
 -- --------------------------------------------------------
 
@@ -717,12 +815,14 @@ INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`,
 
 CREATE TABLE `user_role` (
   `user_role` int(11) NOT NULL,
-  `module` varchar(45) DEFAULT NULL,
+  `module_id` int(11) DEFAULT NULL,
   `view_page` enum('Y','N') DEFAULT 'N',
   `view_command` enum('Y','N') DEFAULT 'N',
   `edit_command` enum('Y','N') DEFAULT 'N',
   `add_command` enum('Y','N') DEFAULT 'N',
   `delete_command` enum('Y','N') DEFAULT 'N',
+  `save_changes` enum('Y','N') DEFAULT 'N',
+  `edit_changes` enum('Y','N') DEFAULT 'N',
   `user_type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -730,8 +830,67 @@ CREATE TABLE `user_role` (
 -- Dumping data for table `user_role`
 --
 
-INSERT INTO `user_role` (`user_role`, `module`, `view_page`, `view_command`, `edit_command`, `add_command`, `delete_command`, `user_type_id`) VALUES
-(1, 'payment', 'N', 'N', 'Y', 'Y', 'Y', 1);
+INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, `edit_command`, `add_command`, `delete_command`, `save_changes`, `edit_changes`, `user_type_id`) VALUES
+(1, 1, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(2, 2, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(3, 3, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(12, 4, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(13, 5, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(14, 6, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(15, 7, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(16, 8, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(17, 9, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(18, 10, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(20, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 1),
+(21, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 1),
+(22, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(23, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(24, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(25, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(26, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(27, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(28, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(29, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(30, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(31, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(32, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(33, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(34, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(35, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(36, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(37, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(38, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(39, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(40, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(41, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(42, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(43, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(44, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(45, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(46, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(47, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(48, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(49, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(50, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(51, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(52, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(53, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(54, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(55, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(56, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(57, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
+(58, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(59, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(60, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(61, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(62, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(63, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(64, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(65, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(66, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(67, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(68, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(69, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5);
 
 -- --------------------------------------------------------
 
@@ -767,6 +926,18 @@ ALTER TABLE `customer`
   ADD PRIMARY KEY (`customer_id`);
 
 --
+-- Indexes for table `location_marks`
+--
+ALTER TABLE `location_marks`
+  ADD PRIMARY KEY (`id_marks`);
+
+--
+-- Indexes for table `module`
+--
+ALTER TABLE `module`
+  ADD PRIMARY KEY (`module_id`);
+
+--
 -- Indexes for table `owner_info`
 --
 ALTER TABLE `owner_info`
@@ -779,7 +950,8 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`product_id`),
   ADD KEY `sub_prod_idx` (`project_id`),
   ADD KEY `fuser_idx` (`created_by`),
-  ADD KEY `fprice_idx` (`product_price`);
+  ADD KEY `fprice_idx` (`product_price`),
+  ADD KEY `product_name` (`product_name`);
 
 --
 -- Indexes for table `product_price`
@@ -803,6 +975,14 @@ ALTER TABLE `project_duration`
   ADD KEY `fkproject_idx` (`project_id`);
 
 --
+-- Indexes for table `purchase_request`
+--
+ALTER TABLE `purchase_request`
+  ADD PRIMARY KEY (`pr_id`),
+  ADD KEY `fk_user_idx` (`created_by`),
+  ADD KEY `fk_proj_idx` (`project_id`);
+
+--
 -- Indexes for table `rental_items`
 --
 ALTER TABLE `rental_items`
@@ -817,7 +997,8 @@ ALTER TABLE `rental_specific`
   ADD KEY `fkusers_idx` (`created_by`),
   ADD KEY `fk_id_idx` (`rental_id`),
   ADD KEY `fkcustomer_idx` (`customer_id`),
-  ADD KEY `fkor_idx` (`sales_id`);
+  ADD KEY `fkor_idx` (`sales_id`),
+  ADD KEY `updated_onidx` (`updated_on`);
 
 --
 -- Indexes for table `sales_record`
@@ -825,7 +1006,8 @@ ALTER TABLE `rental_specific`
 ALTER TABLE `sales_record`
   ADD PRIMARY KEY (`sales_id`),
   ADD KEY `fk_customer_idx` (`customer_id`),
-  ADD KEY `fuserId_idx` (`user_id`);
+  ADD KEY `fuserId_idx` (`user_id`),
+  ADD KEY `date_saveidx` (`date_save`);
 
 --
 -- Indexes for table `sales_specific`
@@ -833,7 +1015,8 @@ ALTER TABLE `sales_record`
 ALTER TABLE `sales_specific`
   ADD PRIMARY KEY (`sales_specific_id`),
   ADD KEY `fk_pro_idx` (`product_id`),
-  ADD KEY `fk_sale_idx` (`or_number`);
+  ADD KEY `fk_sale_idx` (`or_number`),
+  ADD KEY `amount` (`amount`);
 
 --
 -- Indexes for table `users`
@@ -848,7 +1031,8 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_role`
   ADD PRIMARY KEY (`user_role`),
-  ADD KEY `fkuser_type_idx` (`user_type_id`);
+  ADD KEY `fkuser_type_idx` (`user_type_id`),
+  ADD KEY `fkmodule_idx` (`module_id`);
 
 --
 -- Indexes for table `user_type`
@@ -865,6 +1049,16 @@ ALTER TABLE `user_type`
 --
 ALTER TABLE `customer`
   MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+--
+-- AUTO_INCREMENT for table `location_marks`
+--
+ALTER TABLE `location_marks`
+  MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `module`
+--
+ALTER TABLE `module`
+  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
@@ -891,10 +1085,15 @@ ALTER TABLE `projects`
 ALTER TABLE `project_duration`
   MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 --
+-- AUTO_INCREMENT for table `purchase_request`
+--
+ALTER TABLE `purchase_request`
+  MODIFY `pr_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `rental_items`
 --
 ALTER TABLE `rental_items`
-  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `rental_specific`
 --
@@ -919,7 +1118,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 --
 -- AUTO_INCREMENT for table `user_type`
 --
@@ -948,6 +1147,13 @@ ALTER TABLE `projects`
 --
 ALTER TABLE `project_duration`
   ADD CONSTRAINT `fkproject` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`);
+
+--
+-- Constraints for table `purchase_request`
+--
+ALTER TABLE `purchase_request`
+  ADD CONSTRAINT `fk_proj` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`),
+  ADD CONSTRAINT `fk_user` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `rental_specific`
@@ -982,6 +1188,7 @@ ALTER TABLE `users`
 -- Constraints for table `user_role`
 --
 ALTER TABLE `user_role`
+  ADD CONSTRAINT `fkmodule` FOREIGN KEY (`module_id`) REFERENCES `module` (`module_id`),
   ADD CONSTRAINT `fkuser_type` FOREIGN KEY (`user_type_id`) REFERENCES `user_type` (`user_type_id`);
 COMMIT;
 

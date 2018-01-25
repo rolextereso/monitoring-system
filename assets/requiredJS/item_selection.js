@@ -46,7 +46,7 @@ $(function() {
                                                                                             message: "Would you like to print the certification?", 
                                                                                             callback: function(result){ 
                                                                                                      if(result){
-                                                                                                        WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=sales','print','480','450')
+                                                                                                        WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=sales','print','480','450');
                                                                                                      }
                                                                                             }
                                                                          });

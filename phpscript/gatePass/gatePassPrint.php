@@ -1,9 +1,11 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Print Gate Pass</title>
 </head>
 <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+
 <style>
 	body{		
 		padding: 0;
@@ -127,7 +129,7 @@
 				<br/>
 				<br/>
 				<div id="footer">
-					<label>Printed by: </label><span> ROLLY TERESO </span><br/>
+					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
 					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
 					
 

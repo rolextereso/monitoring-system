@@ -72,6 +72,7 @@ foreach($result as $key =>$row){
 	$nestedData=array(); 
 
 	$access=access_role("payment","view_command",$_SESSION['user_type']);
+	
 	$transaction_id_row=($row["sales_transaction_id"]!=null)?$row["sales_transaction_id"]:$row["rental_transaction_id"];
 	$nestedData[] =$transaction_id_row;    
 	$nestedData[] =$row["customer_name"];

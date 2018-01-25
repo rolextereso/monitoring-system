@@ -7,6 +7,9 @@
                 <li class="nav-item">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="index.php")? 'active': '';?>"  href="index.php"><i class="fa fa-tachometer"></i> Dashboard</a>
                 </li>
+                 <li class="nav-item ">
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="location-map.php")? 'active': '';?>"  href="location-map.php"><i class="fa fa-map-marker"></i> Location Map </a>
+                </li>
                 <li class="nav-item">
                       <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"  ><i class="fa fa-hand-pointer-o"></i>  Rental or Product Selection</a>                      
                 </li>

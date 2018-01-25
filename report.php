@@ -54,8 +54,9 @@
                                   <label> <b>Category:</b></label>
                                   <div class="">
                                    <select name="category" class="form-control form-control-sm" style="border-color: #ced4da;" >
-                                              <option value="Projects">Projects</option>
-                                              <option value="Products" selected="">Products</option>
+                                              <option value="PROJECTS">Projects</option>
+                                              <option value="PRODUCTS" selected="">Products</option>
+                                              <option value="RENTAL" selected="">Rental</option>
                                             </select>
                                   </div>
                           </div>
@@ -73,7 +74,7 @@
                                                <button class="btn btn-secondary" type="button" onclick="searchReport();">Search</button>
                                             </span>
                                             <span class="input-group-btn">
-                                               <button class="btn btn-secondary" type="button" id="print"><i class="fa fa-print"></i> </button>
+                                               <button class="btn btn-secondary" onclick="printReport();" type="button" id="print"><i class="fa fa-print"></i> </button>
                                             </span>
                                             &nbsp;
                                             <div class="buttons">
@@ -88,10 +89,8 @@
                        </div>    
               </div>
               <div class="parent" style="height: 457px;">
-                  <div class="card-body shadow" style="background:white;">                    
-                         
-                                   
-                       
+               
+                  <div class="card-body shadow" style="background:white;">
                   </div>
              </div>
         </div>
@@ -108,15 +107,21 @@
                       clearBtn: true
                   });
 
+                  $('.card-body').hide();
+
                   $('.card-body').panzoom({
                       $zoomIn: $(".zoom-in"),
                       $zoomOut: $(".zoom-out"),
                       // $zoomRange: $(".zoom-range"),                     
                       $reset: $(".reset"),
                       startTransform: 'scale(0.9)'
-                    })
+                    });
 
-                   report();   
+                  $("select, input").change(function(){
+                      $("#print").attr("disabled","disabled");
+                  });
+
+                  // report();   
              
                 // $('#datefrom').on( 'change', function () {                 
                 //     var v =$(this).val();  // getting search input value
@@ -129,8 +134,14 @@
                 // } );                
           });
 
+          function printReport(){
+              WindowPopUp('phpscript/report/printReport.php?content='+$('.card-body').html(),'print','900','650');
+          }
+
           function searchReport(){
 
+
+           
             if($("#datefrom").val()=="" || $("#datefrom").val()==""){
                  $('.alert').removeClass('alert-success, alert-danger')
                              .addClass('alert-danger')
@@ -147,11 +158,14 @@
                                  $(this).fadeOut(5000);
                              });
             }else{
+                $('.card-body').html("<img src='assets/img/spinner.gif'/> Please wait while system gathering records...").show();
+                
                 report();   
             }
           }
 
           function report(){
+                
                  $.ajax({
                     type: "POST",
                     url: "phpscript/report/getReportData.php",
@@ -159,12 +173,13 @@
                     data: {category:$("[name='category']").val(), report_type: $("[name='report_type']").val(), datefrom:$("#datefrom").val(), dateto: $("#dateto").val()},
                     success: function (data)
                     {
+                          $("#print").removeAttr("disabled");
                           if(data.fetch){
-                                    var table ="<br/><h2 style='margin-bottom:0px;'>COLLECTION REPORT</h2>";
+                                    var table ="<br/><h2 style='margin-bottom:0px;'>"+data.title+"</h2>";
                                     table    +="<h6 style='margin-bottom:0px;'>"+data.range+"</h6><br/><br/>";
                                     table    += " <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'> ";
                                     table    += " <thead class='thead-dark'> ";    
-                                    table    += " <th>Products</th>";                                       
+                                    table    += " <th>"+data.search+"</th>";                                       
                                             $.each(data.date, function(key, value){                                                     
                                                       table+="<th>"+value+"</th>";                                
                                             });

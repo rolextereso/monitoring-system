@@ -19,7 +19,7 @@ if(isset($_GET['p']) && isset($_GET['df']) && isset($_GET['dt'])){
 				"INNER JOIN sales_record sr ON ss.or_number=sr.sales_id ".
 				" ".$date." ".$product.
 				" GROUP BY product_name, MONTH(sr.date_save), YEAR(sr.date_save) ORDER BY product_name,DATE(sr.date_save);";
-    //echo $query;
+   
 }
 
 $result = $crud->getData($query);
