@@ -17,19 +17,19 @@ $columns = array(
 );
 
 //fetching data in descending order (lastest entry first)
-$query = "SELECT * FROM users";
+$query = "SELECT * FROM users ";
 $result = $crud->getData($query);
 
 $totalData= count($result);
 $totalFiltered=$totalData;
 
-$sql = "SELECT * ";
-$sql.=" FROM users WHERE 1=1";
+$sql = "SELECT u.*, ut.user_type as type_of_user ";
+$sql.=" FROM users u LEFT JOIN user_type ut ON u.user_type=ut.user_type_id WHERE 1=1";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 	$sql.=" AND ( firstname LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR lastname LIKE '".$requestData['search']['value']."%' ";
-
+	$sql.=" OR ut.user_type LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR username LIKE '".$requestData['search']['value']."%' )";
 }
 
@@ -48,6 +48,7 @@ foreach($result as $key =>$row){
 	$nestedData[] = $row["firstname"];
 	$nestedData[] = $row["lastname"];
 	$nestedData[] = $row["username"];
+	$nestedData[] = $row["type_of_user"];
 	$nestedData[] = ($row["status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 
 	$nestedData[] = "<a title='Edit Profile' href='user-edit.php?u=".$row["user_id"]."' class='edit btn btn-success'><i class='fa fa-pencil-square-o'></i></a>&nbsp;".

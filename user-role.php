@@ -87,6 +87,7 @@
 
             $('#form').on('submit', function (e) {
                       // if the validator does not prevent form submit
+
                       if (!e.isDefaultPrevented()) {
                         bootbox.confirm({
                                           size: "small",                                         
@@ -118,6 +119,7 @@
                                 return false;
                       }
                   });
+
         });
 
         function user_role(){
@@ -145,9 +147,31 @@
                           });
                                    
                           $("#user_role_table tbody").prepend(row);
+                          checking_checkbox();
                           
                     }
                 });
+
+        }
+
+        function checking_checkbox(){
+                          $(".check:not(:checked)").prev().attr("checked","checked");//check the uncheck checkbox that is hidden
+
+                          $('[type=checkbox]').change(function() {
+                                  if(this.checked) {      
+                                                        
+                                     $(this).prev().remove();
+                                     $(this).attr("checked","checked"); //add checked attribure to checkbox  
+                                  }else{
+                                     var temp_name=$(this).attr("name");
+                                     var temp_value=$(this).attr("uncheck");
+                                     var temp_input="<input type='hidden' name='"+temp_name+"' value='"+temp_value+"'/>";
+
+                                     $(temp_input).insertBefore(this);
+                                     $(this).removeAttr("checked");//remove check attr to checkbox  
+
+                                  }                        
+                          });
         }
 
   

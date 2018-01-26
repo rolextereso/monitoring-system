@@ -39,6 +39,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Reports","view_page",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"> <i class="fa fa-file-text" ></i> Reports</li>
@@ -95,9 +96,7 @@
              </div>
         </div>
         </div>
-      </main>
-
-      <script src="assets/jquery.panzoom.min.js"></script>
+         <script src="assets/jquery.panzoom.min.js"></script>
       <script src="assets/bootstrap-datepicker.min.js"></script>
       <script>    
 
@@ -121,17 +120,7 @@
                       $("#print").attr("disabled","disabled");
                   });
 
-                  // report();   
-             
-                // $('#datefrom').on( 'change', function () {                 
-                //     var v =$(this).val();  // getting search input value
-                //     dataTable.columns(1).search(v).draw();
-                // } );
-
-                // $('#dateto').on( 'change', function () {                 
-                //     var v =$(this).val();  // getting search input value
-                //     dataTable.columns(2).search(v).draw();
-                // } );                
+                            
           });
 
           function printReport(){
@@ -224,4 +213,8 @@
                 return error;
             }
       </script>
+<?php }else{ echo UnauthorizedOpenTemp(); } ?>
+      </main>
+
+     
 <?php require_once('layout/footer.php');?>      

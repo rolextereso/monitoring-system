@@ -3,7 +3,9 @@
   if(!isset($_SESSION['user_id'])){      
       header('Location: login.php');
   }
+  include_once("classes/function.php");
 ?>
+
 
 <!DOCTYPE html>
 <!-- saved from url=(0054)https://getbootstrap.com/docs/4.0/examples/dashboard/# -->
@@ -85,36 +87,55 @@
                 <li class="nav-item header-nav">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="index.php")? 'active': '';?>"  href="index.php"> Home </a>
                 </li>
-                <li class="nav-item header-nav">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="location-map.php")? 'active': '';?>"  href="location-map.php"> Location Map </a>
-                </li>
-                 <li class="nav-item header-nav">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"> Rental or Product Selection</a>
-                </li>
+                 <?php if(access_role("Location Map","view_page",$_SESSION['user_type'])){?>
+                      <li class="nav-item header-nav">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="location-map.php")? 'active': '';?>"  href="location-map.php"> Location Map </a>
+                      </li>
+                 <?php } ?>
 
-                 <li class="nav-item header-nav">
-                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php">Transaction List</a>
-                </li>
+                 <?php if(access_role("Rental or Product Selection","view_page",$_SESSION['user_type'])){?>
+                     <li class="nav-item header-nav">
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"> Rental or Product Selection</a>
+                    </li>
+                <?php } ?>
 
-                <li class="nav-item header-nav">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")|| (basename($_SERVER['PHP_SELF'])=="project-list-spec.php")? 'active': '';?>" href="project-list.php"> Project List </a>
-                </li>
+                <?php if(access_role("Transaction List","view_page",$_SESSION['user_type'])){?>
+                     <li class="nav-item header-nav">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php">Transaction List</a>
+                    </li>
+                <?php } ?>
 
-                 <li class="nav-item header-nav">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"></i> Rental Item List</a>
-                </li>
 
-                <li class="nav-item header-nav">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-to-return-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-return.php")? 'active': '';?>" href="rental-to-return-list.php"> Rented Items</a>
-                </li>
+                <?php if(access_role("Project List","view_page",$_SESSION['user_type'])){?>
+                    <li class="nav-item header-nav">
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")|| (basename($_SERVER['PHP_SELF'])=="project-list-spec.php")? 'active': '';?>" href="project-list.php"> Project List </a>
+                    </li>
+                <?php } ?>
 
-                <li class="nav-item header-nav ">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="report.php")? 'active': '';?>" href="report.php"> Reports</a>
-                </li>
+                <?php if(access_role("Rental Item List","view_page",$_SESSION['user_type'])){?>
+                     <li class="nav-item header-nav">
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"></i> Rental Item List</a>
+                     </li>
+                <?php } ?>
+
+                <?php if(access_role("Rented Items","view_page",$_SESSION['user_type'])){?>
+                    <li class="nav-item header-nav">
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-to-return-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-return.php")? 'active': '';?>" href="rental-to-return-list.php"> Rented Items</a>
+                    </li>
+                <?php } ?>
+
+
+                <?php if(access_role("Reports","view_page",$_SESSION['user_type'])){?>
+                    <li class="nav-item header-nav ">
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="report.php")? 'active': '';?>" href="report.php"> Reports</a>
+                    </li>
+                <?php } ?>
                
-                <li class="nav-item header-nav">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="gatepass.php")? 'active': '';?>" href="gatepass.php">Gate Pass</a>
-                </li>
+                <?php if(access_role("Gate Pass","view_page",$_SESSION['user_type'])){?>
+                    <li class="nav-item header-nav">
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="gatepass.php")? 'active': '';?>" href="gatepass.php">Gate Pass</a>
+                    </li>
+                <?php } ?>
                
                 <li class="nav-item header-nav">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php") || (basename($_SERVER['PHP_SELF'])=="product-register-step.php") || (basename($_SERVER['PHP_SELF'])=="user-list.php") || (basename($_SERVER['PHP_SELF'])=="user-register.php") || (basename($_SERVER['PHP_SELF'])=="user-reset-pass.php") || (basename($_SERVER['PHP_SELF'])=="user-edit.php") ? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>

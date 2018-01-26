@@ -1,4 +1,5 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
  

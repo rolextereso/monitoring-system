@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2018 at 11:45 PM
+-- Generation Time: Jan 27, 2018 at 12:44 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -230,18 +230,17 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`module_id`, `module_name`, `status`) VALUES
-(1, 'Payment', 'Y'),
-(2, 'Location Map', 'Y'),
-(3, 'Rental or Product Selection', 'Y'),
-(4, 'Transaction List', 'Y'),
-(5, 'Project List', 'Y'),
-(6, 'Rental Item List', 'Y'),
-(7, 'Rented Items', 'Y'),
-(8, 'Reports', 'Y'),
-(9, 'Gate Pass', 'Y'),
-(10, 'Setting', 'Y'),
-(11, 'Setting User Role', 'Y'),
-(12, 'Setting Company Info', 'Y');
+(1, 'Location Map', 'Y'),
+(2, 'Rental or Product Selection', 'Y'),
+(3, 'Transaction List', 'Y'),
+(4, 'Project List', 'Y'),
+(5, 'Rental Item List', 'Y'),
+(6, 'Rented Items', 'Y'),
+(7, 'Reports', 'Y'),
+(8, 'Gate Pass', 'Y'),
+(9, 'Setting', 'Y'),
+(10, 'Setting User Role', 'Y'),
+(11, 'Setting Company Info', 'Y');
 
 -- --------------------------------------------------------
 
@@ -287,16 +286,16 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `created_on`, `created_by`, `project_id`, `unit_of_measurement`, `product_status`, `project_specific_id`) VALUES
-(1, 'Coconut Seedling', 1, '2017-12-15 14:18:40', NULL, 1, 'Seedling', 'Y', NULL),
-(2, 'Vinegar/Suka', 2, '2017-12-15 14:19:30', NULL, 1, 'Gallon', 'N', NULL),
-(3, 'Charcoal', 3, '2017-12-18 14:26:56', NULL, 1, 'Taro', 'N', NULL),
-(4, 'Bunot', 4, '2017-12-18 14:27:19', NULL, 1, 'pieces', 'N', NULL),
-(5, 'Lukay', 5, '2017-12-18 14:27:59', NULL, 1, 'pieces', 'N', NULL),
-(6, 'bagol', 6, '2017-12-18 14:28:26', NULL, 1, 'pieces', 'Y', NULL),
-(7, 'Vermi Worm', 7, '2017-12-18 14:31:34', NULL, 3, 'kilo', 'Y', NULL),
-(8, 'Vermi Compost', 8, '2017-12-18 14:38:06', NULL, 3, 'kilo', 'Y', NULL),
-(9, 'Vermi mud', 9, '2017-12-18 14:39:27', NULL, 3, 'kilo', 'Y', NULL),
-(10, 'Goat Meat', 10, '2017-12-18 22:57:44', NULL, 4, 'kilo', 'Y', NULL),
+(1, 'Coconut Seedling', 1, '2017-12-15 14:18:40', 1, 1, 'Seedling', 'Y', NULL),
+(2, 'Vinegar/Suka', 2, '2017-12-15 14:19:30', 1, 1, 'Gallon', 'N', NULL),
+(3, 'Charcoal', 3, '2017-12-18 14:26:56', 1, 1, 'Taro', 'N', NULL),
+(4, 'Bunot', 4, '2017-12-18 14:27:19', 1, 1, 'pieces', 'N', NULL),
+(5, 'Lukay', 5, '2017-12-18 14:27:59', 1, 1, 'pieces', 'N', NULL),
+(6, 'bagol', 6, '2017-12-18 14:28:26', 1, 1, 'pieces', 'Y', NULL),
+(7, 'Vermi Worm', 7, '2017-12-18 14:31:34', 1, 3, 'kilo', 'Y', NULL),
+(8, 'Vermi Compost', 8, '2017-12-18 14:38:06', 1, 3, 'kilo', 'Y', NULL),
+(9, 'Vermi mud', 9, '2017-12-18 14:39:27', 1, 3, 'kilo', 'Y', NULL),
+(10, 'Goat Meat', 10, '2017-12-18 22:57:44', 1, 4, 'kilo', 'Y', NULL),
 (17, 'Product 1', 17, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL),
 (18, 'Product 2', 18, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL),
 (19, 'Product 3', 19, '2018-01-08 14:55:39', 1, 8, 'kg', 'Y', NULL),
@@ -805,7 +804,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`, `hint`, `status`, `profile_pic`, `user_type`, `created_on`) VALUES
 (1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37'),
-(2, 'Sample', 'Sample', 'Sample', '96ÀžY‰ì:Wü¯D	‚', '098', 'Y', 'img/logo2.png', 2, '2018-01-18 22:34:41');
+(2, 'Sample', 'Sample', 'Sample', '96ÀžY‰ì:Wü¯D	‚', '098', 'Y', 'img/logo2.png', 2, '2018-01-18 22:34:41'),
+(3, 'Joselito', 'Rojas', 'jose', 'ÃBFª×:DñdÃ4ÉO²} ', 'My CCF case number', 'Y', NULL, 5, '2018-01-26 17:32:37');
 
 -- --------------------------------------------------------
 
@@ -842,11 +842,10 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (17, 9, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
 (18, 10, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
 (20, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 1),
-(21, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 1),
-(22, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
-(23, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
-(24, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
-(25, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(22, 1, 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 2),
+(23, 2, 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 2),
+(24, 3, 'N', 'Y', 'Y', 'Y', 'N', 'N', 'N', 2),
+(25, 4, 'N', 'N', 'Y', 'Y', 'N', 'N', 'N', 2),
 (26, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (27, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (28, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
@@ -854,8 +853,7 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (30, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (31, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (32, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
-(33, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
-(34, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
+(34, 1, 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 3),
 (35, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (36, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (37, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
@@ -866,7 +864,6 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (42, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (43, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (44, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
-(45, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (46, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (47, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (48, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
@@ -878,19 +875,39 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (54, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (55, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (56, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
-(57, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
-(58, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(59, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(60, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(61, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(62, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(63, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(58, 1, 'Y', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(59, 2, 'Y', 'N', 'N', 'N', 'N', 'Y', 'N', 5),
+(60, 3, 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 5),
+(61, 4, 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 5),
+(62, 5, 'Y', 'N', 'Y', 'N', 'N', 'N', 'N', 5),
+(63, 6, 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 5),
 (64, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (65, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (66, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (67, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (68, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(69, 12, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5);
+(70, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(71, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(72, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(73, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(74, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(75, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(76, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(77, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(78, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(79, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(80, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
+(82, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(83, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(84, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(85, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(86, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(87, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(88, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(89, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(90, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(91, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
+(92, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7);
 
 -- --------------------------------------------------------
 
@@ -910,10 +927,12 @@ CREATE TABLE `user_type` (
 
 INSERT INTO `user_type` (`user_type_id`, `user_type`, `status`) VALUES
 (1, 'Administrator', 'Y'),
-(2, 'IGP Director', 'Y'),
+(2, 'Project Head', 'Y'),
 (3, 'Campus Dean', 'Y'),
 (4, 'Accounting', 'Y'),
-(5, 'Project Assistant', 'Y');
+(5, 'Cashier', 'Y'),
+(6, 'Supply Officer', 'Y'),
+(7, 'IGP Director', 'Y');
 
 --
 -- Indexes for dumped tables
@@ -1113,17 +1132,17 @@ ALTER TABLE `sales_specific`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 --
 -- AUTO_INCREMENT for table `user_type`
 --
 ALTER TABLE `user_type`
-  MODIFY `user_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `user_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --

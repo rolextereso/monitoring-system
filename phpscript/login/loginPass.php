@@ -11,7 +11,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		$username = $crud->escape_string($_POST['username']);
 		$password  =$crud->escape_string($_POST['password']);
 		
-		$found= $crud->getData("SELECT u.*, ut.user_type FROM users u
+		$found= $crud->getData("SELECT u.* FROM users u
 								LEFT JOIN user_type ut ON ut.user_type_id=u.user_type WHERE password=AES_ENCRYPT('$password',username)  AND username='$username' AND u.status='Y' LIMIT 1");
 
 		       

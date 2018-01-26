@@ -101,7 +101,7 @@
               </ol>
           </nav>
     <?php 
-        if(!access_role("payment","view_page",$_SESSION['user_type'])){
+        if(!access_role("Transaction List","view_page",$_SESSION['user_type'])){
     ?>
            <h2 style="text-align: center;width: 100%;"><span style='color:red;'>Unauthorized Access:</span><br/><small>You don't have permission to open this page.</small></h2>
     <?php }else if($found){ ?>
@@ -302,7 +302,10 @@
                       </select>
                   </div>
                   <hr/>
-                 <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Payment</button>                 
+                   <?php if(access_role("Transaction List","Save_changes",$_SESSION['user_type'])){?>
+                         <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Payment</button>   
+
+                    <?php } ?>              
                 
               </div>
             </div>

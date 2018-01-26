@@ -1,6 +1,7 @@
 <?php 
     require_once('layout/header.php');
     require_once('layout/nav.php');
+    require_once('classes/function.php');
 ?>  
 
 <style>
@@ -129,23 +130,18 @@
 
   <main role="main" class="col-sm-9 ml-sm-auto col-md-10" style="padding-left:0px;" >	
   			
-				
-			<img src="img/setting_assets/slsu-map.jpg" id="map" />		
-
+	 <?php if(access_role("Location Map","view_page",$_SESSION['user_type'])){?>	
+			<img src="img/setting_assets/slsu-map.jpg" id="map" />
 			<div id="registered-location"  class="hide-temp">
 				<div class="location-position">
 						<div class="bldgImage"></div>
-
 						<div class="bldgNameCont">
 						</div>
 					</div>
 			</div>
-
 			
-			<div id="register-template" class="hide-temp">
-				
-					<span></span>
-					
+			<div id="register-template" class="hide-temp">				
+					<span></span>					
 					<div class="row detail">
 								<div class="col-sm-12">
 									<br/>
@@ -183,6 +179,7 @@
 		                    </div> 
 	            	                   
 			</div>
+	  <?php }else{ echo UnauthorizedOpenTemp(); } ?>
 
 </main>
 	

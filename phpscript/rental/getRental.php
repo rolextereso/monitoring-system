@@ -1,6 +1,7 @@
 <?php 
-
+   session_start();
    include_once("../../classes/Crud.php");
+
 
     $crud = new Crud(); 
 
@@ -15,7 +16,7 @@
                          per_day, 
                          unit,
                          availability FROM rental_items   
-                         WHERE status='Y' AND (item_name LIKE '%$request%' OR item_description LIKE '%$request%')";
+                         WHERE status='Y' AND created_by={$_SESSION['user_type']} AND (item_name LIKE '%$request%' OR item_description LIKE '%$request%')";
 
 
     

@@ -49,6 +49,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Rented Items","view_page",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='rental-to-return-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Rented Items</a> </li>
@@ -127,7 +128,9 @@
                                         <div class="form-group">
                                           <div class="form-row">
                                               <div class="col-md-4">
+                                                <?php if(access_role("Rented Items","save_changes",$_SESSION['user_type'])){?>
                                                   <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                                <?php } ?>
                                               </div>
                                               <br/><br/>
                                         
@@ -148,7 +151,10 @@
               </div>
         </div>
         </div>
+
+      <script src="assets/requiredJS/return-rental-item.js"></script>
+<?php }else{ echo UnauthorizedOpenTemp(); } ?>
       </main>
  
-<script src="assets/requiredJS/return-rental-item.js"></script>
+
 <?php require_once('layout/footer.php');?>      

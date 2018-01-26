@@ -1,6 +1,8 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
+include_once("../../classes/function.php");
  
 $crud = new Crud();
 
@@ -18,17 +20,17 @@ $columns = array(
 );
 
 //this will get the total row of the query;
-$sql = "SELECT * FROM rental_items ";
+$sql = "SELECT * FROM rental_items where created_by={$_SESSION['user_type']}";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
 $totalFiltered = $totalData;
 
 
-$sql = "SELECT * FROM rental_items ";
+$sql = "SELECT * FROM rental_items WHERE created_by= {$_SESSION['user_type']} ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
-	$sql.=" WHERE (item_name LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" AND (item_name LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR item_code LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR rental_fee LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR item_description LIKE '".$requestData['search']['value']."%' )";
@@ -47,6 +49,8 @@ $count=1;
 foreach($result as $key =>$row){
 	$nestedData=array(); 
 
+	$access=access_role("Rental Item List","edit_command",$_SESSION['user_type']);
+
 	$nestedData[] = $row["item_code"];    
 	$nestedData[] =$row["item_name"]."(".$row['item_description'].")";
 	$nestedData[] =$row["rental_fee"];
@@ -54,7 +58,7 @@ foreach($result as $key =>$row){
 	$nestedData[] =($row["per_day"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] =($row["need_gate_pass"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] =($row["status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
-	$nestedData[] = "<a href='rental-register.php?r_id=".$row['rental_id']."'><i class='fa fa-pencil'></i></a>";
+	$nestedData[] = ($access)?"<a href='rental-register.php?r_id=".$row['rental_id']."'><i class='fa fa-pencil'></i></a>":"";
 	
 	$data[] = $nestedData;
 }

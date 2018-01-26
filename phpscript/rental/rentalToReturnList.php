@@ -1,6 +1,8 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
+include_once("../../classes/function.php");
  
 $crud = new Crud();
 
@@ -26,7 +28,7 @@ $sql = "SELECT
                 FROM rental_items ri
 LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
 INNER JOIN customer c ON c.customer_id=rs.customer_id 
-WHERE ri.availability='N' AND (date_returned IS NULL OR date_returned ='') ";
+WHERE ri.availability='N' AND ri.created_by={$_SESSION['user_type']} AND (date_returned IS NULL OR date_returned ='') ";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -53,6 +55,9 @@ $result = $crud->getData($sql);
 
 $data=array();
 $count=1;
+
+$access=access_role("Rented Items","view_command",$_SESSION['user_type']);
+
 foreach($result as $key =>$row){
 	$nestedData=array(); 
 
@@ -60,7 +65,7 @@ foreach($result as $key =>$row){
 	$nestedData[] = $row["customer_name"];        
 	$nestedData[] = $row["customer_address"];
 	$nestedData[] = $row["rented_items"];                
-	$nestedData[] = "<a href='rental-return.php?t_id=".$row['transaction_id']."' title='Return Items'><i class='fa fa-arrow-left'></i></a>";
+	$nestedData[] = ($access)?"<a href='rental-return.php?t_id=".$row['transaction_id']."' title='Return Items'><i class='fa fa-arrow-left'></i></a>":"";
 	
 	$data[] = $nestedData;
 }

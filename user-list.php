@@ -36,6 +36,7 @@
                                               <th>First Name</th>
                                               <th>Last Name</th>
                                               <th>Username</th>
+                                              <th>User Type</th>
                                               <th>Status</th>
                                               <th>Commands</th>
                                         </tr>

@@ -37,5 +37,27 @@ Even if you make zoom in the page, the points will be rendered correctly accordi
 </p>
 <br>
 <canvas id="canvas" width="690" height="651" style="cursor:crosshair;background:url(http://www.mundoanimalia.com/images/articles/66/58/06/7f6ffaa6bb0b408017b62254211691b5/gallina.jpg)"></canvas>
+
+<script type="text/javascript">
+    // when page is ready
+    $(document).ready(function() {
+         // on form submit
+        $("#form").on('submit', function() {
+            // to each unchecked checkbox
+            $(this + 'input[type=checkbox]:not(:checked)').each(function () {
+                // set value 0 and check it
+                $(this).attr('checked', true).val(0);
+            });
+
+            return false;
+        })
+    })
+</script>
+
+<form method="post" id="form">
+    <input type="checkbox" name="check[0]" value="1" />
+    <input type="checkbox" name="check[1]" value="1" />
+    <input type="submit" value="Save Changes" />
+</form>
 </body>
 </html>
