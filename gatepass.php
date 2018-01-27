@@ -36,6 +36,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Gate Pass","view_page",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-key" aria-hidden="true"></i> Gate Pass</li>
@@ -58,7 +59,6 @@
           </div>
               
         </div>
-      </main>
       <script src="assets/datatables/jquery.dataTables.js"></script>
       <script src="assets/datatables/dataTables.bootstrap4.js"></script> 
 
@@ -87,4 +87,7 @@
           }
 
       </script>
+<?php }else{ echo UnauthorizedOpenTemp(); } ?>
+      </main>
+      
 <?php require_once('layout/footer.php');?>      
