@@ -4,6 +4,7 @@ include_once("../../classes/Crud.php");
 
 $crud = new Crud();
 
+
 if(isset($_POST['user_type'])){
 		$user_type_id=$_POST['user_type'];
 
@@ -34,24 +35,75 @@ if(isset($_POST['user_type'])){
 		    	$save="save[$row][$col]";
 		    	$uncheck_checkbox ="<input type='hidden' name='$save' value='N_".$result[$row]["user_role"]."'/><input type='checkbox' name='$save' uncheck='N_".$result[$row]["user_role"]."' class='check' value='Y_".$result[$row]["user_role"]."'/>";
 				$check_checkbox   ="<input type='checkbox' class='check' uncheck='N_".$result[$row]["user_role"]."' name='$save' checked='checked' value='Y_".$result[$row]["user_role"]."'/>";
+
+				$disable_checkbox   ="<input type='hidden' name='$save' value='X_".$result[$row]["user_role"]."'/><input type='checkbox' name='$save' uncheck='X_".$result[$row]["user_role"]."' class='check' value='X_".$result[$row]["user_role"]."' disabled='disabled'/>";
 				
-				if($col==0)
+				if($col==0){
 					 $nestedData[] = $result[$row]["module_name"];
-				elseif($col==1)
-		  		     $nestedData[] = ($result[$row]["view_page"]=='Y')	? $check_checkbox : $uncheck_checkbox;
-		  		elseif($col==2)
-				    $nestedData[] = ($result[$row]["view_command"]=='Y')	? $check_checkbox : $uncheck_checkbox;
-				elseif($col==3)
-					$nestedData[] = ($result[$row]["edit_command"]=='Y')	? $check_checkbox : $uncheck_checkbox;
-				elseif($col==4)
-					$nestedData[] = ($result[$row]["add_command"]=='Y')	? $check_checkbox : $uncheck_checkbox;
-				elseif($col==5)
-					$nestedData[] = ($result[$row]["delete_command"]=='Y')?$check_checkbox : $uncheck_checkbox;
-				elseif($col==6)
-					$nestedData[] = ($result[$row]["save_changes"]=='Y')	? $check_checkbox : $uncheck_checkbox;
-				elseif($col==7)
-					$nestedData[] = ($result[$row]["edit_changes"]=='Y')	? $check_checkbox : $uncheck_checkbox;	    	
-		    	  
+				}elseif($col==1){
+
+		  		     if($result[$row]["view_page"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		     }elseif($result[$row]["view_page"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		     }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		     } 
+		  		}elseif($col==2){
+				   
+					if($result[$row]["view_command"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		    }elseif($result[$row]["view_command"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		    }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		    } 
+				}elseif($col==3){
+					
+					if($result[$row]["edit_command"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		    }elseif($result[$row]["edit_command"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		    }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		    } 
+				}elseif($col==4){
+					
+					if($result[$row]["add_command"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		    }elseif($result[$row]["add_command"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		    }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		    } 
+				}elseif($col==5){
+					
+					if($result[$row]["delete_command"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		    }elseif($result[$row]["delete_command"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		    }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		    } 
+				}elseif($col==6){
+				
+					if($result[$row]["save_changes"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		    }elseif($result[$row]["save_changes"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		    }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		    }
+				}elseif($col==7){
+					
+					if($result[$row]["edit_changes"]=='Y'){
+		  		     	 $nestedData[] = $check_checkbox;
+		  		    }elseif($result[$row]["edit_changes"]!='X'){
+		  		     	 $nestedData[] = $uncheck_checkbox;
+		  		    }else{
+		  		     	 $nestedData[] = $disable_checkbox;
+		  		    }	    	
+		    	}  
 		    }
 			$data[] = $nestedData;
 		     

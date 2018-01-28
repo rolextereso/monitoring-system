@@ -28,6 +28,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Users Setting","add_command",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='user-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Users List</a> / Register User</li>
@@ -117,9 +118,6 @@
               </div>
         </div>
         </div>
-      </main>
-
-
 <script src='assets/validator.min.js'></script>   
 <script>
           $(function() {
@@ -162,5 +160,10 @@
                   });
             });
 </script>
+
+<?php }else{ echo UnauthorizedOpenTemp(); } ?>
+      </main>
+
+
 
 <?php require_once('layout/footer.php');?>      

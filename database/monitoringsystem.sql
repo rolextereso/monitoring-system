@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2018 at 12:44 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.8
+-- Generation Time: Jan 28, 2018 at 03:18 AM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -238,9 +238,8 @@ INSERT INTO `module` (`module_id`, `module_name`, `status`) VALUES
 (6, 'Rented Items', 'Y'),
 (7, 'Reports', 'Y'),
 (8, 'Gate Pass', 'Y'),
-(9, 'Setting', 'Y'),
-(10, 'Setting User Role', 'Y'),
-(11, 'Setting Company Info', 'Y');
+(9, 'Users Setting', 'Y'),
+(10, 'Admin Setting', 'Y');
 
 -- --------------------------------------------------------
 
@@ -816,13 +815,13 @@ INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`,
 CREATE TABLE `user_role` (
   `user_role` int(11) NOT NULL,
   `module_id` int(11) DEFAULT NULL,
-  `view_page` enum('Y','N') DEFAULT 'N',
-  `view_command` enum('Y','N') DEFAULT 'N',
-  `edit_command` enum('Y','N') DEFAULT 'N',
-  `add_command` enum('Y','N') DEFAULT 'N',
-  `delete_command` enum('Y','N') DEFAULT 'N',
-  `save_changes` enum('Y','N') DEFAULT 'N',
-  `edit_changes` enum('Y','N') DEFAULT 'N',
+  `view_page` enum('Y','N','X') DEFAULT 'N',
+  `view_command` enum('Y','N','X') DEFAULT 'N',
+  `edit_command` enum('Y','N','X') DEFAULT 'N',
+  `add_command` enum('Y','N','X') DEFAULT 'N',
+  `delete_command` enum('Y','N','X') DEFAULT 'N',
+  `save_changes` enum('Y','N','X') DEFAULT 'N',
+  `edit_changes` enum('Y','N','X') DEFAULT 'N',
   `user_type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -841,18 +840,16 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (16, 8, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
 (17, 9, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
 (18, 10, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(20, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 1),
-(22, 1, 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 2),
-(23, 2, 'N', 'N', 'Y', 'N', 'N', 'N', 'N', 2),
-(24, 3, 'N', 'Y', 'Y', 'Y', 'N', 'N', 'N', 2),
-(25, 4, 'N', 'N', 'Y', 'Y', 'N', 'N', 'N', 2),
+(22, 1, 'Y', 'X', 'X', 'N', 'N', 'X', 'X', 2),
+(23, 2, 'N', 'X', 'X', 'X', 'X', 'N', 'X', 2),
+(24, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
+(25, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (26, 5, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (27, 6, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (28, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (29, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (30, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (31, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
-(32, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 2),
 (34, 1, 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 3),
 (35, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (36, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
@@ -863,7 +860,6 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (41, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (42, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (43, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
-(44, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 3),
 (46, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (47, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (48, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
@@ -874,7 +870,6 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (53, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (54, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (55, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
-(56, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 4),
 (58, 1, 'Y', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (59, 2, 'Y', 'N', 'N', 'N', 'N', 'Y', 'N', 5),
 (60, 3, 'N', 'Y', 'N', 'N', 'N', 'N', 'N', 5),
@@ -883,9 +878,8 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (63, 6, 'Y', 'Y', 'N', 'N', 'N', 'N', 'N', 5),
 (64, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (65, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(66, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
+(66, 9, 'Y', 'N', 'Y', 'Y', 'N', 'N', 'N', 5),
 (67, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
-(68, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 5),
 (70, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
 (71, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
 (72, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
@@ -896,7 +890,6 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (77, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
 (78, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
 (79, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
-(80, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 6),
 (82, 1, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
 (83, 2, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
 (84, 3, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
@@ -906,8 +899,7 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (88, 7, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
 (89, 8, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
 (90, 9, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
-(91, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7),
-(92, 11, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7);
+(91, 10, 'N', 'N', 'N', 'N', 'N', 'N', 'N', 7);
 
 -- --------------------------------------------------------
 
@@ -1068,81 +1060,97 @@ ALTER TABLE `user_type`
 --
 ALTER TABLE `customer`
   MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+
 --
 -- AUTO_INCREMENT for table `location_marks`
 --
 ALTER TABLE `location_marks`
-  MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
 --
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
   MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
   MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
   MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
 --
 -- AUTO_INCREMENT for table `project_duration`
 --
 ALTER TABLE `project_duration`
   MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
+
 --
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
   MODIFY `pr_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `rental_items`
 --
 ALTER TABLE `rental_items`
   MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT for table `rental_specific`
 --
 ALTER TABLE `rental_specific`
   MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+
 --
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
   MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
   MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
   MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+
 --
 -- AUTO_INCREMENT for table `user_type`
 --
 ALTER TABLE `user_type`
   MODIFY `user_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- Constraints for dumped tables
 --

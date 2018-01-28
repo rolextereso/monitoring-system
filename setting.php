@@ -8,6 +8,13 @@
           font-size: 13px;
         }
 
+<?php 
+$col_no=4;
+if(access_role("Admin Setting","view_page",$_SESSION['user_type'])){
+    $col_no=3;
+}
+
+?>
     </style>
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
@@ -23,8 +30,8 @@
               </div>
               <div class="card-body">               
                     <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2">
+                    
+                        <div class="col-md-<?php echo $col_no;?>">
                             <div class="card">
                                 <img class="card-img-top img-fluid" src="img/setting_assets/user-setting.jpg" alt="Card image cap">
                                 <div class="card-body" style="text-align: center;">
@@ -34,7 +41,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-<?php echo $col_no;?>">
                           <div class="card " >
                               <img class="card-img-top img-fluid" src="img/setting_assets/project-setting.jpg" alt="Card image cap">
                               <div class="card-body" style="text-align: center;">
@@ -44,7 +51,7 @@
                               </div>
                           </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-<?php echo $col_no;?>">
                             <div class="card " >
                                 <img class="card-img-top img-fluid" src="img/setting_assets/product-setting.jpg" alt="Card image cap">
                                 <div class="card-body" style="text-align: center;">
@@ -54,30 +61,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                          <div class="card ">
-                              <img class="card-img-top img-fluid" src="img/setting_assets/lock-setting.jpg" alt="Card image cap">
-                              <div class="card-body" style="text-align: center;">
-                                    <h4 class="card-title">Company Info</h4>
-                                    <p class="card-text">This module used to add, edit and set user role and status of the user.</p>
-                                    <a href="owner-info.php" class="btn btn-primary">View Setting</a>
+                        <?php if(access_role("Admin Setting","view_page",$_SESSION['user_type'])){ ?>
+                            <div class="col-md-<?php echo $col_no;?>">
+                              <div class="card ">
+                                  <img class="card-img-top img-fluid" src="img/setting_assets/lock-setting.jpg" alt="Card image cap">
+                                  <div class="card-body" style="text-align: center;">
+                                        <h4 class="card-title">Admin Setting</h4>
+                                        <p class="card-text">This module used to add, edit and set user role and status of the user.</p>
+                                        <a href="owner-info.php" class="btn btn-primary">View Setting</a>
+                                  </div>
                               </div>
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="card ">
-                              <img class="card-img-top img-fluid" src="img/setting_assets/user-setting.jpg" alt="Card image cap">
-                              <div class="card-body" style="text-align: center;">
-                                    <h4 class="card-title">Company Info</h4>
-                                    <p class="card-text">This module used to add, edit and set user role and status of the user.</p>
-                                    <a href="owner-info.php" class="btn btn-primary">View Setting</a>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="col-md-1"></div>
+                            </div>
 
-                        
-                    
+                        <?php } ?>                    
                     </div>                  
               </div>
         </div>

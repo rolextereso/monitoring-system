@@ -27,13 +27,23 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Admin Setting","view_page",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Setting </a> </li>
               </ol>
+              <ul class="nav nav-tabs">
+                          <li class="nav-item">
+                               <a class="nav-link active" href="owner-info.php"><i class="fa fa-hand-pointer-o" ></i> Owner Information</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="user-role.php"> <i class="fa fa-hand-pointer-o" ></i> User Role</a>
+                          </li>
+                         
+              </ul>
            </nav>
 
-        
+         <br/>
          <div class="card">
               <div class="card-header">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i></i> Owner Information
@@ -93,11 +103,13 @@
               </div>
         </div>
         </div>
+<script src='assets/validator.min.js'></script>   
+<script src='assets/requiredJS/owner-info.js'>      
+</script>
+<?php }else{ echo UnauthorizedOpenTemp(); } ?>
       </main>
 
 
-<script src='assets/validator.min.js'></script>   
-<script src='assets/requiredJS/owner-info.js'>        
-</script>
+
 
 <?php require_once('layout/footer.php');?>      

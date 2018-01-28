@@ -185,10 +185,15 @@
 	
 	<script>
 		$(document).ready(function(){				
-				$("#map").Caption({deleteMark:false,addMark:true});	
+				$("#map").Caption({
+					deleteMark:<?php echo (access_role("Location Map","delete_command",$_SESSION['user_type']))?"true":"false"; ?>,
+					addMark:<?php echo (access_role("Location Map","add_command",$_SESSION['user_type']))?"true":"false"; ?>
+				});	
 				
 		});		
 	</script> 
+
+
 	
 <script type="text/javascript" src="assets/requiredJS/Caption.js"></script>
 

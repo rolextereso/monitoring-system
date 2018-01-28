@@ -15,7 +15,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-<?php if(access_role("Setting","view_page",$_SESSION['user_type'])){?>
+
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='setting.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a> / Users List</li>
@@ -26,7 +26,12 @@
          <div class="card">
               <div class="card-header">
                 <i class="fa fa-table"></i> Users
-                <a href='user-register.php' type="button" class="btn btn-info" style="float:right;"><i class="fa fa-plus" aria-hidden="true"></i> Add User</a>
+
+                <?php if(access_role("Users Setting","add_command",$_SESSION['user_type'])){?>
+                      <a href='user-register.php' type="button" class="btn btn-info" style="float:right;"><i class="fa fa-plus" aria-hidden="true"></i> Add User</a>
+                <?php } ?>
+
+
               </div>
               <div class="card-body">
                        <div class="table-responsive">                               
@@ -72,7 +77,7 @@
 
           });
       </script>
-  <?php }else{ echo UnauthorizedOpenTemp(); } ?>
+
       </main>
 
       
