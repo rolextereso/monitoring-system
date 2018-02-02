@@ -3,7 +3,10 @@
     require_once('classes/Crud.php');
     $crud = new Crud();    
     
-    $projects = $crud->getData("SELECT * FROM projects;");
+    $projects = $crud->getData("SELECT p.*,pd.project_duration_id FROM projects p                          
+                                LEFT JOIN project_duration pd ON pd.project_id=p.project_id
+                                WHERE pd.status='Y'
+                                ");
     $found=true;      
 ?>   
 
@@ -24,16 +27,19 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Purchase Requests","add_command",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">Purchase Request </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a href="purchase_request_list.php"><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Purchase Requests</a>
+                    </li>
               </ol>
            </nav>
-
+          
       
          <div class="card">
               <div class="card-header">
-                   
+            
               </div>
               <div class="card-body">
               
@@ -57,7 +63,7 @@
                                                         <label >Projects:</label>
                                                         <select class="form-control form-control-sm" name="projects" required="">
                                                           <?php foreach ($projects as $proj){?>
-                                                            <option value="<?php echo $proj['project_id'];?>"><?php echo $proj['project_name'];?>
+                                                            <option value="<?php echo $proj['project_duration_id'];?>"><?php echo $proj['project_name'];?>
                                                             </option>
                                                           <?php } ?>
                                                         </select>
@@ -111,77 +117,80 @@
               </div>
         </div>
         </div>
-      </main>
- <script src='assets/validator.min.js'></script>  
-<script>
-  $(document).ready(function(){
+  <script>
+  $(document).ready(function(){   
+   
+            $("#add_item").click(function(){                   
 
-    $("#add_item").click(function(){
-        var body=$(".table tbody"),
-            type="text",
-            classes="form-control-sm form-control",
-            $unit=" <input type='"+type+"' required class='"+classes+"' name='unit[]'/> ",
-            $item=" <input type='"+type+"' required class='"+classes+"' name='item_description[]'/> ",
-            $quantity=" <input type='"+type+"' required class='"+classes+"' name='quantity[]'/> ",
-            $delete="<span class='red delete'>&Cross;</span>";
+                    var body=$(".table tbody"),
+                        type="text",
+                        classes="form-control-sm form-control",
+                        $unit=" <input type='"+type+"' required class='"+classes+"' name='unit[]'/> ",
+                        $item=" <input type='"+type+"' required class='"+classes+"' name='item_description[]'/> ",
+                        $quantity=" <input type='"+type+"' required class='"+classes+"' name='quantity[]'/> ",
+                        $delete="<span class='red delete'>&Cross;</span>";
 
-        var $temp="<tr>"+
-                    " <td>"+$delete+"</td>"+
-                    " <td>"+$unit+"</td>"+
-                    " <td>"+$item+"</td>"+
-                    " <td>"+$quantity+"</td>"+
-                  "</tr>";
-        $(body).prepend($temp);
+                    var $temp="<tr>"+
+                                " <td>"+$delete+"</td>"+
+                                " <td>"+$unit+"</td>"+
+                                " <td>"+$item+"</td>"+
+                                " <td>"+$quantity+"</td>"+
+                              "</tr>";
+                    $(body).prepend($temp);
 
-         $(".delete").click(function(){
-            var p=$(this).parent().parent();
-            p.remove();
-        });
-
-        $('#form').validator();
-                  // when the form is submitted
-                  $('#form').on('submit', function (e) {
-                      // if the validator does not prevent form submit
-                      if (!e.isDefaultPrevented()) {
-                        bootbox.confirm({
-                                          size: "small",                                         
-                                          message: "Are you sure?", 
-                                          callback: function(result){ 
-                                            
-                                                if(result){
-                                                      var url = "phpscript/registerAccount/registerAccount.php";
-
-                                                      // POST values in the background the the script URL
-                                                      $.ajax({
-                                                          type: "POST",
-                                                          url: url,
-                                                          dataType   : 'json',
-                                                          data: $("#form").serialize(),
-                                                          success: function (data)
-                                                          {
-                                                              $('.alert').removeClass('alert-success, alert-danger')
-                                                                         .addClass(data.type)
-                                                                         .html(data.message)
-                                                                         .fadeIn(100,function(){
-                                                                             $(this).fadeOut(5000);
-                                                                         });
-                                                              $('#form')[0].reset();
-
-                                                          }
-                                                      });
-                                                }
-                                         }
-                                      });
-                                return false;
-                      }
-                  });
-    });
+                     $(".delete").click(function(){
+                        var p=$(this).parent().parent();
+                        p.remove();
+                    });
+              
+            });
 
 
+            $('#form').on('submit', function (e) {
+              // if the validator does not prevent form submit
+                   if($(".table tbody tr").length==0){
+                      alert("Please add an item");
+                   }else if (!e.isDefaultPrevented()) {
+                      bootbox.confirm({
+                                        size: "small",                                         
+                                        message: "Are you sure?", 
+                                        callback: function(result){ 
+                                          
+                                              if(result){
+                                                    var url = "phpscript/purchase_request/save_pr.php";
 
+                                                    // POST values in the background the the script URL
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: url,
+                                                        dataType   : 'json',
+                                                        data: $("#form").serialize(),
+                                                        success: function (data)
+                                                        {
+                                                            $('.alert').removeClass('alert-success, alert-danger')
+                                                                       .addClass(data.type)
+                                                                       .html(data.message)
+                                                                       .fadeIn(100,function(){
+                                                                           $(this).fadeOut(5000);
+                                                                       });
+                                                            $('#form')[0].reset();
 
+                                                        }
+                                                    });
+                                              }
+                                       }
+                                    });
+                             return false;
+                    }
+              
+          });
 
   });
 
+
 </script>
+  <?php }else{ echo UnauthorizedOpenTemp(); } ?>
+      </main>
+ <script src='assets/validator.min.js'></script>  
+
 <?php require_once('layout/footer.php');?>      

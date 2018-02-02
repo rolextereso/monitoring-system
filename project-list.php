@@ -6,7 +6,7 @@
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-cube"></i> Project List </li>
+                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-cube"></i> Projects </li>
               </ol>
            </nav>
 

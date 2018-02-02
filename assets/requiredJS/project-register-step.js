@@ -16,7 +16,8 @@
 
 						return this.each( function() {
 							var parent=this;
-							var dates = getDates(new Date(settings.dateFrom), new Date(settings.dateTo));
+							//var dates = getDates(new Date(settings.dateFrom), new Date(settings.dateTo));
+							var dates=['expenses'];
 							populateTbl(dates,settings.text,settings.steps,true,this);
 							//this will remove the row of once x is click
 							$('.table-remove').click(function () {
@@ -72,8 +73,11 @@
 											
 										date.forEach(function(date) {
 
-											var dates=(editable)?"0":  moment(date).format("MMM YYYY");
-											var formatted=(!editable)? "data='"+moment(date).format("YYYY-MM-DD")+"'": "";
+											var dates=(editable)?"0": "Planned Budget";
+											//var dates=(editable)?"0": moment(date).format("MMM YYYY");
+											//var formatted=(!editable)? "data='"+moment(date).format("YYYY-MM-DD")+"'": "";
+
+											var formatted=(!editable)? "data='expenses_value'": "";
 											var row_number=(footer)? "t_"+no: (footer==null)?"h_"+no : "_"+no;
 											
 

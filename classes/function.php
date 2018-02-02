@@ -19,10 +19,10 @@ function header_info(){
 
 	 $owner_info = $crud->getData("SELECT * FROM owner_info LIMIT 1"); 
 
-	 $info=array("company_name"=>$owner_info[0]["owner_name"],
-				 "company_address"=>$owner_info[0]['owner_address'],
-				 "contact_no"=>$owner_info[0]['contact_no'],
-				 "logo"=>$owner_info[0]['logo']);
+	 $info=array("company_name"   => $owner_info[0]["owner_name"],
+				 "company_address"=> $owner_info[0]['owner_address'],
+				 "contact_no"     => $owner_info[0]['contact_no'],
+				 "logo"           => $owner_info[0]['logo']);
 	 return $info;
 }
 
@@ -33,8 +33,6 @@ function access_role($module,$access_role,$user_type_id){
 								INNER JOIN user_type ut ON ut.user_type_id =ur.user_type_id
 								INNER JOIN module m ON ur.module_id =m.module_id
 								WHERE ur.user_type_id='$user_type_id' AND module_name='$module' LIMIT 1;"); 
-
-	
 
 	if($access[0]['access']=='N'){
 		return false;
@@ -50,6 +48,17 @@ function UnauthorizedOpenTemp(){
 					Unauthorized Access:</span>
 					<br/>
 			 <small>Sorry your account is not authorize to view this page.</small></h2>";
+}
+
+function specific_user($text="",$access=false){
+	$user="";
+	if($text=="" && $access==true){
+		 $user="";
+    }else{
+    	  $user=$text."".$_SESSION['user_id'];
+    }
+
+    return $user;
 }
 
 

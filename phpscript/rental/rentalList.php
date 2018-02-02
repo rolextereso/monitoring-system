@@ -19,15 +19,16 @@ $columns = array(
 	
 );
 
+
 //this will get the total row of the query;
-$sql = "SELECT * FROM rental_items where created_by={$_SESSION['user_type']}";
+$sql = "SELECT * FROM rental_items where created_by=".specific_user();
 
 $result = $crud->getData($sql);
 $totalData= count($result);
 $totalFiltered = $totalData;
 
 
-$sql = "SELECT * FROM rental_items WHERE created_by= {$_SESSION['user_type']} ";
+$sql = "SELECT * FROM rental_items WHERE created_by=".specific_user();
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
 	$sql.=" AND (item_name LIKE '".$requestData['search']['value']."%' ";    

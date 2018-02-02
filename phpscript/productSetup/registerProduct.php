@@ -18,6 +18,11 @@ if(isset($_POST['product_name'])){
 		if(isset($_POST['product_status'])){
 			$status='Y';
 		}
+
+		$for_gate_pass='N';
+		if(isset($_POST['for_gate_pass'])){
+			$for_gate_pass='Y';
+		}
 		
 		if(isset($_POST['product_id'])){
 			 $result=$crud->executeUnAutoCommit("UPDATE product_price SET price='$price', created_by='{$_SESSION['user_id']}' WHERE price_id=".$_POST['price_id']);								
@@ -27,6 +32,7 @@ if(isset($_POST['product_name'])){
 			 											 " product_price=".$_POST['price_id'].", ".
 			 											 " project_id='$project', ".
 			 											 " unit_of_measurement='$measurement', ".
+			 											 " for_gate_pass='$for_gate_pass', ".
 			 											 " product_status='$status' WHERE product_id= ".$_POST['product_id']);				
 			 }
 

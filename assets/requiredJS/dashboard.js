@@ -1,7 +1,8 @@
 $(document).ready(function(){
                
                 pieChart();
-                lineGraph("","","");               
+                lineGraph("","","");  
+                multi_bar();             
                     
 
                 $('#datefrom, #dateto').datepicker({
@@ -9,14 +10,12 @@ $(document).ready(function(){
                     todayHighlight: true,       
                 });
             });         
-            function toogleDataSeries(e){
-                    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                      e.dataSeries.visible = false;
-                    } else{
-                      e.dataSeries.visible = true;
-                    }
-                    chart.render();
-            }
+            
+            Number.prototype.format = function(n, x) {
+                var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+                return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
+            };
+            
 
             function lineGraphByProduct(){
                 var product=$("#product").val();
@@ -62,6 +61,7 @@ $(document).ready(function(){
                                     _data.push(object);   
 
                                 });
+                               
 
                                 var chart = new CanvasJS.Chart("chartContainer", {
                                     animationEnabled: true,
@@ -161,4 +161,90 @@ $(document).ready(function(){
                 }              
 
                 return error;
+            }
+
+            function multi_bar(){
+
+                 var $budget=[];
+                 var $expenses=[];
+                 $.getJSON("phpscript/dashboardGraph/multibarData.php", function(data) {
+                            $.each(data, function(key,value){
+                                            
+                                            $.each(value.budget, function(key, value){                                                     
+                                                  $budget.push({y: parseFloat(value[0]),label: value[1]});                                    
+                                            });
+
+                                            $.each(value.expenses, function(key, value){                                                     
+                                                  $expenses.push({y: parseFloat(value[0]),label: value[1]});                                    
+                                            });
+                                            
+                                            
+
+                              });
+                        console.log($budget);
+
+                          var chart = new CanvasJS.Chart("multibarContainer", {
+                                  animationEnabled: true,
+                                  title:{
+                                    text: "Budgets and Expenses"
+                                  },
+                                  axisY: {
+                                    title: "Amount"
+                                  },
+                                  legend: {
+                                    cursor:"pointer",
+                                    itemclick : toogleDataSeries
+                                  },
+                                  toolTip: {
+                                    shared: true,
+                                    content: toolTipFormatter
+                                  },
+                                  data: [{
+                                    type: "bar",
+                                    showInLegend: true,
+                                    name: "Project Budget",
+                                    color: "green",
+                                    dataPoints: $budget
+                                  },
+                                  {
+                                    type: "bar",
+                                    showInLegend: true,
+                                    name: "Project Expenses",
+                                    color: "#971010",
+                                    dataPoints: $expenses
+                                  }]
+                        });
+                        chart.render();
+
+                  setTimeout(function(){multi_bar()}, 60000);
+              });          
+
+
+            }
+
+            function toolTipFormatter(e) {
+       
+
+                  var str = "";
+                  var total = 0 ;
+                  var str3;
+                  var str2 ;
+                  for (var i = 0; i < e.entries.length; i++){
+                    var str1 = "<span style= \"color:"+e.entries[i].dataSeries.color + "\">" + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y.format(2) + "</strong> <br/>" ;
+                    
+                    str = str.concat(str1);
+                  }
+                  total = e.entries[0].dataPoint.y - e.entries[1].dataPoint.y ;
+                  str2 = "<strong>" + e.entries[0].dataPoint.label + "</strong> <br/>";
+                  str3 = "<span style = \"color:Tomato\">Total: </span><strong>" + total.format(2) + "</strong><br/>";
+                  return (str2.concat(str)).concat(str3);
+            }
+
+            function toogleDataSeries(e){
+                    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                      e.dataSeries.visible = false;
+                    } else{
+                      e.dataSeries.visible = true;
+                    }
+                    chart.render();
             }

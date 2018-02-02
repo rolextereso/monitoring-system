@@ -134,12 +134,12 @@
 						 <?php if($paid_for=="sales"){ ?>
 							<td>&nbsp;<?php echo $res['product_name'];?></td>
 							<td>&nbsp;<?php echo $res['quantity'];?> </td>
-							<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['amount'];?></td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($res['amount'],2);?></td>
 							<?php $total_amount+=$res['amount']; ?>
 						 <?php } else if($paid_for=="rental"){ ?>
 						 	<td>&nbsp;<?php echo $res['item_name']."(".$res['item_description'].")";?></td>
 							<td>&nbsp;<?php echo $res['no_of_days'];?> </td>
-							<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['rental_fee_amount'];?></td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($res['rental_fee_amount'],2);?></td>
 							<?php $total_amount+=$res['rental_fee_amount']; ?>
 
 						 <?php } ?>
@@ -150,11 +150,11 @@
 					 ?>
 					<tr>
 						<td colspan="2"> Total</td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo $total_amount;?></td>
+						<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($total_amount,2);?></td>
 					</tr>
 					<tr>
 						<td colspan="2"> Amount Tendered:</td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo $amount_tendered;?></td>
+						<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($amount_tendered,2);?></td>
 					</tr>
 					<tr>
 						<td colspan="2"> Change:</td>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Print Official Reciept</title>
+	<title>Print Collection Report</title>
 </head>
 <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
  <link href="../../assets/bootstrap.css" rel="stylesheet">
@@ -14,8 +14,7 @@
 	}
 	.container{
 		margin: 0 auto;
-		width: 80%;
-		
+		width: 80%;		
 	}
 
 	#body{
@@ -28,6 +27,7 @@
 	    border-color: silver;
 	    width: 80%;
 	}
+
 	#customer_info, #footer, #header{
 		 margin: 0 auto;
 		 width: 80%;
@@ -50,15 +50,19 @@
         width: 100%;
         text-align: center;
         font-family: Arial;
-      }
+    }
 </style>
 <?php    
-    require_once('../../classes/Crud.php');
-    require_once('../../classes/function.php');
 
-    $crud = new Crud();
-    $header=header_info();
-    $content=$_GET['content'];   
+    require_once('../../classes/function.php');
+    require_once('collectionReportData.php');
+
+  
+    $header=header_info();   
+
+    $out=(collectionReportData($_GET['datefrom'], $_GET['dateto'], $_GET['category'], $_GET['report_type'],$_GET["search_by"]));
+
+	
 ?>  
 <body>
 		<div class="container">
@@ -76,7 +80,41 @@
 				<div class="clearfix"></div>
 				<br/>
 				<div class="card-body">
-					<?php echo $content;?>
+					<br/><h2 style='margin-bottom:0px;'><?php echo "COLLECTION REPORT OF ".$out['category'];?></h2>
+                                    <h6 style='margin-bottom:0px;'><?php echo "for the ".$out['report_type']." of <u>".$out['from_date']."</u> to <u>".$out['to_date']."</u>"?></h6>
+                                    <br/><br/>
+                                    <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'>
+                                    <thead class='thead-dark'>    
+                                    <th><?php echo $out['category'];?></th>                                     
+                                           
+                                            <?php foreach($out['date'] as $date)                                               
+                                                      echo "<th>$date</th>";                                
+                                            ?>
+                                    </th>
+                                   </thead>
+                                    <tfoot class='tfoot-dark' >  
+                                              <tr>
+                                              <td> Total </td> 
+                                           
+                                             <?php foreach($out['total'] as $total)                                               
+                                                      echo "<td>$total</td>";                                
+                                             ?>
+                                             </tr>                                        
+                                    </tfoot> 
+                                    <tbody> 
+                                           
+                                            <?php foreach($out['data'] as $key=>$value){                                              
+                                                      echo "<tr>";    
+                                                      echo "  <td>$key</td>";
+                                                      foreach($value as $i_key=>$i_value){
+                                                      		echo "  <td>$i_value</td>";
+                                                      }   
+                                                     echo "</tr>"; 
+                                                  }                         
+                                             ?>   
+                                                              
+                                    </tbody>                                    
+                                    </table>
 				</div>
 				<br/>
 				<br/>

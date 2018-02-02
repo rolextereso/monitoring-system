@@ -13,6 +13,7 @@
     $project_id   = "";
     $unit_of_measurement ="";
     $product_status="";
+    $for_gate_pass="";
     $found=false;
     $add=true;
 
@@ -36,6 +37,7 @@
                   $project_id   = $res['project_id'];
                   $unit_of_measurement =$res['unit_of_measurement'];
                   $product_status =$res['product_status'];
+                  $for_gate_pass=$res['for_gate_pass'];
                   
               }
         }
@@ -117,6 +119,12 @@
                                                               <input  id="product_status" name="product_status" type="checkbox"
                                                               <?php echo($product_status=='Y')?'checked':'';?> />
                                                               <span id="stat" class="italic <?php echo($product_status=='Y')?'green':'red';?>"><?php echo($product_status=='Y')?'(Active)':'(Unactive)';?></span>
+                                                              &nbsp;
+
+                                                              <label for="check">For Gate Pass</label>                                                  
+                                                              <input  id="for_gate_pass" name="for_gate_pass" type="checkbox"
+                                                              <?php echo($for_gate_pass=='Y')?'checked':'';?> />
+                                                              <span id="stat" class="italic <?php echo($for_gate_pass=='Y')?'green':'red';?>"><?php echo($for_gate_pass=='Y')?'(Active)':'(Unactive)';?></span>
                                                   </div>
                                               </div>
                                               <div class="col-md-6">
@@ -215,13 +223,13 @@
                   });
 
                    //script for the checkbox account status
-                  $('#product_status').on('change',function(){
+                  $('#product_status, #for_gate_pass').on('change',function(){
                       if($(this).is(':checked')){
-                          $('#stat').removeClass('red').addClass('green');
-                          $('#stat').text('(Active)');
+                          $(this).next().removeClass('red').addClass('green');
+                          $(this).next().text('(Active)');
                       }else{
-                          $('#stat').removeClass('green').addClass('red');
-                          $('#stat').html('(Unactive)');
+                          $(this).next().removeClass('green').addClass('red');
+                          $(this).next().html('(Unactive)');
                          
                       }
                   });

@@ -53,31 +53,50 @@
 
     $crud = new Crud();
     
-    if(isset($_GET['or_id'])){
+    if(isset($_GET['or'])){
         //getting id from url
-        $id = $crud->escape_string($_GET['or_id']);
-        if(is_numeric($id) && $id!=''){
-       
-            //selecting data associated with this particular id
-            $result = $crud->getData("SELECT ".
-									"	p.product_name, ".
-									"		sp.quantity, ".							
-									"		sp.amount  ".
-									"		FROM sales_specific sp ".
-									"		INNER JOIN sales_record sr ON sp.or_number=sr.sales_id ".
-									"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".
-									"		INNER JOIN products p ON p.product_id=sp.product_id ".
-									"		WHERE sp.or_number=".$id);
-  
-             $customer = $crud->getData("SELECT ".
-									"	sr.or_number, ".
-									"		c.customer_name, ".							
-									"		c.customer_address  ".
-									"		FROM sales_record sr ".							
-									"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".							
-									"		WHERE sr.sales_id=".$id." LIMIT 1");  
-             //update printing_status to printed or 'Y'
-			$crud->execute("UPDATE sales_record SET printing_status='Y' WHERE sales_id=".$id);            
+        $id = $crud->escape_string($_GET['or']);    
+        $paid_for = $crud->escape_string($_GET['specific']);   
+
+        if($id!=''){
+		       		if($paid_for=="sales"){
+				            //selecting data associated with this particular id
+				             $result = $crud->getData("SELECT ".
+													"	p.product_name, ".
+													"		sp.quantity, ".							
+													"		sp.amount  ".
+													"		FROM sales_specific sp ".
+													"		INNER JOIN sales_record sr ON sp.or_number=sr.sales_id ".
+													"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".
+													"		INNER JOIN products p ON p.product_id=sp.product_id ".
+													"		WHERE sr.or_number='$id'");
+				       
+		             } else if($paid_for=="rental"){
+
+		             	       $result=$crud->getData("SELECT                                 
+						                                  ri.item_name,
+						                                  ri.item_description,
+						                                  ri.rental_fee,
+						                                  ri.per_day,
+						                                  rs.rental_fee_amount,
+						                                  rs.no_of_days			                                  
+					                                  FROM rental_items ri
+					                                LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
+					                                LEFT JOIN sales_record sr ON sr.sales_id=rs.sales_id
+					                                WHERE  sr.or_number='$id'");
+		             	    
+
+		             }     
+
+		             $customer = $crud->getData("SELECT ".
+											"	sr.or_number, ".
+											"		c.customer_name, ".							
+											"		c.customer_address  ".
+											"		FROM sales_record sr ".							
+											"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".							
+											"		WHERE sr.or_number=".$id." LIMIT 1");  
+		             //update printing_status to printed or 'Y'
+					$crud->execute("UPDATE sales_record SET printing_status='Y' WHERE or_number=".$id);            
         }
     }
 ?>  
@@ -106,24 +125,33 @@
 				<table border="1">
 					<tr>
 						<th> Particulars</th>
-						<th> Quantity </th>
+						<th><?php echo ($paid_for=="rental")?"# of day(s)":"Quantity";?></th>
 						<th> Amount </th>
 					</tr>
 					<?php   
 						$total_amount=0;
 						foreach ($result as $res) {?>
 					<tr>
-						<td>&nbsp;<?php echo $res['product_name'];?></td>
-						<td>&nbsp;<?php echo $res['quantity'];?> </td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['amount'];?></td>
+						 <?php if($paid_for=="sales"){ ?>
+							<td>&nbsp;<?php echo $res['product_name'];?></td>
+							<td>&nbsp;<?php echo $res['quantity'];?> </td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($res['amount'],2);?></td>
+							<?php $total_amount+=$res['amount']; ?>
+						 <?php } else if($paid_for=="rental"){ ?>
+						 	<td>&nbsp;<?php echo $res['item_name']."(".$res['item_description'].")";?></td>
+							<td>&nbsp;<?php echo $res['no_of_days'];?> </td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($res['rental_fee_amount'],2);?></td>
+							<?php $total_amount+=$res['rental_fee_amount']; ?>
+
+						 <?php } ?>
 					</tr>
 					<?php 
-						$total_amount+=$res['amount'];
+						
 					 	} 
 					 ?>
 					<tr>
 						<td colspan="2"> Total</td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo $total_amount;?></td>
+						<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($total_amount,2);?></td>
 					</tr>
 				</table>
 				<br/>

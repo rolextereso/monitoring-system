@@ -17,9 +17,8 @@ function insert($array, $proj_id,$find_expr,$created_by,$spec_id){
 						$desc=$val;
 					}else{		
 						 $extra=($find_expr=='production costs')?"(production costs)":"";		
-						 $insert="INSERT INTO project_duration(project_specific_id,project_id, description, month,amount,created_by) ".
-						 "VALUES ('$spec_id','{$proj_id}', '".$crud->escape_string($desc)." $extra', '{$key}', '{$val}','{$created_by}');";
-
+						 $insert="INSERT INTO project_budget(project_specific_id,project_id, description,amount,created_by) VALUES('$spec_id','{$proj_id}', '".$crud->escape_string($desc)." $extra',  '{$val}','{$created_by}');";
+						  
 					     $result = $crud->executeUnAutoCommit($insert);		
 					}			
 				}				
@@ -28,9 +27,10 @@ function insert($array, $proj_id,$find_expr,$created_by,$spec_id){
 }
 
 function insertPriceForProduct($product_price,$project_id,$created_by,$spec_id){
-	$product_name="";
+	    $product_name="";
 		$prices=0;
 		$unit="";
+		$for_gate_pass="";
 		global $crud;
 
 	foreach($product_price as $value) {
@@ -41,6 +41,8 @@ function insertPriceForProduct($product_price,$project_id,$created_by,$spec_id){
 						$prices=$val;
 					}elseif($key=="unit of measurement"){
 						$unit=$val;
+					}elseif($key=="gate pass value"){
+						$for_gate_pass=$val;
 					}		
 				}
 				 $result=$crud->executeUnAutoCommit("INSERT INTO product_price(price, created_by) ".
@@ -49,15 +51,14 @@ function insertPriceForProduct($product_price,$project_id,$created_by,$spec_id){
 				 $product_id= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
 				 if(count($product_id)>0){
 				 		$lastId=$product_id[0]['insert_id'];
-				 		$result = $crud->executeUnAutoCommit("INSERT INTO products(product_name,product_price, 	project_id, unit_of_measurement,created_by,project_specific_id) ".
-									 "VALUES ('$product_name', '$lastId', '$project_id', '$unit','$created_by','$spec_id');");		
+				 		$result = $crud->executeUnAutoCommit("INSERT INTO products(product_name,product_price, 	project_id, unit_of_measurement,created_by,project_specific_id,for_gate_pass) VALUES ('$product_name', '$lastId', '$project_id', '$unit','$created_by','$spec_id','$for_gate_pass');");		
 				 }				
 	}
 	return $result;
 }
 
 
-
+$result=array();
 //adding project into the database
 if(isset($_POST['proj_name'])){
 
@@ -65,6 +66,8 @@ if(isset($_POST['proj_name'])){
 		$project_description  = $crud->escape_string($_POST['proj_desc']);
 		$project_incharge  = $crud->escape_string($_POST['proj_incharge']);
 		$project_type  = $crud->escape_string($_POST['proj_type']);
+		$project_started  = $crud->escape_string($_POST['proj_started']);
+		$project_ended = $crud->escape_string($_POST['proj_ended']);
 		$production_cost = $_POST['prod_cost'];
 		$expenses = $_POST['expenses'];
 		$product_price = $_POST['prod_price'];
@@ -76,25 +79,44 @@ if(isset($_POST['proj_name'])){
 
 		if($_POST['project_id']==""){
 
-			$insert="INSERT INTO projects(project_type,project_name, project_description, project_incharge) ".
-				"VALUES ('$project_type','$project_name', '$project_description','$project_incharge');";
+			$insert="INSERT INTO projects(project_type,project_name, project_description, project_incharge,created_by)
+					 VALUES ('$project_type','$project_name', '$project_description','$project_incharge','$created_by');";
 
-			$result=$crud->executeUnAutoCommit($insert);
+			$result[]=$crud->executeUnAutoCommit($insert);
 
 			$project_id= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
 			$project_id_=$project_id[0]['insert_id'];
 
-			$result=insert($production_cost,$project_id_,'production costs',$created_by,$spec_id);
-			$result=insert($expenses,$project_id_,'expenses',$created_by,$spec_id);
-			$result=insertPriceForProduct($product_price,$project_id_,$created_by,$spec_id);
+			$insert_duration="INSERT INTO project_duration(project_specific_id,from_date, to_date, 
+										created_by,project_id)  
+			         VALUES ('$spec_id','$project_started', '$project_ended','$created_by','$project_id_');";
+
+			$result[]=$crud->executeUnAutoCommit($insert_duration);
+
+			
+
+			$result[]=insert($production_cost,$project_id_,'production costs',$created_by,$spec_id);
+			$result[]=insert($expenses,$project_id_,'expenses',$created_by,$spec_id);
+			$result[]=insertPriceForProduct($product_price,$project_id_,$created_by,$spec_id);
 		}else{
-			$result=insert($production_cost,$project_id_,'production costs',$created_by,$spec_id);
-			$result=insert($expenses,$project_id_,'expenses',$created_by,$spec_id);
-			$result=insertPriceForProduct($product_price,$project_id_,$created_by,$spec_id);
+
+			$update_current="UPDATE project_duration SET status='N' WHERE project_id='$project_id_';";
+
+			$result[]=$crud->executeUnAutoCommit($update_current);
+
+			$insert_duration="INSERT INTO project_duration(project_specific_id,from_date, to_date, 
+										created_by,project_id)  
+			         		  VALUES ('$spec_id','$project_started', '$project_ended','$created_by','$project_id_');";
+
+			$result[]=$crud->executeUnAutoCommit($insert_duration);
+
+			$result[]=insert($production_cost,$project_id_,'production costs',$created_by,$spec_id);
+			$result[]=insert($expenses,$project_id_,'expenses',$created_by,$spec_id);
+			$result[]=insertPriceForProduct($product_price,$project_id_,$created_by,$spec_id);
 		}
 		
 
-		echo print_message($result, '<strong>Success:</strong> Project information and Project budget successfully save.','<strong>Error:</strong> Not saved, <br/>1. Check if the project already exists. <br/>If it is still occur, please contact the developer.');	
+		echo print_message(!in_array("", $result), '<strong>Success:</strong> Project information and Project budget successfully save.','<strong>Error:</strong> Not saved, <br/>1. Check if the project already exists. <br/>If it is still occur, please contact the developer.');	
 
 }
 ?>

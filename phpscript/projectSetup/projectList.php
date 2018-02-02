@@ -1,4 +1,3 @@
-
 <?php
 //including the database connection file
 include_once("../../classes/Crud.php");
@@ -22,8 +21,9 @@ $columns = array(
 $sql = "SELECT pd.product_id,pr.project_id, price, product_name, project_name, project_type, CONCAT(firstname,' ',lastname) AS incharge, pd.product_status  ";
 $sql.=" FROM projects pr";
 $sql.=" LEFT JOIN products pd ON pd.project_id= pr.project_id ";
+$sql.=" LEFT JOIN project_duration pr_d ON pr_d.project_specific_id=pd.project_specific_id";
 $sql.=" LEFT JOIN product_price pc ON pc.price_id= pd.product_price ";
-$sql.=" LEFT JOIN users u ON u.user_id= pr.project_incharge ";
+$sql.=" LEFT JOIN users u ON u.user_id= pr.project_incharge WHERE pr_d.status='Y' ";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -38,12 +38,11 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	}else{
 		$search='N';
 	}
-	$sql.=" WHERE project_name LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" AND (project_name LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR project_description LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR project_status LIKE '".$search."%' ";
-	$sql.=" OR project_incharge LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR project_incharge LIKE '".$requestData['search']['value']."%')  ";
 }
-
 
 $result = $crud->getData($sql);
 $totalFiltered=$totalData;

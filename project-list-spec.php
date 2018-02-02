@@ -50,6 +50,7 @@
                                   <th>Project Ended</th>      
                                   <th>Save by</th>                                             
                                   <th>Date Saved</th>
+                                  <th>Status</th>
                                   <th>Commands</th>
                             </tr>
                       </thead>

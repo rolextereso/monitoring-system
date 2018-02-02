@@ -10,7 +10,7 @@
 <?php if(access_role("Transaction List","view_page",$_SESSION['user_type'])){?> 
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Transaction List</li>
+                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Transactions</li>
               </ol>
            </nav>
           

@@ -47,10 +47,10 @@
            </nav>
           <ul class="nav nav-tabs">
                           <li class="nav-item">
-                               <a class="nav-link active" href="report.php"> Collection Report</a>
+                               <a class="nav-link" href="report.php">Collection Report</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link " href="report_debit.php">Expenses Breakdown Report</a>
+                              <a class="nav-link active" href="report_debit.php">Expenses Breakdown Report</a>
                           </li>
                          
           </ul>
@@ -65,9 +65,8 @@
                                   <div class="">
                                       <select name="category" class="form-control form-control-sm" style="border-color: #ced4da;" >
                                               <option value="">Select Category</option>
-                                              <option value="PROJECTS">Projects</option>
-                                              <option value="PRODUCTS" >Products</option>
-                                              <option value="RENTAL ITEMS" >Rental</option>
+                                              <option value="EXPENSES">Expenses</option>
+                                              
                                               
                                       </select>                                    
                                   </div>
@@ -150,7 +149,7 @@
           });
 
           function printReport(){
-              WindowPopUp('phpscript/report/printReport.php?datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val()+"&search_by="+$("[name='search_by']").val()+'&category='+$("[name='category']").val()+'&report_type='+$("[name='report_type']").val(),'print','900','650');
+              WindowPopUp('phpscript/report/printExpensesReport.php?datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val()+"&search_by="+$("[name='search_by']").val()+'&category='+$("[name='category']").val()+'&report_type='+$("[name='report_type']").val(),'print','900','650');
           }
 
           function searchReport(){
@@ -185,52 +184,62 @@
             }
           }
 
+         
           function report(){
-
                  $.ajax({
                     type: "POST",
-                    url: "phpscript/report/getReportData.php",
+                    url: "phpscript/report/getExpensesReportData.php",
                     dataType   : 'json',
                     data: {search_by:$("[name='search_by']").val(),category:$("[name='category']").val(), report_type: $("[name='report_type']").val(), datefrom:$("#datefrom").val(), dateto: $("#dateto").val()},
                     success: function (data)
                     {
                           $("#print").removeAttr("disabled");
-                        
-                          if(data.total.length>0){
-                                    var table ="<br/><h2 style='margin-bottom:0px;'>"+data.title+"</h2>";
-                                    table    +="<h6 style='margin-bottom:0px;'>"+data.range+"</h6><br/><br/>";
-                                    table    += " <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'> ";
-                                    table    += " <thead class='thead-dark'> ";    
-                                    table    += " <th>"+data.search+"</th>";                                       
-                                            $.each(data.date, function(key, value){                                                   
-                                                      table+="<th>"+value+"</th>";                                
-                                            });
-                                    table    += " </th> ";
-                                    table    += " </thead> ";
-                                    table    += " <tfoot class='tfoot-dark' > ";    
-                                              table+="<tr>";
-                                              table+="  <td> Total </td>";   
-                                            $.each(data.total, function(key, value){
-                                                                                                       
-                                                      table+="  <td>"+value+"</td>";
-                                            });
-                                              table+="</tr>";                                          
-                                    table    += " </tfoot> ";
-                                    table    += " <tbody> ";
-                                            $.each(data.data, function(key, value){                                                     
-                                                      table+="<tr>";  
-                                                      table+="  <td>"+key+"</td>";
-                                                      $.each(value, function(key, value){                                                     
-                                                             table+="  <td>"+value+"</td>";                                                                        
-                                                       });
-                                                      table+="</tr>";                                
-                                            });     
-                                                              
-                                    table    += " </tbody> ";                                    
-                                    table    += " </table> ";
-                                    $(".card-body").html(table);
+                  
+                          if(data.data.length>0){
+                                    var header ="<br/><h2 style='margin-bottom:0px;'>"+data.title+"</h2>";
+                                    header    +="<h6 style='margin-bottom:0px;'>"+data.range+"</h6><br/><br/>";
+
+                                   var  table = " <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'> ";
+                                        table    += " <thead class='thead-dark'> ";    
+                                        table       += " <th>Item Description</th><th>Quantity</th><th>Amount Per Unit</th><th>Unit Cost</th>";
+                                        table    += " </thead> ";
+                                        table    += " <tfoot class='tfoot-dark' > ";    
+                                                  table+="<tr>";
+                                                  table+="  <td colspan='3'> Total </td><td>"+data.total+"</td>";                                           
+                                                  table+="</tr>";                                          
+                                        table    += " </tfoot> ";
+                                        table    += " <tbody> ";    
+                                                var date_approved="";                                       
+                                                $.each(data.data, function(key, value){ 
+                                                   
+                                                    if(date_approved!=value[4]){
+                                                        table+="<tr>";
+                                                              table+="  <td class='green' colspan='4'><b>"+value[4]+"</b></td>";                                                                      
+                                                        table+="</tr>";
+                                                        table+="<tr>";
+                                                              table+="  <td>"+value[0]+"</td>";
+                                                              table+="  <td>"+value[1]+"</td>";
+                                                              table+="  <td>"+value[2]+"</td>";
+                                                              table+="  <td>"+value[3] +"</td>";             
+                                                        table+="</tr>";
+                                                         date_approved=value[4];  
+                                                    }else if(date_approved==value[4]){
+                                                        table+="<tr>";
+                                                              table+="  <td>"+value[0]+"</td>";
+                                                              table+="  <td>"+value[1]+"</td>";
+                                                              table+="  <td>"+value[2]+"</td>";
+                                                              table+="  <td>"+value[3]+"</td>";             
+                                                        table+="</tr>";
+                                                    } 
+                                                     console.log(date_approved);
+                                                   
+                                                                                  
+                                                });                        
+                                        table    += " </tbody> ";                                    
+                                        table    += " </table> ";
+                                    $(".card-body").html(header+" "+table);
                           }else{
-                                $(".card-body").html("<span class='green'><b>No Record was found</b></span>");
+                              $(".card-body").html("<span class='green'><b>No Record was found</b></span>");
                           }
                     }
                 });

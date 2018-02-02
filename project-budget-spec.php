@@ -1,4 +1,4 @@
-<?php require_once('layout/header.php');?> 
+
 <?php
     require_once('layout/header.php');
     require_once('classes/Crud.php');
@@ -11,7 +11,7 @@
     $project_name="";
     $date_header="";
 
-    function datesPopulate($array){
+    /*function datesPopulate($array){
          $dates=array();
            
          foreach($array as $row){ 
@@ -21,7 +21,7 @@
                   }                 
           }
           return $dates;
-    }
+    }*/
 
     function populateRecord($array){
             $record=array();
@@ -49,23 +49,44 @@
        $b_id = $crud->escape_string($_GET['b_id']);
        $p_id= $crud->escape_string($_GET['p_id']);
     
-            $duration = $crud->getData("SELECT  max(month) as to_date, min(month) as from_date FROM project_duration WHERE project_specific_id='$b_id';");
+            $duration = $crud->getData("SELECT  project_duration_id, to_date,  from_date FROM project_duration WHERE project_specific_id='$b_id';");
+
             $project = $crud->getData("SELECT  project_name FROM projects WHERE project_id='$p_id';");
-            $duration_data = $crud->getData("SELECT  description, DATE_FORMAT(month,'%M %Y') as dates, amount FROM project_duration WHERE project_specific_id='$b_id';");
+
+            $duration_data = $crud->getData("SELECT  description, amount FROM project_budget WHERE project_specific_id='$b_id';");
             
 
             $found=(count($duration)==1 &&  count( $project)==1)?true:false;
 
+            $project_duration_id=$duration[0]['project_duration_id'];
             $to=date("M Y", strtotime($duration[0]['to_date']));
             $from=date("M Y", strtotime($duration[0]['from_date']));
             $project_name=$project[0]['project_name'];
+
+            $total_expenses = $crud->getData("SELECT 
+                                        CASE WHEN SUM(qty*amount_per_unit) IS NULL THEN 0 ELSE SUM(qty*amount_per_unit) END as total_expenses 
+                                        FROM purchase_request pr
+                                        LEFT JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id
+                                        WHERE project_duration_id=$project_duration_id");
                   
     }
     
 ?>   
  
  <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+ <style>
+    .planned_budget{
+          font-size: 26px;
+          color: #a6eea0;
+          background: #186c25;
+    }
 
+    .present_expenses{
+        font-size: 26px;
+        color: #f7bbbb;
+        background: #b22b2b;
+    }
+</style>
 
 <?php require_once('layout/nav.php');?>
 
@@ -84,24 +105,31 @@
                  <table class="table table-sm table-dark table-striped">
                     <tr>
                         <th>Expenses</th>
-                        <?php
-                            foreach(datesPopulate($duration_data) as $dates){
-                               echo "<th>{$dates}</th>";
-                            }
-                        ?>
+                        <th>Planned Budget</th>
                     </tr>
                     
-                        <?php
+                        <?php $total=0;
                               $record=populateRecord($duration_data);
                               for($i=0;$i<count($record);$i++){
                                     echo "<tr>";
                                     echo "<td>".$record[$i]['name']."</td>";
                                     for($y=0; $y<count($record[$i]['data']);$y++){
-                                      echo "<td>".$record[$i]['data'][$y]."</td>";
+                                      $total+=$record[$i]['data'][$y];
+                                      echo "<td>".number_format($record[$i]['data'][$y],2)."</td>";
                                     }
                                     echo "</tr>";
                               }
                         ?>
+                    <tr>
+                        <td class="planned_budget">Total Planned Budget Expenses: </td>
+                        <td class="planned_budget"><?php echo number_format($total,2);?></td>
+
+                    </tr>
+                    <tr>
+                        <td class="present_expenses">Total Present Expenses: </td>
+                        <td class="present_expenses"><?php echo number_format($total_expenses[0]['total_expenses'],2);?></td>
+
+                    </tr>
                   
                   </table>
      

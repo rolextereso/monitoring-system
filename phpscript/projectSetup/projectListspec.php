@@ -17,11 +17,14 @@ $columns = array(
 );
 
 //fetching data in descending order (lastest entry first)
-$sql = "SELECT pd.created_on, project_duration_id,p.project_id, project_specific_id, MAX(month) as date_to, MIN(month) as date_from, CONCAT(firstname,' ',lastname) AS saved_by ";
-$sql.=" FROM project_duration pd";
-$sql.=" INNER JOIN projects p ON p.project_id=pd.project_id  ";
-$sql.=" INNER JOIN users u ON u.user_id= pd.created_by ";
-$sql.=" WHERE pd.project_id=".$requestData['id']." ";
+$sql = "SELECT pb.created_on, project_duration_id,p.project_id, pb.project_specific_id, to_date as date_to, from_date as date_from, CONCAT(firstname,' ',lastname) AS saved_by, pd.status";
+$sql.=" FROM project_budget pb";
+$sql.=" INNER JOIN project_duration pd ON pd.project_specific_id=pb.project_specific_id  ";
+$sql.=" INNER JOIN projects p ON p.project_id=pb.project_id  ";
+$sql.=" INNER JOIN users u ON u.user_id= pb.created_by ";
+$sql.=" WHERE pb.project_id=".$requestData['id']." ";
+
+
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -38,7 +41,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 $result = $crud->getData($sql);
 $totalFiltered=$totalData;
 
-$sql.=" GROUP BY pd.project_specific_id ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+$sql.=" GROUP BY pd.project_specific_id ORDER BY pd.status ASC, ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
 $result = $crud->getData($sql);
 
@@ -53,6 +56,7 @@ foreach($result as $key =>$row){
 	$nestedData[] = date("M Y", strtotime($row["date_to"]));
 	$nestedData[] =$row["saved_by"];
 	$nestedData[] =$row["created_on"];
+	$nestedData[] =($row["status"]=="Y")?"<span class='green'><b>Current</b></span>":"<span>Archive</span>";
 
 	
 	$nestedData[] = "<a href='project-budget-spec.php?b_id=".$row['project_specific_id']."&p_id=".$row['project_id']."'><i class='fa fa-folder-open-o'></i></a> <a onclick=deleteBudget('".$row['project_specific_id']."'); href='#'><i class='fa fa-trash-o'></i></a>";

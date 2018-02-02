@@ -12,6 +12,8 @@
     $project_incharge ="";
     $project_type="";
     $found=false;
+    $found_project=false;
+
     $add_item=false;
     $disabled="";
 
@@ -23,6 +25,8 @@
             $projects = $crud->getData("SELECT * FROM projects WHERE project_id=".$id );
 
             $found=(count($projects)==1)?true:false;
+            $found_project=(count($projects)==1)?true:false;
+
             $disabled=($found)?"disabled":"";
             $add_item=true;
             
@@ -31,8 +35,7 @@
                 $project_name = $res['project_name'];
                 $project_description  = $res['project_description'];                
                 $project_incharge =$res['project_incharge'];
-                $project_type =$res['project_type'];
-                   
+                $project_type =$res['project_type'];                   
             }
       }
     }else{
@@ -116,6 +119,13 @@
     overflow-x: scroll;
   }
 
+  #note{
+    font-size: 15px;
+    background: #f3dbdb;
+    color: #912d2d;
+    padding: 15px;
+    border-radius: 4px;
+  }
 </style>
 
 <?php require_once('layout/nav.php');?>
@@ -133,6 +143,13 @@
                     <i class="fa fa-cube" aria-hidden="true"></i>   Project Setup
               </div>
               <div class="card-body">
+                    <?php if($found_project){ ?>
+                      <div id="note">
+                          <b>Note: </b>Successful setup for the new budget for the project means changing the status of current project to archive and the newly created budget is the current budget of the project.
+                      </div>
+              
+                    <?php } ?>
+                      <br/>
                       <div class="stepwizard col-md-offset-3">
                           <div class="stepwizard-row setup-panel">
                             <div class="stepwizard-step">
@@ -291,7 +308,9 @@
         $('#project_started, #project_ended').datepicker({
                       autoclose: true,    
                       todayHighlight: true,       
-        });        
+        });    
+
+
 
         var navListItems = $('div.setup-panel div a'),
                 allWells = $('.setup-content'),
@@ -344,6 +363,8 @@
                 removeTable("#step4");
                 var table=listProductForPricing("#step2");  
                 $("#step4").prepend(table);
+
+                check_for_gate_pass();//call function for gate pass checkbox
                 
             }           
             
@@ -392,7 +413,9 @@
                                                      proj_type:$('#project_type').val(),  
                                                      prod_cost:  step2_,                                            
                                                      expenses:  step3_,
-                                                     prod_price: collectData("#step4")
+                                                     prod_price: collectData("#step4"),
+                                                     proj_started:$("#project_started").val(),
+                                                     proj_ended: $("#project_ended").val()
                                                     },
                                               success: function (data)
                                               {
@@ -438,7 +461,8 @@ var collectData=function (selector) {
                   
                   // Use the headers from earlier to name our hash keys
                   headers.forEach(function (header, i) {
-                    h[header] = $td.eq(i).text();   
+                    h[header] = $td.eq(i).text();
+
 
                   });
                    data.push(h);
@@ -498,13 +522,16 @@ var collectData=function (selector) {
   }
   //this function get the product items from step 2 to display in step 4 for product pricing
   var listProductForPricing=function(steps){
+           
+
           var edit="contenteditable='true'";
           var table="<table class='table table-sm table-dark table-striped'> <tr>";
-              table+="  <th data='items'> Product Items </th><th data='Prices'> Prices </th><th data='Unit of Measurement'> Unit of Measurement </th></tr>";
+              table+="  <th data='items'> Product Items </th><th data='Prices'> Prices </th><th data='Unit of Measurement'> Unit of Measurement </th><th data='for gate pass'> For Gate Pass</th><th data='gate pass value'>&nbsp;</th></tr>";
             
               $(steps+" tbody tr:not(.hide):not(#total) ._0").each(function(i, val) {
                     table+="<tr>";
                     table+="<td >"+$(this).text()+"</td><td "+edit+">0</td><td "+edit+"></td>";
+                    table+="<td><input type='checkbox' class='gate_pass' /></td> <td style='opacity:0;'></td>"
                     table+="</tr>";
               });
              
@@ -524,6 +551,17 @@ var collectData=function (selector) {
 
   var removeTable=function(steps){
      $(steps+' *').remove();
+  }
+
+  var check_for_gate_pass=function(){
+     $(".gate_pass").change(function(){ 
+          $(this).parent().next().text("");                    
+          if(this.checked){                
+             $(this).parent().next().text("Y");
+          }else{             
+             $(this).parent().next().text("N");
+          }
+     });
   }
 
 </script>

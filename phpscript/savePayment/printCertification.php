@@ -1,49 +1,4 @@
 <?php session_start(); ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Print Official Reciept</title>
-</head>
-<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
-<style>
-	body{		
-		padding: 0;
-		font-family: 'Slabo 27px', serif;
-		font-size: 14px;
-	}
-	.container{
-		margin: 0 auto;
-		width: 80%;
-		
-	}
-
-	#body{
-		text-align: center;
-	}
-
-	table {
-	    border-collapse: collapse;
-	    margin: 0 auto;
-	    border-color: silver;
-	    width: 80%;
-	}
-	#customer_info, #footer, #header{
-		 margin: 0 auto;
-		 width: 80%;
-		
-	}
-
-	h4,p{
-		padding: 0;
-		margin:0;
-	}
-
-	.clearfix{
-		content:"";
-		clear:both;
-		display: table;
-	}
-</style>
 <?php 
    
     require_once('../../classes/Crud.php');
@@ -108,9 +63,54 @@
   
             
             
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Print Official Reciept</title>
+</head>
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+<style>
+	body{		
+		padding: 0;
+		font-family: 'Slabo 27px', serif;
+		font-size: 14px;
+	}
+	.container{
+		margin: 0 auto;
+		width: 80%;
+		
+	}
 
-    }
-?>  
+	#body{
+		text-align: center;
+	}
+
+	table {
+	    border-collapse: collapse;
+	    margin: 0 auto;
+	    border-color: silver;
+	    width: 80%;
+	}
+	#customer_info, #footer, #header{
+		 margin: 0 auto;
+		 width: 80%;
+		
+	}
+
+	h4,p{
+		padding: 0;
+		margin:0;
+	}
+
+	.clearfix{
+		content:"";
+		clear:both;
+		display: table;
+	}
+</style>
+
+
 <body>
 		<div class="container">
 		
@@ -128,7 +128,7 @@
 				<div id="customer_info">
 					<label>Customer Name:</label><span> <b><?php echo $customer[0]['customer_name'];?></b>  </span><br/>
 					<label>Customer Address:</label><span><b> <?php echo $customer[0]['customer_address'];?></b></span><br/>
-					<label>OR #:</label><span> <b><?php echo $customer[0]['transaction_id'];?> </b></span>					
+					<label>Transaction #:</label><span> <b><?php echo $customer[0]['transaction_id'];?> </b></span>					
 				</div>
 				<div id="body">
 					<h3>Certification</h3>
@@ -146,12 +146,12 @@
 						<?php if($paid_for!="rental"){ ?>
 							<td>&nbsp;<?php echo $res['product_name'];?></td>
 							<td>&nbsp;<?php echo $res['quantity'];?> </td>
-							<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['amount'];?></td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($res['amount'],2);?></td>
 							<?php $total_amount+=$res['amount']; ?>
 						 <?php } else { ?>
 						 	<td>&nbsp;<?php echo $res['item_name']."(".$res['item_description'].")";?></td>
 							<td>&nbsp;<?php echo $res['no_of_days'];?> </td>
-							<td style="text-align: center;">&#8369;&nbsp;<?php echo $res['rental_fee_amount'];?></td>
+							<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($res['rental_fee_amount'],2);?></td>
 							<?php $total_amount+=$res['rental_fee_amount']; ?>
 
 						 <?php } ?>
@@ -162,7 +162,7 @@
 					 ?>
 					<tr>
 						<td colspan="2"> Total</td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo $total_amount;?></td>
+						<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($total_amount,2);?></td>
 					</tr>
 					
 				</table>
@@ -176,3 +176,6 @@
 
 </body>
 </html>
+<?php
+    }
+?> 

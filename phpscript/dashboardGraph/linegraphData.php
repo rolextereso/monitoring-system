@@ -35,7 +35,6 @@ foreach($result as $row){
 	       		$record[] = $row_data;
 	    }elseif(in_array($row["product"],$found)){		
 		    	$index =array_keys($found, $row["product"]);
-
 				$record[$index[0]]["data"][]=array($row["sold_date"],$row["amount"]);			
 		}  
 	    

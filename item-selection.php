@@ -26,6 +26,12 @@
         border-radius:5px;
         border: 2px solid #28a745;
       }
+      .quantity{
+          width: 57px;
+          background: none;
+          border: none;
+          color:white;
+      }
    </style>
 <?php require_once('layout/nav.php');?>
 
@@ -201,6 +207,7 @@
                        </div>
                 </script>
                 <script src="assets/requiredJS/item_selection.js"></script>
+          
 
 <?php }else{ echo UnauthorizedOpenTemp(); } ?>
 </main>

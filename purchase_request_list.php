@@ -12,31 +12,26 @@
         <?php if(access_role("Rental Item List","view_page",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Rental Items
-                        
-                           
-
-                        
-                    </li>
-
+                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-files-o"> </i> Purchase Requests</li>
                      
               </ol>
            </nav>
-           <a href='rental-register.php' class="btn btn-success" style="margin-left: 17px;" ><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</a>
-           <br/><br/>
+          <a href='purchase_request.php' class="btn btn-success" style="margin-left: 17px;" ><i class="fa fa-plus" aria-hidden="true"></i> Create new request</a>
+           <br/><br/> 
            <div class="table-responsive"> 
-                    
-                    <input type="hidden" value="<?php echo $project_id;?>" id="id" />                         
+                                        
                     <table class="table table-hover" id="dataTable" width="100%" cellpadding="0" cellspacing="0">
                       <thead class="thead-dark">
                             <tr> 
-                                  <th>Item Code</th>
-                                  <th>Item Name</th>
-                                  <th>Rental Fee</th>
-                                  <th>Availability</th>
-                                  <th>Per Day?</th>
-                                  <th>Gate Pass?</th>
-                                  <th>Status</th>
+                                  <th>Purchase Request No.</th>
+                                  <th>Entity Name</th>
+                                  <th>Project</th>
+                                  <th>Purpose</th>
+                                  <th>Requested by</th>
+                                  <th>Created on</th>     
+                                  <th>Updated on</th>     
+                                  <th>Status</th> 
+
                                   <th>Command</th>
                             </tr>
                       </thead>
@@ -57,10 +52,10 @@
                                                       "searching" : true,                                  
                                                       "bLengthChange": true,
                                                       "ajax":{
-                                                        url :"phpscript/rental/rentalList.php",
+                                                        url :"phpscript/purchase_request/purchase_request_list.php",
                                                       },
                                                       columnDefs: [ {
-                                                              targets: [3,4,5,6], // column or columns numbers
+                                                              targets: [3, 4,5,6,7], // column or columns numbers
                                                               orderable: false,  // set orderable for selected columns
                                                       }]
                                   });  

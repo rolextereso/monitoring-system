@@ -101,20 +101,20 @@
 
                 <?php if(access_role("Transaction List","view_page",$_SESSION['user_type'])){?>
                      <li class="nav-item header-nav">
-                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php">Transaction List</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php">Transactions </a>
                     </li>
                 <?php } ?>
 
 
                 <?php if(access_role("Project List","view_page",$_SESSION['user_type'])){?>
                     <li class="nav-item header-nav">
-                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")|| (basename($_SERVER['PHP_SELF'])=="project-list-spec.php")? 'active': '';?>" href="project-list.php"> Project List </a>
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php")|| (basename($_SERVER['PHP_SELF'])=="project-list-spec.php")? 'active': '';?>" href="project-list.php"> Projects </a>
                     </li>
                 <?php } ?>
 
                 <?php if(access_role("Rental Item List","view_page",$_SESSION['user_type'])){?>
                      <li class="nav-item header-nav">
-                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"></i> Rental Item List</a>
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"></i> Rental Items </a>
                      </li>
                 <?php } ?>
 
@@ -124,10 +124,16 @@
                     </li>
                 <?php } ?>
 
+                <?php if(access_role("Purchase Requests","view_page",$_SESSION['user_type'])){?>
+                      <li class="nav-item">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="purchase_request_list.php") || (basename($_SERVER['PHP_SELF'])=="purchase_request.php") || (basename($_SERVER['PHP_SELF'])=="purchased_request_save_approved.php")? 'active': '';?>" href="purchase_request_list.php"><i class="fa fa-files-o"></i> Purchase Requests</a>
+                      </li>
+                <?php } ?>
+
 
                 <?php if(access_role("Reports","view_page",$_SESSION['user_type'])){?>
                     <li class="nav-item header-nav ">
-                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="report.php")? 'active': '';?>" href="report.php"> Reports</a>
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="report.php" || basename($_SERVER['PHP_SELF'])=="report_debit.php")? 'active': '';?>" href="report.php"> Reports</a>
                     </li>
                 <?php } ?>
                

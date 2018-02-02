@@ -23,8 +23,9 @@
                                  ."   INNER JOIN sales_record sr ON ss.or_number=sr.sales_id"
                                  ."   INNER JOIN customer c ON c.customer_id =sr.customer_id"
                                  ."   INNER JOIN products p ON p.product_id=ss.product_id"
-                                 ."  INNER JOIN product_price pp ON pp.price_id=p.product_id"
+                                 ."  INNER JOIN product_price pp ON pp.price_id=p.product_price"
                                  ."  WHERE ss.paid='N' AND sr.or_number ='' AND transaction_id='$id';");
+        
         $rental=$crud->getData("SELECT 
                                   ri.transaction_id,   
                                   ri.item_name,
@@ -136,7 +137,7 @@
           <div class="col-sm-3" id="total_and_change">
                <div class="col-sm-12" id="total_amount_cont">
                   <span>Total Amount</span>
-                  <h1 id="total_amount" >&#8369; <?php echo $total_amount;?></h1>
+                  <h1 id="total_amount" >&#8369; <?php echo number_format($total_amount,2);?></h1>
                   <input type='hidden' id="total_amount_" name="total_amount" value="<?php echo $total_amount;?>">                 
                </div>
               <div class="col-sm-12">

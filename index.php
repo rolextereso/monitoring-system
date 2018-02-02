@@ -38,11 +38,11 @@
                   <div class="col-sm-6">
                       <div class="card">
                             <div class="card-header ">
-                                <b>User Logs</b> 
-                                <button  title="Refresh" style="float:right;" class="btn btn-secondary" type="button" id="print"><i class="fa fa-refresh"></i> </button>                                 
+                                <b>Project Expenses</b> 
+                                <button  onclick="multi_bar()" title="Refresh" style="float:right;" class="btn btn-secondary" type="button" id="print"><i class="fa fa-refresh"></i> </button>                                 
                             </div>
                             <div class="card-body" style="height: 391px;">
-                            
+                                  <div id="multibarContainer" style="height: 350px; width: 100%;"></div> 
                             </div>
 
                       </div>
