@@ -95,17 +95,22 @@
               </ol>
            </nav>
            <?php if($found){?>
+          
            <div id="approval_stat">
                 <?php if($status_request=='O'){ ?>
-                        <button class="btn btn-success approval_stat" stat='Y'>Approved</button>&nbsp;
-                        <button class="btn btn-danger approval_stat" stat='N'>Disapproved</button>
+                     <?php if(access_role("Purchase Requests","view_command",$_SESSION['user_type'])){?>
+                            <button class="btn btn-success approval_stat" stat='Y'>Approved</button>&nbsp;
+                            <button class="btn btn-danger approval_stat" stat='N'>Disapproved</button>
+                      <?php } ?>
                 <?php }elseif($status_request=='Y'){ ?>                  
                         <h3 class="green" style="display: inline;">This request is <b>APPROVED</b></h3>                    
                         <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>
                 <?php }elseif($status_request=='N'){?>                      
                         <h3 class="red">This request is <b>REJECTED</b></h3>                     
                 <?php } ?>
+
            </div>
+          
            <input type="hidden" id="pr_id" value='<?php echo $pr_id;?>'>
            <br/>
        

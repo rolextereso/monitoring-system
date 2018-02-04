@@ -37,7 +37,7 @@
                 <?php } ?>
 
 
-                <?php if(access_role("Transaction List","view_page",$_SESSION['user_type'])){?>                
+                <?php if(access_role("Project List","view_page",$_SESSION['user_type'])){?>                
                       <li class="nav-item">
                         <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="project-list.php") || (basename($_SERVER['PHP_SELF'])=="project-list-spec.php") || (basename($_SERVER['PHP_SELF'])=="project-register.php") || (basename($_SERVER['PHP_SELF'])=="product-register.php")? 'active': '';?>" href="project-list.php"><i class="fa fa-cube"></i> Projects  </a>
                       </li>

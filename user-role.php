@@ -35,7 +35,7 @@
               <div class="card-header">
                 
               </div>
-              <div class="card-body"> 
+              <div class="card-body" style="overflow: auto;"> 
                      <div class="row">
                         <div class="col-md-12">
                                <form data-toggle="validator" role="form" id="form">
@@ -58,7 +58,7 @@
                                               <div class="col-md-4">
                                                   <div class="form-row">
                                                      <label>&nbsp;</label>
-                                                    <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Changes</button>
+                                                    <button type="submit" name="submit" disabled="disabled" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Changes</button>
                                                   </div>
                                              </div> 
                                         </div>
@@ -91,7 +91,13 @@
 <script>
         $(document).ready(function(){
             $("[name='user_type']").change(function(){
-                user_role();
+                if($(this).val==""){
+                  $("[name='submit']").attr('disabled','disabled');
+                }else{
+                  $("[name='submit']").removeAttr('disabled');
+                  user_role();
+                }
+                
             });
 
             $('#form').on('submit', function (e) {
@@ -140,23 +146,34 @@
                     data: {user_type: $("[name='user_type']").val()},
                     success: function (data)
                     {
+                        console.log(data.data);
+                        if(data.data.length>1){
                           var row="";                                     
-                          $.each(data.data, function(key, value){  
-                                    row+="<tr>";                                                             
-                                    row+="<td>"+value[0]+"</td>";  
-                                    row+="<td>"+value[1]+"</td>";                                       
-                                    row+="<td>"+value[2]+"</td>";         
-                                    row+="<td>"+value[3]+"</td>";         
-                                    row+="<td>"+value[4]+"</td>";         
-                                    row+="<td>"+value[5]+"</td>";  
-                                    row+="<td>"+value[6]+"</td>";         
-                                    row+="<td>"+value[7]+"</td>";  
-                                  
-                                    row+="</tr>";       
-                          });
-                                   
-                          $("#user_role_table tbody").prepend(row);
+                                $.each(data.data, function(key, value){  
+                                          row+="<tr>";                                                             
+                                          row+="<td>"+value[0]+"</td>";  
+                                          row+="<td>"+value[1]+"</td>";                                       
+                                          row+="<td>"+value[2]+"</td>";         
+                                          row+="<td>"+value[3]+"</td>";         
+                                          row+="<td>"+value[4]+"</td>";         
+                                          row+="<td>"+value[5]+"</td>";  
+                                          row+="<td>"+value[6]+"</td>";         
+                                          row+="<td>"+value[7]+"</td>";  
+                                        
+                                          row+="</tr>";       
+                                });
+                                         
+                                $("#user_role_table tbody").prepend(row);
                           checking_checkbox();
+                         }else{
+                              var row="";
+                                        row+="<tr>";                                                             
+                                        row+="<td colspan='8'> Please select the user type drop down list</td>"; 
+                                        row+="</tr>"; 
+
+                              $("#user_role_table tbody").prepend(row);      
+                             
+                         }
                           
                     }
                 });

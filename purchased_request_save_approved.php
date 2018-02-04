@@ -52,7 +52,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-<?php if(access_role("Purchase Requests","view_command",$_SESSION['user_type'])){?>
+<?php if(access_role("Purchase Requests","save_changes",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='purchase_request_list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Purchase Request List</a> </li>

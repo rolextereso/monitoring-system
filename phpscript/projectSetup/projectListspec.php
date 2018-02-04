@@ -1,7 +1,9 @@
 
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
+include_once("../../classes/function.php");
  
 $crud = new Crud();
 
@@ -47,8 +49,12 @@ $result = $crud->getData($sql);
 
 $data=array();
 $count=1;
+
+$access_delete=access_role("Project List","delete_command",$_SESSION['user_type']);
 foreach($result as $key =>$row){
 	$nestedData=array(); 
+
+	$delete_=($access_delete)?"<a onclick=deleteBudget('".$row['project_specific_id']."'); href='#'><i class='fa fa-trash-o'></i></a>":"";
 
 	$nestedData[] = $row["project_specific_id"];
     
@@ -59,7 +65,7 @@ foreach($result as $key =>$row){
 	$nestedData[] =($row["status"]=="Y")?"<span class='green'><b>Current</b></span>":"<span>Archive</span>";
 
 	
-	$nestedData[] = "<a href='project-budget-spec.php?b_id=".$row['project_specific_id']."&p_id=".$row['project_id']."'><i class='fa fa-folder-open-o'></i></a> <a onclick=deleteBudget('".$row['project_specific_id']."'); href='#'><i class='fa fa-trash-o'></i></a>";
+	$nestedData[] = "<a href='project-budget-spec.php?b_id=".$row['project_specific_id']."&p_id=".$row['project_id']."'><i class='fa fa-folder-open-o'></i></a> $delete_";
 	
 	$data[] = $nestedData;
 }

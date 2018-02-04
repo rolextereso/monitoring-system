@@ -28,7 +28,7 @@ $sql = "SELECT
                 FROM rental_items ri
 LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
 INNER JOIN customer c ON c.customer_id=rs.customer_id 
-WHERE ri.availability='N' AND ri.created_by={$_SESSION['user_type']} AND (date_returned IS NULL OR date_returned ='') ";
+WHERE ri.availability='N' AND ri.created_by ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']))." AND (date_returned IS NULL OR date_returned ='') ";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -56,7 +56,7 @@ $result = $crud->getData($sql);
 $data=array();
 $count=1;
 
-$access=access_role("Rented Items","view_command",$_SESSION['user_type']);
+$access=access_role("Rented Items","save_changes",$_SESSION['user_type']);
 
 foreach($result as $key =>$row){
 	$nestedData=array(); 

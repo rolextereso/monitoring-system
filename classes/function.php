@@ -50,12 +50,12 @@ function UnauthorizedOpenTemp(){
 			 <small>Sorry your account is not authorize to view this page.</small></h2>";
 }
 
-function specific_user($text="",$access=false){
+function specific_user($access=false){
 	$user="";
-	if($text=="" && $access==true){
-		 $user="";
+	if($access==true){
+		 $user=" IS NOT NULL";
     }else{
-    	  $user=$text."".$_SESSION['user_id'];
+    	  $user="=".$_SESSION['user_id'];
     }
 
     return $user;

@@ -21,10 +21,11 @@ $columns = array(
 
 
 
+
 $sql = "SELECT pr.*,p.project_name, CONCAT(u.firstname,' ',u.lastname) as user FROM purchase_request pr	 		
         INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id       
 		INNER JOIN projects p ON p.project_id= pd.project_id
-		INNER JOIN users u ON u.user_id= pr.created_by ".specific_user(" where pr.created_by= ",true);
+		INNER JOIN users u ON u.user_id= pr.created_by  where pr.created_by".specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
 
 
 $result = $crud->getData($sql);
@@ -62,7 +63,9 @@ foreach($result as $key =>$row){
 		$approved='<span class="badge badge-warning">On Process</span>';
 	}else if($row['approved']=='Y'){
 		$approved='<span class="badge badge-success">Approved</span>';
-		$once_approved="<a href='purchased_request_save_approved.php?pr_id=".$row['pr_no']."'><i class='fa fa-file-o'></i></a>";
+		if(access_role("Purchase Requests","save_changes",$_SESSION['user_type'])){
+			$once_approved="<a href='purchased_request_save_approved.php?pr_id=".$row['pr_no']."'><i class='fa fa-file-o'></i></a>";
+	    }
 	}else{
 		$approved='<span class="badge badge-danger">Disapproved</span>';
 

@@ -125,8 +125,8 @@
                 <?php } ?>
 
                 <?php if(access_role("Purchase Requests","view_page",$_SESSION['user_type'])){?>
-                      <li class="nav-item">
-                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="purchase_request_list.php") || (basename($_SERVER['PHP_SELF'])=="purchase_request.php") || (basename($_SERVER['PHP_SELF'])=="purchased_request_save_approved.php")? 'active': '';?>" href="purchase_request_list.php"><i class="fa fa-files-o"></i> Purchase Requests</a>
+                      <li class="nav-item header-nav ">
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="purchase_request_list.php") || (basename($_SERVER['PHP_SELF'])=="purchase_request.php") || (basename($_SERVER['PHP_SELF'])=="purchased_request_save_approved.php")? 'active': '';?>" href="purchase_request_list.php">Purchase Requests</a>
                       </li>
                 <?php } ?>
 

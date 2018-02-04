@@ -21,7 +21,7 @@
               var input_ =$('.typeahead').typeahead({
                   hint: false,
                   highlight: true, /* Enable substring highlighting */
-                  minLength: 2 /* Specify minimum characters required for showing result */
+                  minLength: 1 /* Specify minimum characters required for showing result */
               },
               {
                   name: 'product_name',

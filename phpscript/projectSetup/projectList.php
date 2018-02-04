@@ -1,6 +1,8 @@
 <?php
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
+include_once("../../classes/function.php");
  
 $crud = new Crud();
 
@@ -23,7 +25,7 @@ $sql.=" FROM projects pr";
 $sql.=" LEFT JOIN products pd ON pd.project_id= pr.project_id ";
 $sql.=" LEFT JOIN project_duration pr_d ON pr_d.project_specific_id=pd.project_specific_id";
 $sql.=" LEFT JOIN product_price pc ON pc.price_id= pd.product_price ";
-$sql.=" LEFT JOIN users u ON u.user_id= pr.project_incharge WHERE pr_d.status='Y' ";
+$sql.=" LEFT JOIN users u ON u.user_id= pr.project_incharge WHERE pr_d.status='Y' AND pr.created_by ".specific_user(access_role("Project List","view_command",$_SESSION['user_type']));
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -55,11 +57,18 @@ $result = $crud->getData($sql);
 
 $data=array();
 $count=1;
+
+$access_edit=access_role("Project List","edit_command",$_SESSION['user_type']);
+
+
 foreach($result as $key =>$row){
+	$edit_project=($access_edit)?" <small><a href='project-register.php?edit=".$row['project_id']."'>[edit]</a></small>":"";
+    $edit_product=($access_edit)?" <a href='product-register.php?edit=".$row['product_id']."'><i class='fa fa-pencil'></i></a>":"";
+
 	$nestedData=array(); 
 
 	$nestedData[] = $row["product_name"];
-    $nestedData[] = $row["project_name"]." <small><a href='project-register.php?edit=".$row['project_id']."'>[edit]</a></small>".
+    $nestedData[] = $row["project_name"].$edit_project.
     				"<span class='view-project'>".
     					"<a title='View Budgeted List' href='project-list-spec.php?id=".$row['project_id']."'>".
     						"<i class='fa fa-ellipsis-h'></i>".
@@ -68,7 +77,7 @@ foreach($result as $key =>$row){
 	$nestedData[] = $row["incharge"];
 	$nestedData[] = ($row["product_status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] = "&#8369; ".$row["price"];
-	$nestedData[] = "<a href='product-register.php?edit=".$row['product_id']."'><i class='fa fa-pencil'></i></a>";
+	$nestedData[] = "$edit_product";
 	
 	$data[] = $nestedData;
 }

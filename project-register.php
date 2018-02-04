@@ -53,6 +53,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Project List","view_page",$_SESSION['user_type'])){?> 
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='project-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Project List</a> / Project / <h2><?php echo  $project_name;?></h2></li>
@@ -116,8 +117,7 @@
                                               <div class="col-md-6">
                                                  <div class="form-group">
                                                       <label for="exampleInputLastName">Project Description</label>
-                                                      <textarea rows="5" class="form-control " name="project_description" style="margin-top: 0px; margin-bottom: 0px;">
-                                                        <?php echo($project_description=='')?'':$project_description;?></textarea>
+                                                      <textarea rows="5" class="form-control " name="project_description" style="margin-top: 0px; margin-bottom: 0px;"><?php echo($project_description=='')?'':$project_description;?></textarea>
                                                   </div>
 
                                               </div>
@@ -151,11 +151,13 @@
               </div>
         </div>
         </div>
+        <script src='assets/validator.min.js'></script>
+        <script src="assets/bootstrap-datepicker.min.js"></script>   
+        <script src="assets/requiredJS/project-register.js"></script>
+        <?php }else{ echo UnauthorizedOpenTemp(); } ?>
       </main>
 
 
-<script src='assets/validator.min.js'></script>
-<script src="assets/bootstrap-datepicker.min.js"></script>   
-<script src="assets/requiredJS/project-register.js"></script>
+
 
 <?php require_once('layout/footer.php');?>      

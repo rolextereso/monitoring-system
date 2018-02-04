@@ -87,7 +87,14 @@
                                               }]
                                 } ); 
                   var project_id=$('#id').val();
-                  $("div.toolbar").html("<a href='product-register-step.php?p_id="+project_id+"'><i class='fa fa-plus-square'></i> Add another project budget</span></a>");
+                  <?php 
+                  $add_="";
+                  if(access_role("Project List","add_command",$_SESSION['user_type'])){ ?>
+                      $("div.toolbar").html("<a href='product-register-step.php?p_id="+project_id+"'><i class='fa fa-plus-square'></i> Add another project budget</span></a>");
+                  <?php }else{  ?> 
+                      $("div.toolbar").html("");
+                  <?php } ?>
+                  
           });
 
           function deleteBudget(id){

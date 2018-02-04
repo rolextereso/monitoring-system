@@ -21,14 +21,14 @@ $columns = array(
 
 
 //this will get the total row of the query;
-$sql = "SELECT * FROM rental_items where created_by=".specific_user();
+$sql = "SELECT * FROM rental_items where created_by".specific_user(access_role("Rental or Product Selection","view_command",$_SESSION['user_type']));
 
 $result = $crud->getData($sql);
 $totalData= count($result);
 $totalFiltered = $totalData;
 
 
-$sql = "SELECT * FROM rental_items WHERE created_by=".specific_user();
+$sql = "SELECT * FROM rental_items WHERE created_by".specific_user(access_role("Rental or Product Selection","view_command",$_SESSION['user_type']));
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
 	$sql.=" AND (item_name LIKE '".$requestData['search']['value']."%' ";    
