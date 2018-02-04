@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 03, 2018 at 12:07 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.8
+-- Generation Time: Feb 04, 2018 at 05:21 AM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -197,7 +197,9 @@ INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALU
 (102, 'ssf', 'sdf'),
 (103, 'sx', 'sx'),
 (104, 'rolex', 'ambacom'),
-(105, 'rental', 'retnal');
+(105, 'rental', 'retnal'),
+(106, 'CX', 'CX'),
+(107, 'sf', 'sf');
 
 -- --------------------------------------------------------
 
@@ -225,7 +227,8 @@ INSERT INTO `expenses_breakdown` (`id`, `ORNumber`, `item_description`, `qty`, `
 (6, NULL, 'Abuno', 2, NULL, 'Sack', 5),
 (7, '54674343443', 'Grass cutter', 2, 13000, 'pc', 6),
 (8, '2342423324', 'Abuno', 12, 1000, 'Sack', 6),
-(9, '2342234344465', 'Vermi Worm', 4, 100, 'kg', 7);
+(9, '2342234344465', 'Vermi Worm', 4, 100, 'kg', 7),
+(10, NULL, 'Abuno', 3, NULL, '1', 8);
 
 -- --------------------------------------------------------
 
@@ -278,7 +281,8 @@ INSERT INTO `module` (`module_id`, `module_name`, `status`) VALUES
 (8, 'Gate Pass', 'Y'),
 (9, 'Users Setting', 'Y'),
 (10, 'Admin Setting', 'Y'),
-(11, 'Purchase Requests', 'Y');
+(11, 'Purchase Requests', 'Y'),
+(12, 'User Logs', 'Y');
 
 -- --------------------------------------------------------
 
@@ -332,7 +336,10 @@ INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `created_
 (78, 'Coconut Seedling', 93, '2018-02-01 15:34:13', 1, 23, 'pcs', 'Y', '18-02011334', 'Y'),
 (79, 'Product 3', 94, '2018-02-01 15:34:13', 1, 23, 'pcs', 'Y', '18-02011334', ''),
 (80, 'Vermi Waste', 95, '2018-02-01 18:00:21', 1, 24, 'kg', 'Y', '18-02012100', ''),
-(81, 'Vermi Worm', 96, '2018-02-01 18:00:21', 1, 24, 'kg', 'Y', '18-02012100', 'Y');
+(81, 'Vermi Worm', 96, '2018-02-01 18:00:21', 1, 24, 'kg', 'Y', '18-02012100', 'Y'),
+(82, 'Pineapple(small)', 97, '2018-02-04 03:31:50', 5, 25, 'kg', 'Y', '18-02045031', 'Y'),
+(83, 'Pineapple(medium)', 98, '2018-02-04 03:31:50', 5, 25, 'kg', 'Y', '18-02045031', 'Y'),
+(84, 'Pineapple(Large)', 99, '2018-02-04 03:31:50', 5, 25, 'kg', 'Y', '18-02045031', 'Y');
 
 -- --------------------------------------------------------
 
@@ -420,7 +427,10 @@ INSERT INTO `product_price` (`price_id`, `price`, `created_updated_on`, `created
 (93, 100, '2018-02-01 15:34:13', 1),
 (94, 10, '2018-02-01 15:34:13', 1),
 (95, 30, '2018-02-01 18:00:21', 1),
-(96, 130, '2018-02-01 18:00:21', 1);
+(96, 130, '2018-02-01 18:00:21', 1),
+(97, 100, '2018-02-04 03:31:50', 5),
+(98, 150, '2018-02-04 03:31:50', 5),
+(99, 200, '2018-02-04 03:31:50', 5);
 
 -- --------------------------------------------------------
 
@@ -445,7 +455,8 @@ CREATE TABLE `projects` (
 
 INSERT INTO `projects` (`project_id`, `project_type`, `project_name`, `project_description`, `project_status`, `project_incharge`, `created_on`, `created_by`) VALUES
 (23, 'Agricultural', 'Coconut', '                                        ', 'Y', 1, '2018-01-30 18:16:07', 1),
-(24, 'Agricultural', 'Vermi', 'Vermiculture Production                      ', 'Y', 1, '2018-02-01 18:00:21', 1);
+(24, 'Agricultural', 'Vermi', 'Vermiculture Production                      ', 'Y', 1, '2018-02-01 18:00:21', 1),
+(25, 'Agricultural', 'Pineapple', 'DA project for pineapple                     ', 'Y', 5, '2018-02-04 03:31:50', 5);
 
 -- --------------------------------------------------------
 
@@ -507,7 +518,17 @@ INSERT INTO `project_budget` (`project_budget_id`, `project_specific_id`, `proje
 (236, '18-02012100', 24, 'Salaries other than Labor ', 190, 'N', 1, '2018-02-01 18:00:21'),
 (237, '18-02012100', 24, 'Other Administrative Expenses ', 0, 'N', 1, '2018-02-01 18:00:21'),
 (238, '18-02012100', 24, 'Registration, Fees, Licenses ', 0, 'N', 1, '2018-02-01 18:00:21'),
-(239, '18-02012100', 24, 'Others ', 0, 'N', 1, '2018-02-01 18:00:21');
+(239, '18-02012100', 24, 'Others ', 0, 'N', 1, '2018-02-01 18:00:21'),
+(240, '18-02045031', 25, 'Pineapple(small) (production costs)', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(241, '18-02045031', 25, 'Pineapple(medium) (production costs)', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(242, '18-02045031', 25, 'Pineapple(Large) (production costs)', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(243, '18-02045031', 25, 'Marketing Expenses ', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(244, '18-02045031', 25, 'Other Marketing Expenses ', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(245, '18-02045031', 25, 'Other Related Marketing Expenses ', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(246, '18-02045031', 25, 'Salaries other than Labor ', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(247, '18-02045031', 25, 'Other Administrative Expenses ', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(248, '18-02045031', 25, 'Registration, Fees, Licenses ', 1000, 'N', 5, '2018-02-04 03:31:50'),
+(249, '18-02045031', 25, 'Others ', 1000, 'N', 5, '2018-02-04 03:31:50');
 
 -- --------------------------------------------------------
 
@@ -533,7 +554,8 @@ CREATE TABLE `project_duration` (
 INSERT INTO `project_duration` (`project_duration_id`, `project_specific_id`, `from_date`, `to_date`, `created_by`, `created_on`, `status`, `project_id`) VALUES
 (2, '18-01300716', '2018-01-01', '2018-01-31', 1, '2018-01-30 18:16:07', 'N', 23),
 (4, '18-02011334', '2018-02-01', '2018-05-31', 1, '2018-02-01 15:34:13', 'Y', 23),
-(5, '18-02012100', '2018-02-01', '2018-04-30', 1, '2018-02-01 18:00:21', 'Y', 24);
+(5, '18-02012100', '2018-02-01', '2018-04-30', 1, '2018-02-01 18:00:21', 'Y', 24),
+(6, '18-02045031', '2018-02-01', '2018-07-31', 5, '2018-02-04 03:31:50', 'Y', 25);
 
 -- --------------------------------------------------------
 
@@ -561,7 +583,8 @@ INSERT INTO `purchase_request` (`purchase_request_id`, `entity_name`, `project_d
 (4, 'Southern Leyte State University', 2, 'For Coconut use', '2018-01-30 21:08:28', 1, 'Y', '180152-0352', '2018-02-03 00:49:20'),
 (5, 'Southern Leyte State University', 2, 'For Coconut Use', '2018-02-02 16:10:54', 1, 'Y', '180242-3742', NULL),
 (6, 'Southern Leyte State University', 4, 'For coconut', '2018-02-01 16:57:18', 1, 'Y', '180232-5632', NULL),
-(7, 'Southern Leyte State University', 5, 'For Production of Worm', '2018-02-01 18:45:06', 1, 'Y', '180233-4433', NULL);
+(7, 'Southern Leyte State University', 5, 'For Production of Worm', '2018-02-01 18:45:06', 1, 'Y', '180233-4433', NULL),
+(8, 'Southern Leyte State University', 4, 'For coconut use only', '2018-02-04 02:53:22', 3, 'Y', '180230-5230', '2018-02-03 19:00:05');
 
 -- --------------------------------------------------------
 
@@ -591,8 +614,9 @@ CREATE TABLE `rental_items` (
 INSERT INTO `rental_items` (`rental_id`, `item_name`, `item_code`, `item_description`, `rental_fee`, `unit`, `per_day`, `need_gate_pass`, `created_by`, `status`, `availability`, `transaction_id`) VALUES
 (4, 'Tractor', '180106-4206', 'Blue                                                                                   ', 100, 'set', 'Y', 'N', 1, 'Y', 'N', 'RE180202-3713'),
 (6, 'Tractor', '180109-4209', 'Red', 100, 'Set', 'N', 'Y', 1, 'Y', 'Y', ''),
-(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180202-1021'),
-(8, 'Screw Driver', '180139-3739', 'Yellow', 20, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180201-5538');
+(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'Y', ''),
+(8, 'Screw Driver', '180139-3739', 'Yellow', 20, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180201-5538'),
+(9, 'Projector', '180214-2614', 'Acer Brand(white)', 200, 'pcs', 'Y', 'Y', 5, 'Y', 'N', 'RE180204-1515');
 
 -- --------------------------------------------------------
 
@@ -622,10 +646,11 @@ CREATE TABLE `rental_specific` (
 INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`, `rental_fee_amount`, `updated_on`, `created_by`, `customer_id`, `transaction_id`, `date_returned`, `sales_id`, `paid`, `no_of_days`) VALUES
 (50, 7, '2018-02-09', 800, '2018-02-01 20:28:18', 1, 100, 'RE180201-5827', '2018-02-02', 81, 'Y', 8),
 (51, 8, '2018-02-03', 40, '2018-02-01 22:39:13', 1, 101, 'RE180201-5538', NULL, 82, 'Y', 2),
-(52, 7, '2018-02-03', 200, '2018-02-02 14:21:25', 1, 102, 'RE180202-1021', NULL, 83, 'Y', 2),
+(52, 7, '2018-02-03', 200, '2018-02-02 14:21:25', 1, 102, 'RE180202-1021', '2018-02-03', 83, 'Y', 2),
 (53, 6, '2018-02-07', 100, '2018-02-02 15:11:12', 1, 104, 'RE180202-4210', '2018-02-02', 85, 'Y', 6),
 (54, 4, '2018-02-03', 200, '2018-02-02 15:11:12', 1, 104, 'RE180202-4210', '2018-02-02', 85, 'Y', 2),
-(55, 4, '2018-02-10', 900, '2018-02-02 15:14:10', 1, 105, 'RE180202-3713', NULL, 86, 'Y', 9);
+(55, 4, '2018-02-10', 900, '2018-02-02 15:14:10', 1, 105, 'RE180202-3713', NULL, 86, 'Y', 9),
+(56, 9, '2018-02-14', 2400, '2018-02-04 04:15:27', 5, 107, 'RE180204-1515', NULL, 88, 'N', 12);
 
 -- --------------------------------------------------------
 
@@ -658,7 +683,9 @@ INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_pa
 (83, '2323232', 200, 'cash', '2018-02-02 14:21:25', 1, 102, 'Y'),
 (84, '23224324', 300, 'cash', '2018-02-02 14:54:20', 1, 103, 'N'),
 (85, '111111111111', 300, 'cash', '2018-02-02 15:11:12', 1, 104, 'Y'),
-(86, '22222222222', 900, 'cash', '2018-02-02 15:14:10', 1, 105, 'N');
+(86, '22222222222', 900, 'cash', '2018-02-02 15:14:10', 1, 105, 'N'),
+(87, '', 10, '', '2018-02-04 01:55:50', 1, 106, 'N'),
+(88, '', 2400, '', '2018-02-04 04:15:27', 1, 107, 'N');
 
 -- --------------------------------------------------------
 
@@ -685,7 +712,8 @@ INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `am
 (2, 77, 10, 100, 78, '180201-4917', 'Y'),
 (3, 78, 10, 1000, 79, '180201-3321', 'Y'),
 (4, 80, 12, 360, 80, '180201-3407', 'Y'),
-(5, 80, 10, 300, 84, '180202-5153', 'Y');
+(5, 80, 10, 300, 84, '180202-5153', 'Y'),
+(6, 77, 1, 10, 87, '180204-3355', 'N');
 
 -- --------------------------------------------------------
 
@@ -714,7 +742,8 @@ INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`,
 (1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37'),
 (2, 'Sample', 'Sample', 'Sample', '96ÀžY‰ì:Wü¯D	‚', '098', 'Y', 'img/logo2.png', 2, '2018-01-18 22:34:41'),
 (3, 'Joselito', 'Rojas', 'jose', 'ÃBFª×:DñdÃ4ÉO²} ', 'My CCF case number', 'Y', NULL, 5, '2018-01-26 17:32:37'),
-(4, 'Wade', 'Lim', 'wade', 'v”×®%u¶pHÚ!:Ú', 'case number', 'Y', NULL, 3, '2018-01-31 16:51:14');
+(4, 'Wade', 'Lim', 'wade', 'v”×®%u¶pHÚ!:Ú', 'case number', 'Y', NULL, 3, '2018-01-31 16:51:14'),
+(5, 'Darlyn`', 'Rasonable', 'Darlyn', '½ª;ÇXèQ6J#ùø', '098', 'Y', NULL, 2, '2018-02-04 03:11:21');
 
 -- --------------------------------------------------------
 
@@ -740,17 +769,78 @@ CREATE TABLE `user_role` (
 --
 
 INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, `edit_command`, `add_command`, `delete_command`, `save_changes`, `edit_changes`, `user_type_id`) VALUES
-(1, 1, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(2, 2, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(3, 3, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(12, 4, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(13, 5, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(14, 6, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(15, 7, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(16, 8, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(17, 9, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(18, 10, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
-(92, 11, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1);
+(345, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 1),
+(346, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 1),
+(347, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 1),
+(348, 4, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 1),
+(349, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 1),
+(350, 6, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 1),
+(351, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 1),
+(352, 8, 'Y', 'X', 'X', 'X', 'X', 'X', 'X', 1),
+(353, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 1),
+(354, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 1),
+(355, 11, 'Y', 'Y', 'X', 'Y', 'X', 'Y', 'X', 1),
+(356, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 1),
+(357, 1, 'Y', 'X', 'X', 'N', 'N', 'N', 'X', 2),
+(358, 2, 'Y', 'N', 'X', 'X', 'X', 'Y', 'X', 2),
+(359, 3, 'N', 'X', 'X', 'X', 'X', 'N', 'X', 2),
+(360, 4, 'Y', 'N', 'Y', 'N', 'N', 'Y', 'Y', 2),
+(361, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 2),
+(362, 6, 'Y', 'N', 'X', 'X', 'X', 'Y', 'X', 2),
+(363, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 2),
+(364, 8, 'N', 'X', 'X', 'X', 'X', 'X', 'X', 2),
+(365, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 2),
+(366, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 2),
+(367, 11, 'Y', 'Y', 'X', 'Y', 'X', 'Y', 'X', 2),
+(368, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 2),
+(369, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 3),
+(370, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 3),
+(371, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 3),
+(372, 4, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 3),
+(373, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 3),
+(374, 6, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 3),
+(375, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 3),
+(376, 8, 'Y', 'X', 'X', 'X', 'X', 'X', 'X', 3),
+(377, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 3),
+(378, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 3),
+(379, 11, 'Y', 'Y', 'X', 'Y', 'X', 'Y', 'X', 3),
+(380, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 3),
+(393, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 4),
+(394, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 4),
+(395, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 4),
+(396, 4, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 4),
+(397, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 4),
+(398, 6, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 4),
+(399, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 4),
+(400, 8, 'Y', 'X', 'X', 'X', 'X', 'X', 'X', 4),
+(401, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 4),
+(402, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 4),
+(403, 11, 'Y', 'Y', 'X', 'Y', 'X', 'Y', 'X', 4),
+(404, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 4),
+(417, 1, 'Y', 'X', 'X', 'N', 'N', 'N', 'X', 5),
+(418, 2, 'N', 'N', 'X', 'X', 'X', 'N', 'X', 5),
+(419, 3, 'Y', 'X', 'X', 'X', 'X', 'N', 'X', 5),
+(420, 4, 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 5),
+(421, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 5),
+(422, 6, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 5),
+(423, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 5),
+(424, 8, 'Y', 'X', 'X', 'X', 'X', 'X', 'X', 5),
+(425, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 5),
+(426, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 5),
+(427, 11, 'Y', 'N', 'X', 'Y', 'X', 'N', 'X', 5),
+(428, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 5),
+(429, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 7),
+(430, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 7),
+(431, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 7),
+(432, 4, 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 7),
+(433, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 7),
+(434, 6, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 7),
+(435, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 7),
+(436, 8, 'Y', 'X', 'X', 'X', 'X', 'X', 'X', 7),
+(437, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 7),
+(438, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 7),
+(439, 11, 'Y', 'Y', 'X', 'Y', 'X', 'Y', 'X', 7),
+(440, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 7);
 
 -- --------------------------------------------------------
 
@@ -925,92 +1015,110 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+
 --
 -- AUTO_INCREMENT for table `expenses_breakdown`
 --
 ALTER TABLE `expenses_breakdown`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `location_marks`
 --
 ALTER TABLE `location_marks`
   MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
 --
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
-  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
-  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
 --
 -- AUTO_INCREMENT for table `project_budget`
 --
 ALTER TABLE `project_budget`
-  MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
+  MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
+
 --
 -- AUTO_INCREMENT for table `project_duration`
 --
 ALTER TABLE `project_duration`
-  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
-  MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT for table `rental_items`
 --
 ALTER TABLE `rental_items`
-  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT for table `rental_specific`
 --
 ALTER TABLE `rental_specific`
-  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
 --
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
-  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=441;
+
 --
 -- AUTO_INCREMENT for table `user_type`
 --
 ALTER TABLE `user_type`
   MODIFY `user_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
 --
 -- Constraints for dumped tables
 --
