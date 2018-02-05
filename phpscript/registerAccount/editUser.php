@@ -42,10 +42,11 @@ if(isset($_POST['username'])){
 			}
 
 		}else{
-			$result = $crud->execute("UPDATE users SET firstname='$firstname', ".
-										 "lastname= '$lastname', ".
-										 "user_type='$access_role',".
-										 "username= '$username', status='$status' WHERE user_id=$user_id;");
+			$result = $crud->execute("UPDATE users SET firstname='$firstname', 
+										  lastname= '$lastname', 
+										  user_type='$access_role',
+										  password=AES_ENCRYPT(AES_DECRYPT(password,username),'$username'),
+										  username= '$username' , status='$status' WHERE user_id=$user_id;");
 		}
 		
 

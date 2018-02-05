@@ -15,9 +15,9 @@
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
           <meta name="description" content="">
           <meta name="author" content="">
-          <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+          <link rel="shortcut icon" href="img/favicon.gif">
 
-          <title>Dashboard Template for Bootstrap</title>
+          <title>IGP Monitoring System</title>
 
           <!-- Custom fonts for this template-->
           <link href="./assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">

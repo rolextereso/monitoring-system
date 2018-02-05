@@ -25,9 +25,12 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 					$_SESSION['user_type']=$row['user_type'];
 					$_SESSION['pic']=$row['profile_pic'];
 				}
-
-				$r=array("status"=>true);
-				echo json_encode($r);
+				if(user_activity("Login",$_SESSION['user_id'])){
+						$crud->commit();
+						$r=array("status"=>true);
+						echo json_encode($r);
+				}
+				
 		}else{
 			$hint= $crud->getData("SELECT * FROM users WHERE username='$username' LIMIT 1");
 			

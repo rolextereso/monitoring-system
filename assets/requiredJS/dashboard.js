@@ -165,13 +165,13 @@ $(document).ready(function(){
 
             function multi_bar(){
 
-                 var $budget=[];
+                 var $sales=[];
                  var $expenses=[];
                  $.getJSON("phpscript/dashboardGraph/multibarData.php", function(data) {
                             $.each(data, function(key,value){
                                             
-                                            $.each(value.budget, function(key, value){                                                     
-                                                  $budget.push({y: parseFloat(value[0]),label: value[1]});                                    
+                                            $.each(value.sales, function(key, value){                                                     
+                                                  $sales.push({y: parseFloat(value[0]),label: value[1]});                                    
                                             });
 
                                             $.each(value.expenses, function(key, value){                                                     
@@ -181,12 +181,12 @@ $(document).ready(function(){
                                             
 
                               });
-                        console.log($budget);
+                       
 
                           var chart = new CanvasJS.Chart("multibarContainer", {
                                   animationEnabled: true,
                                   title:{
-                                    text: "Budgets and Expenses"
+                                    text: "Sales and Expenses"
                                   },
                                   axisY: {
                                     title: "Amount"
@@ -202,9 +202,9 @@ $(document).ready(function(){
                                   data: [{
                                     type: "bar",
                                     showInLegend: true,
-                                    name: "Project Budget",
+                                    name: "Project Sales",
                                     color: "green",
-                                    dataPoints: $budget
+                                    dataPoints: $sales
                                   },
                                   {
                                     type: "bar",
@@ -236,7 +236,7 @@ $(document).ready(function(){
                   }
                   total = e.entries[0].dataPoint.y - e.entries[1].dataPoint.y ;
                   str2 = "<strong>" + e.entries[0].dataPoint.label + "</strong> <br/>";
-                  str3 = "<span style = \"color:Tomato\">Total: </span><strong>" + total.format(2) + "</strong><br/>";
+                  str3 = "<span style = \"color:Tomato\">Profit: </span><strong>" + total.format(2) + "</strong><br/>";
                   return (str2.concat(str)).concat(str3);
             }
 

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 //including the database connection file
 include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
@@ -33,8 +33,11 @@ if(isset($_POST['sales_id'])){
 			 }	
 		}
 		 
-
-		 echo print_message($result, '<strong>Success:</strong> Payment successfully save.','<strong>Error:</strong> Payment not saved, please contact the developer.');	
+		if(user_activity("Saved payment for $selection_for selection with OR number: $OR",$_SESSION['user_id'])){
+		 		echo print_message($result, '<strong>Success:</strong> Payment successfully save.','<strong>Error:</strong> Payment not saved, please contact the developer.');	
+		}else{
+				echo print_message(false, '','<strong>Error:</strong> Something wrong with activity log, Please contact the developer.');
+		}
 
 }
 ?>

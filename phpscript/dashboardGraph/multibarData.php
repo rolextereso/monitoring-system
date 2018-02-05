@@ -17,12 +17,13 @@ function getData($result){
 		return $record;
 }
 
-$budget_query = "SELECT SUM(amount) as amount, p.project_name FROM projects p
-					INNER JOIN project_duration pd ON p.project_id= pd.project_id
-					INNER JOIN project_budget pb ON pb.project_specific_id = pd.project_specific_id 
-					WHERE pd.status='Y' GROUP BY p.project_id ORDER BY p.project_id;";   
+$sales_query = "SELECT SUM(amount) as amount, p.project_name FROM projects p
+					INNER JOIN  products pd ON pd.project_id=p.project_id	
+					INNER JOIN  sales_specific ss ON ss.product_id=pd.product_id	
+					INNER JOIN sales_record sr ON sr.sales_id = ss.or_number
+					WHERE sr.or_number!='' OR sr.or_number IS NOT NULL GROUP BY p.project_id ORDER BY p.project_id;";   
 
-$budget = $crud->getData($budget_query);
+$sales = $crud->getData($sales_query);
 
 $expenses_query = "SELECT 
 					CASE WHEN SUM(qty*amount_per_unit) IS NULL THEN 0 ELSE SUM(qty*amount_per_unit) END as amount ,
@@ -37,7 +38,7 @@ $expenses = $crud->getData($expenses_query);
 
 
 
-$json_data = array(array("budget"=> getData($budget),"expenses"=>getData($expenses)));
+$json_data = array(array("sales"=> getData($sales),"expenses"=>getData($expenses)));
 echo json_encode($json_data);
 
 ?>

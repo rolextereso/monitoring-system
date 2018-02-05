@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2018 at 05:21 AM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.1.12
+-- Generation Time: Feb 05, 2018 at 11:49 PM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -26,7 +26,7 @@ DELIMITER $$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `report_product_by_month_year` (`product_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_product_by_month` (`product_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
 		DECLARE total FLOAT DEFAULT 0.0;
 		SELECT 
 				SUM(ss.amount)  INTO total
@@ -40,7 +40,21 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `report_product_by_month_year` (`prod
 RETURN total;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `report_project_by_month_year` (`project_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_product_by_year` (`product_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+		DECLARE total FLOAT DEFAULT 0.0;
+		SELECT 
+				SUM(ss.amount)  INTO total
+				FROM products pe 
+				inner JOIN sales_specific ss ON ss.product_id=pe.product_id 
+				inner JOIN sales_record sre ON ss.or_number=sre.sales_id   
+				WHERE  pe.product_id=product_id  
+				AND YEAR(sre.date_save)=YEAR(date_save)
+				GROUP BY product_name, YEAR(sre.date_save);
+
+RETURN total;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_project_by_month` (`project_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
 		DECLARE total FLOAT DEFAULT 0.0;
 		SELECT 
 				SUM(ss.amount)  INTO total
@@ -54,7 +68,21 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `report_project_by_month_year` (`proj
 RETURN total;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `report_rental_by_month_year` (`rental_id_` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_project_by_year` (`project_id` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+		DECLARE total FLOAT DEFAULT 0.0;
+		SELECT 
+				SUM(ss.amount)  INTO total
+				FROM products pe 
+				inner JOIN sales_specific ss ON ss.product_id=pe.product_id 
+				inner JOIN sales_record sre ON ss.or_number=sre.sales_id   
+				WHERE  pe.project_id=project_id  
+				AND YEAR(sre.date_save)=YEAR(date_save)
+				GROUP BY project_id, YEAR(sre.date_save);
+
+RETURN total;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_rental_by_month` (`rental_id_` INT, `date_save` DATE) RETURNS FLOAT BEGIN
 		DECLARE total FLOAT DEFAULT 0.0;
 		SELECT 
 				SUM(rs.rental_fee_amount)  INTO total
@@ -64,6 +92,20 @@ CREATE DEFINER=`root`@`localhost` FUNCTION `report_rental_by_month_year` (`renta
 				WHERE  ri.rental_id=rental_id_ AND MONTH(sr.date_save)=MONTH(date_save)
 				AND YEAR(sr.date_save)=YEAR(date_save) AND rs.paid='Y'
 				GROUP BY ri.rental_id, MONTH(sr.date_save), YEAR(sr.date_save);
+
+RETURN total;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `report_rental_by_year` (`rental_id_` INT, `date_save` DATE) RETURNS FLOAT BEGIN
+		DECLARE total FLOAT DEFAULT 0.0;
+		SELECT 
+				SUM(rs.rental_fee_amount)  INTO total
+				FROM rental_specific rs 
+				inner JOIN rental_items ri ON rs.rental_id=ri.rental_id
+				inner JOIN sales_record sr ON rs.sales_id=sr.sales_id   
+				WHERE  ri.rental_id=rental_id_ 
+				AND YEAR(sr.date_save)=YEAR(date_save) AND rs.paid='Y'
+				GROUP BY ri.rental_id, YEAR(sr.date_save);
 
 RETURN total;
 END$$
@@ -199,7 +241,11 @@ INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALU
 (104, 'rolex', 'ambacom'),
 (105, 'rental', 'retnal'),
 (106, 'CX', 'CX'),
-(107, 'sf', 'sf');
+(107, 'sf', 'sf'),
+(108, 'sitang', 'sitang'),
+(109, 's', 's'),
+(110, 's', 's'),
+(111, 's', 'sf');
 
 -- --------------------------------------------------------
 
@@ -612,9 +658,9 @@ CREATE TABLE `rental_items` (
 --
 
 INSERT INTO `rental_items` (`rental_id`, `item_name`, `item_code`, `item_description`, `rental_fee`, `unit`, `per_day`, `need_gate_pass`, `created_by`, `status`, `availability`, `transaction_id`) VALUES
-(4, 'Tractor', '180106-4206', 'Blue                                                                                   ', 100, 'set', 'Y', 'N', 1, 'Y', 'N', 'RE180202-3713'),
-(6, 'Tractor', '180109-4209', 'Red', 100, 'Set', 'N', 'Y', 1, 'Y', 'Y', ''),
-(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'Y', ''),
+(4, 'Tractor', '180106-4206', 'Blue                                                                                   ', 100, 'set', 'Y', 'N', 1, 'Y', 'Y', ''),
+(6, 'Tractor', '180109-4209', 'Red', 100, 'Set', 'N', 'Y', 1, 'Y', 'N', 'RE19201816-2719'),
+(7, 'Grass cutter', '180126-4126', 'Silver(honda brand)', 100, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180205-0927'),
 (8, 'Screw Driver', '180139-3739', 'Yellow', 20, 'set', 'Y', 'Y', 1, 'Y', 'N', 'RE180201-5538'),
 (9, 'Projector', '180214-2614', 'Acer Brand(white)', 200, 'pcs', 'Y', 'Y', 5, 'Y', 'N', 'RE180204-1515');
 
@@ -649,8 +695,10 @@ INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`,
 (52, 7, '2018-02-03', 200, '2018-02-02 14:21:25', 1, 102, 'RE180202-1021', '2018-02-03', 83, 'Y', 2),
 (53, 6, '2018-02-07', 100, '2018-02-02 15:11:12', 1, 104, 'RE180202-4210', '2018-02-02', 85, 'Y', 6),
 (54, 4, '2018-02-03', 200, '2018-02-02 15:11:12', 1, 104, 'RE180202-4210', '2018-02-02', 85, 'Y', 2),
-(55, 4, '2018-02-10', 900, '2018-02-02 15:14:10', 1, 105, 'RE180202-3713', NULL, 86, 'Y', 9),
-(56, 9, '2018-02-14', 2400, '2018-02-04 04:15:27', 5, 107, 'RE180204-1515', NULL, 88, 'N', 12);
+(55, 4, '2018-02-10', 900, '2018-02-02 15:14:10', 1, 105, 'RE180202-3713', '2018-02-06', 86, 'Y', 9),
+(56, 9, '2018-02-14', 2400, '2018-02-04 04:15:27', 5, 107, 'RE180204-1515', NULL, 88, 'N', 12),
+(57, 7, '2018-02-07', 200, '2018-02-05 22:27:19', 1, 110, 'RE180205-0927', NULL, 91, 'N', 2),
+(58, 6, '2018-02-09', 100, '2018-02-05 22:31:42', 1, 111, 'RE19201816-2719', NULL, 92, 'N', 4);
 
 -- --------------------------------------------------------
 
@@ -685,7 +733,11 @@ INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_pa
 (85, '111111111111', 300, 'cash', '2018-02-02 15:11:12', 1, 104, 'Y'),
 (86, '22222222222', 900, 'cash', '2018-02-02 15:14:10', 1, 105, 'N'),
 (87, '', 10, '', '2018-02-04 01:55:50', 1, 106, 'N'),
-(88, '', 2400, '', '2018-02-04 04:15:27', 1, 107, 'N');
+(88, '', 2400, '', '2018-02-04 04:15:27', 1, 107, 'N'),
+(89, '12345567898', 220, 'cash', '2018-02-05 16:17:11', 1, 108, 'N'),
+(90, '1212334343', 200, 'cash', '2018-02-05 22:23:33', 1, 109, 'N'),
+(91, '', 200, '', '2018-02-05 22:27:19', 1, 110, 'N'),
+(92, '', 100, '', '2018-02-05 22:31:42', 1, 111, 'N');
 
 -- --------------------------------------------------------
 
@@ -713,7 +765,10 @@ INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `am
 (3, 78, 10, 1000, 79, '180201-3321', 'Y'),
 (4, 80, 12, 360, 80, '180201-3407', 'Y'),
 (5, 80, 10, 300, 84, '180202-5153', 'Y'),
-(6, 77, 1, 10, 87, '180204-3355', 'N');
+(6, 77, 1, 10, 87, '180204-3355', 'N'),
+(7, 82, 2, 200, 89, '180205-4216', 'Y'),
+(8, 77, 2, 20, 89, '180205-4216', 'Y'),
+(9, 78, 2, 200, 90, '180205-2423', 'Y');
 
 -- --------------------------------------------------------
 
@@ -739,11 +794,37 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`, `hint`, `status`, `profile_pic`, `user_type`, `created_on`) VALUES
-(1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My Case Number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37'),
+(1, 'Rolly', 'Tereso', 'rolex', 'jã#ïÔ®í5NB¬¹Àp—', 'My CCF case number', 'Y', 'img/Christmas-Hat-PNG-HD.png', 1, '2017-12-19 17:47:37'),
 (2, 'Sample', 'Sample', 'Sample', '96ÀžY‰ì:Wü¯D	‚', '098', 'Y', 'img/logo2.png', 2, '2018-01-18 22:34:41'),
 (3, 'Joselito', 'Rojas', 'jose', 'ÃBFª×:DñdÃ4ÉO²} ', 'My CCF case number', 'Y', NULL, 5, '2018-01-26 17:32:37'),
 (4, 'Wade', 'Lim', 'wade', 'v”×®%u¶pHÚ!:Ú', 'case number', 'Y', NULL, 3, '2018-01-31 16:51:14'),
-(5, 'Darlyn`', 'Rasonable', 'Darlyn', '½ª;ÇXèQ6J#ùø', '098', 'Y', NULL, 2, '2018-02-04 03:11:21');
+(5, 'Darlyn', 'Rasonable', 'Darlyn', '½ª;ÇXèQ6J#ùø', '098', 'Y', NULL, 2, '2018-02-04 03:11:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_log`
+--
+
+CREATE TABLE `user_log` (
+  `user_log_id` int(11) NOT NULL,
+  `msg` text,
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user_log`
+--
+
+INSERT INTO `user_log` (`user_log_id`, `msg`, `created_on`, `user_id`) VALUES
+(6, 'Login', '2018-02-05 22:15:15', 1),
+(7, 'Logout', '2018-02-05 22:22:40', 1),
+(8, 'Login', '2018-02-05 22:22:57', 1),
+(9, 'Made Product Selection with transaction id: 180205-2423', '2018-02-05 22:23:33', 1),
+(10, 'Made rental selection with transaction id: RE180205-0927', '2018-02-05 22:27:19', 1),
+(11, 'Made rental selection with transaction id: RE19201816-2719', '2018-02-05 22:31:42', 1),
+(13, 'Saved payment for sales selection with OR number: 1212334343', '2018-02-05 22:36:28', 1);
 
 -- --------------------------------------------------------
 
@@ -787,11 +868,11 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (360, 4, 'Y', 'N', 'Y', 'N', 'N', 'Y', 'Y', 2),
 (361, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 2),
 (362, 6, 'Y', 'N', 'X', 'X', 'X', 'Y', 'X', 2),
-(363, 7, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 2),
+(363, 7, 'Y', 'N', 'X', 'X', 'X', 'X', 'X', 2),
 (364, 8, 'N', 'X', 'X', 'X', 'X', 'X', 'X', 2),
-(365, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 2),
+(365, 9, 'Y', 'Y', 'Y', 'N', 'X', 'Y', 'Y', 2),
 (366, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 2),
-(367, 11, 'Y', 'Y', 'X', 'Y', 'X', 'Y', 'X', 2),
+(367, 11, 'Y', 'N', 'X', 'Y', 'X', 'Y', 'X', 2),
 (368, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 2),
 (369, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 3),
 (370, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 3),
@@ -994,6 +1075,14 @@ ALTER TABLE `users`
   ADD KEY `fk_user_type_idx` (`user_type`);
 
 --
+-- Indexes for table `user_log`
+--
+ALTER TABLE `user_log`
+  ADD PRIMARY KEY (`user_log_id`),
+  ADD KEY `fk_user_id_idx` (`user_id`),
+  ADD KEY `date` (`created_on`,`user_id`);
+
+--
 -- Indexes for table `user_role`
 --
 ALTER TABLE `user_role`
@@ -1015,110 +1104,97 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
-
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 --
 -- AUTO_INCREMENT for table `expenses_breakdown`
 --
 ALTER TABLE `expenses_breakdown`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `location_marks`
 --
 ALTER TABLE `location_marks`
   MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
   MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
 --
 -- AUTO_INCREMENT for table `owner_info`
 --
 ALTER TABLE `owner_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
-
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
   MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
-
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
   MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
 --
 -- AUTO_INCREMENT for table `project_budget`
 --
 ALTER TABLE `project_budget`
   MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
-
 --
 -- AUTO_INCREMENT for table `project_duration`
 --
 ALTER TABLE `project_duration`
   MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
 --
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
   MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
 --
 -- AUTO_INCREMENT for table `rental_items`
 --
 ALTER TABLE `rental_items`
   MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- AUTO_INCREMENT for table `rental_specific`
 --
 ALTER TABLE `rental_specific`
-  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
-
+  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
-
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
-  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
+--
+-- AUTO_INCREMENT for table `user_log`
+--
+ALTER TABLE `user_log`
+  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
   MODIFY `user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=441;
-
 --
 -- AUTO_INCREMENT for table `user_type`
 --
 ALTER TABLE `user_type`
   MODIFY `user_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
 --
 -- Constraints for dumped tables
 --
@@ -1191,6 +1267,12 @@ ALTER TABLE `sales_specific`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_user_type` FOREIGN KEY (`user_type`) REFERENCES `user_type` (`user_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `user_log`
+--
+ALTER TABLE `user_log`
+  ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `user_role`

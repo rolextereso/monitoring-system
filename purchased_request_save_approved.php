@@ -206,6 +206,7 @@
           });
         });     
       </script> 
+      
        <?php }else{ echo UnauthorizedOpenTemp(); } ?>
 
       </main>

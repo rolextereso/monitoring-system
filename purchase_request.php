@@ -3,9 +3,10 @@
     require_once('classes/Crud.php');
     $crud = new Crud();    
     
+    $user_id=specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
     $projects = $crud->getData("SELECT p.*,pd.project_duration_id FROM projects p                          
                                 LEFT JOIN project_duration pd ON pd.project_id=p.project_id
-                                WHERE pd.status='Y'
+                                WHERE pd.status='Y' AND p.created_by $user_id
                                 ");
     $found=true;      
 ?>   
@@ -120,14 +121,15 @@
   <script>
   $(document).ready(function(){   
    
-            $("#add_item").click(function(){                   
+            $("#add_item").click(function(){   
+                             
 
                     var body=$(".table tbody"),
                         type="text",
                         classes="form-control-sm form-control",
                         $unit=" <input type='"+type+"' required class='"+classes+"' name='unit[]'/> ",
                         $item=" <input type='"+type+"' required class='"+classes+"' name='item_description[]'/> ",
-                        $quantity=" <input type='"+type+"' required class='"+classes+"' name='quantity[]'/> ",
+                        $quantity=" <input type='"+type+"' required class='"+classes+" quantity_p' name='quantity[]'/> ",
                         $delete="<span class='red delete'>&Cross;</span>";
 
                     var $temp="<tr>"+
@@ -142,6 +144,23 @@
                         var p=$(this).parent().parent();
                         p.remove();
                     });
+
+                      $('.quantity_p').keyup(function (event) {
+                            // skip for arrow keys
+                            if (event.which >= 37 && event.which <= 40) {
+                                event.preventDefault();
+                            }
+                            var currentVal = ($(this).val()=="")? '0.00':$(this).val();                    
+
+                            var testDecimal = testDecimals(currentVal);
+                            if (testDecimal.length > 1) {
+                                console.log("You cannot enter more than one decimal point");
+                                currentVal = currentVal.slice(0, -1);                      }
+
+                            $(this).val(replaceCommas(currentVal));
+                    });       
+
+                    
               
             });
 
@@ -192,5 +211,6 @@
   <?php }else{ echo UnauthorizedOpenTemp(); } ?>
       </main>
  <script src='assets/validator.min.js'></script>  
+ <script src='assets/numberFormat.js'></script>
 
 <?php require_once('layout/footer.php');?>      

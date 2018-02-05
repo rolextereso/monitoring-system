@@ -54,9 +54,11 @@ if(isset($_POST['rental_id'])){
 				
 		 }	 
 
-		
-
-		 echo print_message(!in_array("", $result), '<strong>Success:</strong> Rental  selected successfully save.','<strong>Error:</strong> Rental not saved, please contact the developer.');	
+		if(user_activity("Made rental selection with transaction id: $transaction_id",$_SESSION['user_id'])){
+		 		echo print_message(!in_array("", $result), '<strong>Success:</strong> Rental  selected successfully save.','<strong>Error:</strong> Rental not saved, please contact the developer.');	
+		}else{
+		 		echo print_message(false, '','<strong>Error:</strong> Something wrong with activity log, Please contact the developer.');	
+		 }
 
 }
 ?>

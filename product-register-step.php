@@ -4,7 +4,12 @@
 
     $crud = new Crud();
 
-    $users = $crud->getData("SELECT * FROM users ;");
+    $user_id="";
+    if($_SESSION['user_type']!=1){
+      $user_id=" WHERE user_id=".$_SESSION['user_id'];
+    }
+
+    $users = $crud->getData("SELECT * FROM users $user_id;");
 
     $project_id= "";
     $project_name= "";
@@ -22,7 +27,9 @@
        $id = $crud->escape_string($_GET['p_id']);
 
        if(is_numeric($id) && $id!=''){
-            $projects = $crud->getData("SELECT * FROM projects WHERE project_id=".$id );
+
+            
+            $projects = $crud->getData("SELECT * FROM projects WHERE project_id=".$id);
 
             $found=(count($projects)==1)?true:false;
             $found_project=(count($projects)==1)?true:false;

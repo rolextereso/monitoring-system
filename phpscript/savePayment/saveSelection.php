@@ -44,8 +44,11 @@ if(isset($_POST['product_id'])){
 				
 				
 		 }	 
-
-		 echo print_message($result, '<strong>Success:</strong> Product selected successfully save.','<strong>Error:</strong> Payment not saved, please contact the developer.');	
+         if(user_activity("Made product selection with transaction id: $transaction_id",$_SESSION['user_id'])){
+			 echo print_message($result, '<strong>Success:</strong> Product selected successfully save.','<strong>Error:</strong> Payment not saved, please contact the developer.');	
+		 }else{
+		 	echo print_message(false, '','<strong>Error:</strong> Something wrong with activity log, Please contact the developer.');	
+		 }
 
 }
 ?>

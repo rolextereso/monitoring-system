@@ -84,7 +84,7 @@
                           </div>
 
                           <div class="form-group col-sm-8">
-                                  <label> <b>Search by date:</b></label>                                                     
+                                  <label> <b>&nbsp;</b></label>                                                     
                                          <div class="input-daterange input-group" id="datepicker">
                                             <select name="report_type" style="border-color: #ced4da;" >
                                               <option value="year">Year</option>

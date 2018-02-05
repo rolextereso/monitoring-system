@@ -17,7 +17,7 @@ $columns = array(
 	1 => 'lastname',
 	2=> 'username'
 );
-$where_="WHERE ut.user_type_id=".$_SESSION['user_type']."  ";
+$where_="WHERE u.user_id=".$_SESSION['user_id']."  ";
 if($_SESSION['user_type']=='1'){
 	$where_=" ";
 }
