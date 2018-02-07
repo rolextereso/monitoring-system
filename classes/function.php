@@ -67,9 +67,7 @@ function user_activity($msg="",$user_id){
 	$result = $crud->executeUnAutoCommit("INSERT INTO user_log(msg,user_id)
 									      VALUES ('$msg', '$user_id');");
 	
-	
-	return $result;		
-
+	return $result;
 
 }
 

@@ -138,6 +138,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+<?php if(access_role("Project List","view_page",$_SESSION['user_type'])){?> 
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><a href='<?php echo ($add_item)? "project-list-spec.php?id=$project_id":"setting.php";?>'><i class="fa fa-arrow-left" aria-hidden="true"></i><?php echo ($add_item)? " Go back ":" Go to Setting";?> </a> / Project /<h2></h2> </li>
@@ -277,7 +278,9 @@
                                  </div>
                                  <br/>
                                 <button id="last_prev" class="btn btn-primary prevBtn btn-lg pull-left" type="button">Previous</button>
-                                <button class="btn btn-success submitBtn btn-lg pull-right" type="button">Submit</button>
+                                <?php if(access_role("Project List","save_changes",$_SESSION['user_type'])){?> 
+                                     <button class="btn btn-success submitBtn btn-lg pull-right" type="button">Submit</button>
+                                <?php } ?>
                               </div>
                             </div>
                           </div>
@@ -290,10 +293,7 @@
 
            <?php } ?>
         </div>
-      </main>
-
-
-<script src='assets/validator.min.js'></script>
+        <script src='assets/validator.min.js'></script>
 <script src="assets/bootstrap-datepicker.min.js"></script>   
 <script src="assets/numberFormat.js"></script>  
 
@@ -315,7 +315,9 @@
         $('#project_started, #project_ended').datepicker({
                       autoclose: true,    
                       todayHighlight: true,       
-        });    
+        });  
+
+         
 
 
 
@@ -393,6 +395,11 @@
                 nextStepWizard.removeAttr("disabled").trigger('click');              
             }
 
+            //this will trigger to format the text when inputing price
+            $('._price').keyup(function(){
+                 var currentVal = ($(this).text()=="")? '0':$(this).text(); 
+                 $(this).text(number_format(currentVal));
+            });
         });
 
         $('div.setup-panel div a.btn-primary').trigger('click');   
@@ -498,7 +505,6 @@ var collectData=function (selector) {
                     items.push(val);
                   }
 
-
                   if (val== '') {
                     $(this).addClass('tbl-error');
                     itemfound++;
@@ -537,7 +543,7 @@ var collectData=function (selector) {
             
               $(steps+" tbody tr:not(.hide):not(#total) ._0").each(function(i, val) {
                     table+="<tr>";
-                    table+="<td >"+$(this).text()+"</td><td "+edit+">0</td><td "+edit+"></td>";
+                    table+="<td >"+$(this).text()+"</td><td "+edit+" class='_price'>0</td><td "+edit+"></td>";
                     table+="<td><input type='checkbox' class='gate_pass' /></td> <td style='opacity:0;'></td>"
                     table+="</tr>";
               });
@@ -572,6 +578,7 @@ var collectData=function (selector) {
   }
 
 </script>
-
+<?php } else { echo UnauthorizedOpenTemp(); } ?>
+      </main>
 
 <?php require_once('layout/footer.php');?>      

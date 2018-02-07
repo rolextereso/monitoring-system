@@ -26,7 +26,7 @@
 
                 <?php if(access_role("Transaction List","view_page",$_SESSION['user_type'])){?>
                       <li class="nav-item">
-                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php"><i class="fa fa-list"></i> Transactions </a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection-list.php")? 'active': '';?>"  href="item-selection-list.php"><i class="fa fa-list"></i> Transactions <span class="badge badge-danger unpaid_transaction" style="display: none;">0</span></a>
                       </li>
 
                       <?php if(basename($_SERVER['PHP_SELF'])=="item-buy.php"){ ?>
@@ -52,13 +52,13 @@
 
                 <?php if(access_role("Rented Items","view_page",$_SESSION['user_type'])){?>    
                       <li class="nav-item">
-                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-to-return-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-return.php")? 'active': '';?>" href="rental-to-return-list.php"><i class="fa fa-reply"></i> Rented Items</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-to-return-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-return.php")? 'active': '';?>" href="rental-to-return-list.php"><i class="fa fa-reply"></i> Rented Items <span class="badge badge-danger rented_items"  style="display: none;">0</span></a>
                       </li>
                 <?php } ?>
 
                 <?php if(access_role("Purchase Requests","view_page",$_SESSION['user_type'])){?>
                       <li class="nav-item">
-                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="purchase_request_list.php") || (basename($_SERVER['PHP_SELF'])=="purchase_request.php") || (basename($_SERVER['PHP_SELF'])=="purchased_request_save_approved.php")? 'active': '';?>" href="purchase_request_list.php"><i class="fa fa-files-o"></i> Purchase Requests</a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="purchase_request_list.php") || (basename($_SERVER['PHP_SELF'])=="purchase_request.php") || (basename($_SERVER['PHP_SELF'])=="purchased_request_save_approved.php")? 'active': '';?>" href="purchase_request_list.php"><i class="fa fa-files-o"></i> Purchase Requests <span class="badge badge-danger onprocess_request"  style="display: none;">0</span></a>
                       </li>
                 <?php } ?>
 
@@ -77,7 +77,7 @@
 
 
                 <li class="nav-item">
-                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php") || (basename($_SERVER['PHP_SELF'])=="product-register-step.php") || (basename($_SERVER['PHP_SELF'])=="user-list.php") || (basename($_SERVER['PHP_SELF'])=="user-register.php") || (basename($_SERVER['PHP_SELF'])=="user-reset-pass.php") || (basename($_SERVER['PHP_SELF'])=="user-edit.php") ? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
+                  <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php") || (basename($_SERVER['PHP_SELF'])=="product-register-step.php") || (basename($_SERVER['PHP_SELF'])=="user-list.php") || (basename($_SERVER['PHP_SELF'])=="user-register.php") || (basename($_SERVER['PHP_SELF'])=="user-reset-pass.php") || (basename($_SERVER['PHP_SELF'])=="user-edit.php") || (basename($_SERVER['PHP_SELF'])=="user_logs.php") ? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
                 </li>
               </ul>
 

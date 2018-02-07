@@ -19,13 +19,10 @@ $columns = array(
 	
 );
 
-
-
-
 $sql = "SELECT pr.*,p.project_name, CONCAT(u.firstname,' ',u.lastname) as user FROM purchase_request pr	 		
         INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id       
 		INNER JOIN projects p ON p.project_id= pd.project_id
-		INNER JOIN users u ON u.user_id= pr.created_by  where pr.created_by".specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
+		INNER JOIN users u ON u.user_id= pr.created_by  where p.project_incharge ".specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
 
 
 $result = $crud->getData($sql);

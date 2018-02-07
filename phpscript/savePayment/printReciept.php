@@ -63,15 +63,15 @@
         if($id!=''){
        		if($paid_for=="sales"){
 		            //selecting data associated with this particular id
-		             $result = $crud->getData("SELECT ".
-											"	p.product_name, ".
-											"		sp.quantity, ".							
-											"		sp.amount  ".
-											"		FROM sales_specific sp ".
-											"		INNER JOIN sales_record sr ON sp.or_number=sr.sales_id ".
-											"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".
-											"		INNER JOIN products p ON p.product_id=sp.product_id ".
-											"		WHERE sr.or_number=".$id);
+		             $result = $crud->getData("SELECT 
+												p.product_name,
+													sp.quantity, 						
+													sp.amount  
+													FROM sales_specific sp 
+													INNER JOIN sales_record sr ON sp.or_number=sr.sales_id 
+													INNER JOIN customer c ON c.customer_id =sr.customer_id 
+													INNER JOIN products p ON p.product_id=sp.product_id 
+													WHERE sr.or_number='".$id."'");
              } else if($paid_for=="rental"){
 
              	       $result=$crud->getData("SELECT                                 
@@ -84,7 +84,7 @@
 			                                  FROM rental_items ri
 			                                LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
 			                                LEFT JOIN sales_record sr ON sr.sales_id=rs.sales_id
-			                                WHERE  sr.or_number=".$id);
+			                                WHERE  sr.or_number='".$id."'");
 
              }
   
@@ -94,7 +94,7 @@
 									"		c.customer_address  ".
 									"		FROM sales_record sr ".							
 									"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".							
-									"		WHERE sr.or_number=".$id." LIMIT 1");  
+									"		WHERE sr.or_number='".$id."' LIMIT 1");  
             
         }
     }

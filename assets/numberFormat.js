@@ -15,3 +15,12 @@
                     components[1] = components[1].replace(/\D/g, "");
                 return components.join(".");
             }
+
+            function number_format(currentVal){
+                            var testDecimal = testDecimals(currentVal);
+                                      if (testDecimal.length > 1) {
+                                          currentVal = currentVal.slice(0, -1);                      
+                                      }
+
+                                      return replaceCommas(currentVal); 
+            }

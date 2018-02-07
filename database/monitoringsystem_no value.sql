@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2018 at 09:18 PM
+-- Generation Time: Feb 06, 2018 at 10:25 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -136,14 +136,6 @@ CREATE TABLE `customer` (
   `customer_address` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `customer`
---
-
-INSERT INTO `customer` (`customer_id`, `customer_name`, `customer_address`) VALUES
-(124, 'Christine Gondaya', 'Silago'),
-(125, 'Rolly Tereso', 'Ambacon');
-
 -- --------------------------------------------------------
 
 --
@@ -159,14 +151,6 @@ CREATE TABLE `expenses_breakdown` (
   `unit` varchar(45) DEFAULT NULL,
   `purchase_request_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `expenses_breakdown`
---
-
-INSERT INTO `expenses_breakdown` (`id`, `ORNumber`, `item_description`, `qty`, `amount_per_unit`, `unit`, `purchase_request_id`) VALUES
-(11, '1313313131313', 'Abuno', 1, 1110, 'Sack', 9),
-(12, NULL, 'Abuno', 1, NULL, 'sack', 10);
 
 -- --------------------------------------------------------
 
@@ -187,11 +171,10 @@ CREATE TABLE `location_marks` (
 
 INSERT INTO `location_marks` (`id_marks`, `position_marks`, `image`, `establisment_name`) VALUES
 (4, ' top:661px;left:416px', 'img/location_map_pic/SCSU_ani.gif', 'Art and Science Building'),
+(5, ' top:572px;left:641px', 'img/location_map_pic/buley-library.jpeg', 'Administration Building'),
 (7, ' top:713px;left:696px', 'img/location_map_pic/social_hall.jpg', 'Social Hall'),
 (9, ' top:733px;left:610px', 'img/location_map_pic/buley-library.jpeg', 'Supply Office'),
-(10, ' top:450px;left:546px', 'img/location_map_pic/social_hall.jpg', 'HomeTech Building'),
-(13, ' top:555px;left:638px', 'img/location_map_pic/2018-02-07_2247.png', 'Administration Building'),
-(14, ' top:249px;left:196px', 'img/location_map_pic/ambacon.jpg', 'Ambacon Barangay Hall');
+(10, ' top:450px;left:546px', 'img/location_map_pic/social_hall.jpg', 'HomeTech Building');
 
 -- --------------------------------------------------------
 
@@ -263,15 +246,6 @@ CREATE TABLE `products` (
   `for_gate_pass` enum('Y','N') DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `created_on`, `created_by`, `project_id`, `unit_of_measurement`, `product_status`, `project_specific_id`, `for_gate_pass`) VALUES
-(88, 'Product 1', 103, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y'),
-(89, 'Product 2', 104, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y'),
-(90, 'Product 3', 105, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y');
-
 -- --------------------------------------------------------
 
 --
@@ -284,15 +258,6 @@ CREATE TABLE `product_price` (
   `created_updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `product_price`
---
-
-INSERT INTO `product_price` (`price_id`, `price`, `created_updated_on`, `created_by`) VALUES
-(103, 210, '2018-02-06 21:59:47', 5),
-(104, 210, '2018-02-06 21:59:47', 5),
-(105, 120, '2018-02-06 21:59:47', 5);
 
 -- --------------------------------------------------------
 
@@ -311,13 +276,6 @@ CREATE TABLE `projects` (
   `created_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `projects`
---
-
-INSERT INTO `projects` (`project_id`, `project_type`, `project_name`, `project_description`, `project_status`, `project_incharge`, `created_on`, `created_by`) VALUES
-(27, 'Non-Agricultural', 'Rubber', '                                        ', 'Y', 5, '2018-02-06 21:59:47', 5);
-
 -- --------------------------------------------------------
 
 --
@@ -334,22 +292,6 @@ CREATE TABLE `project_budget` (
   `created_by` int(11) DEFAULT NULL,
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `project_budget`
---
-
-INSERT INTO `project_budget` (`project_budget_id`, `project_specific_id`, `project_id`, `description`, `amount`, `release`, `created_by`, `created_on`) VALUES
-(260, '18-02064759', 27, 'Product 1 (production costs)', 1110, 'N', 5, '2018-02-06 21:59:47'),
-(261, '18-02064759', 27, 'Product 2 (production costs)', 2220, 'N', 5, '2018-02-06 21:59:47'),
-(262, '18-02064759', 27, 'Product 3 (production costs)', 1110, 'N', 5, '2018-02-06 21:59:47'),
-(263, '18-02064759', 27, 'Marketing Expenses ', 10, 'N', 5, '2018-02-06 21:59:47'),
-(264, '18-02064759', 27, 'Other Marketing Expenses ', 10, 'N', 5, '2018-02-06 21:59:47'),
-(265, '18-02064759', 27, 'Other Related Marketing Expenses ', 101, 'N', 5, '2018-02-06 21:59:47'),
-(266, '18-02064759', 27, 'Salaries other than Labor ', 10, 'N', 5, '2018-02-06 21:59:47'),
-(267, '18-02064759', 27, 'Other Administrative Expenses ', 10, 'N', 5, '2018-02-06 21:59:47'),
-(268, '18-02064759', 27, 'Registration, Fees, Licenses ', 10, 'N', 5, '2018-02-06 21:59:47'),
-(269, '18-02064759', 27, 'Others ', 10, 'N', 5, '2018-02-06 21:59:47');
 
 -- --------------------------------------------------------
 
@@ -368,13 +310,6 @@ CREATE TABLE `project_duration` (
   `project_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `project_duration`
---
-
-INSERT INTO `project_duration` (`project_duration_id`, `project_specific_id`, `from_date`, `to_date`, `created_by`, `created_on`, `status`, `project_id`) VALUES
-(8, '18-02064759', '2018-02-07', '2018-07-31', 5, '2018-02-06 21:59:47', 'Y', 27);
-
 -- --------------------------------------------------------
 
 --
@@ -392,14 +327,6 @@ CREATE TABLE `purchase_request` (
   `pr_no` varchar(45) DEFAULT NULL,
   `updated_on` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `purchase_request`
---
-
-INSERT INTO `purchase_request` (`purchase_request_id`, `entity_name`, `project_duration_id`, `purpose`, `created_on`, `created_by`, `approved`, `pr_no`, `updated_on`) VALUES
-(9, 'Southern Leyte State University', 8, 'For rubber project', '2018-02-06 22:03:07', 5, 'Y', '180242-0242', '2018-02-07 06:25:44'),
-(10, 'Southern Leyte State University', 8, 'For Rubber Project', '2018-02-07 18:36:43', 1, 'Y', '180203-3603', '2018-02-08 02:48:03');
 
 -- --------------------------------------------------------
 
@@ -422,15 +349,6 @@ CREATE TABLE `rental_items` (
   `transaction_id` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='			';
 
---
--- Dumping data for table `rental_items`
---
-
-INSERT INTO `rental_items` (`rental_id`, `item_name`, `item_code`, `item_description`, `rental_fee`, `unit`, `per_day`, `need_gate_pass`, `created_by`, `status`, `availability`, `transaction_id`) VALUES
-(10, 'Grass Cutter', '180225-0125', 'Brand:Honda,Color: Red', 100, 'set', 'Y', 'Y', 5, 'Y', 'Y', ''),
-(11, 'Projector', '180209-2509', 'Brand: Acer, Color: White', 100, 'set', 'Y', 'Y', 5, 'Y', 'Y', ''),
-(12, 'Tractor', '180214-4114', 'Brand: Honda', 200, 'item', 'Y', 'Y', 6, 'Y', 'Y', '');
-
 -- --------------------------------------------------------
 
 --
@@ -452,18 +370,6 @@ CREATE TABLE `rental_specific` (
   `no_of_days` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `rental_specific`
---
-
-INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`, `rental_fee_amount`, `updated_on`, `created_by`, `customer_id`, `transaction_id`, `date_returned`, `sales_id`, `paid`, `no_of_days`) VALUES
-(74, 10, '2018-02-09', 300, '2018-02-06 22:02:14', 5, 124, 'RE180206-0302', '2018-02-08', 113, 'Y', 3),
-(75, 10, '2018-02-09', 200, '2018-02-07 17:44:46', 1, 124, 'RE180207-2944', '2018-02-08', 115, 'Y', 2),
-(76, 11, '2018-02-10', 300, '2018-02-07 17:51:41', 1, 124, 'RE180207-5650', '2018-02-08', 116, 'Y', 3),
-(77, 10, '2018-02-16', 900, '2018-02-07 18:11:40', 1, 124, 'RE180207-3011', '2018-02-08', 117, 'Y', 9),
-(78, 12, '2018-02-13', 1200, '2018-02-07 18:42:34', 6, 125, 'RE180207-1042', '2018-02-08', 118, 'Y', 6),
-(79, 10, '2018-02-10', 300, '2018-02-07 18:55:36', 1, 125, 'RE180207-1955', '2018-02-08', 119, 'Y', 3);
-
 -- --------------------------------------------------------
 
 --
@@ -481,20 +387,6 @@ CREATE TABLE `sales_record` (
   `printing_status` enum('Y','N') DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `sales_record`
---
-
-INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_payment`, `date_save`, `user_id`, `customer_id`, `printing_status`) VALUES
-(112, '1242342311', 630, 'cash', '2018-02-06 22:00:56', 5, 124, 'Y'),
-(113, 'RE98654435233', 300, 'cash', '2018-02-06 22:02:14', 1, 124, 'N'),
-(114, '990075757665', 420, 'cash', '2018-02-06 22:22:28', 1, 124, 'N'),
-(115, '23423422333', 200, 'cash', '2018-02-07 17:44:46', 1, 124, 'N'),
-(116, '121232333', 300, 'cash', '2018-02-07 17:51:41', 1, 124, 'N'),
-(117, '234242424', 900, 'cash', '2018-02-07 18:11:40', 1, 124, 'N'),
-(118, '23424242', 1200, 'cash', '2018-02-07 18:42:34', 1, 125, 'N'),
-(119, '34553535', 300, 'cash', '2018-02-07 18:55:36', 1, 125, 'N');
-
 -- --------------------------------------------------------
 
 --
@@ -510,14 +402,6 @@ CREATE TABLE `sales_specific` (
   `transaction_id` varchar(45) DEFAULT NULL,
   `paid` enum('Y','N') DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `sales_specific`
---
-
-INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `amount`, `or_number`, `transaction_id`, `paid`) VALUES
-(14, 88, 3, 630, 112, '180206-1100', 'Y'),
-(15, 89, 2, 420, 114, '180206-1222', 'Y');
 
 -- --------------------------------------------------------
 
@@ -547,8 +431,7 @@ INSERT INTO `users` (`user_id`, `firstname`, `lastname`, `username`, `password`,
 (2, 'Sample', 'Sample', 'Sample', '96ÀžY‰ì:Wü¯D	‚', '098', 'Y', 'img/logo2.png', 2, '2018-01-18 22:34:41'),
 (3, 'Joselito', 'Rojas', 'jose', 'ÃBFª×:DñdÃ4ÉO²} ', 'My CCF case number', 'Y', NULL, 5, '2018-01-26 17:32:37'),
 (4, 'Wade', 'Lim', 'wade', 'v”×®%u¶pHÚ!:Ú', 'case number', 'Y', NULL, 3, '2018-01-31 16:51:14'),
-(5, 'Darlyn', 'Rasonable', 'Darlyn', '½ª;ÇXèQ6J#ùø', '098', 'Y', NULL, 2, '2018-02-04 03:11:21'),
-(6, 'Jomar', 'Delute', 'jomar', 'c­(¯kÙîâ¤ãÔ˜wåH', 'My CCF case number', 'Y', NULL, 2, '2018-02-07 18:40:18');
+(5, 'Darlyn', 'Rasonable', 'Darlyn', '½ª;ÇXèQ6J#ùø', '098', 'Y', NULL, 2, '2018-02-04 03:11:21');
 
 -- --------------------------------------------------------
 
@@ -562,68 +445,6 @@ CREATE TABLE `user_log` (
   `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `user_log`
---
-
-INSERT INTO `user_log` (`user_log_id`, `msg`, `created_on`, `user_id`) VALUES
-(37, 'Logout', '2018-02-06 21:26:42', 1),
-(38, 'Login', '2018-02-06 21:26:50', 5),
-(39, 'Logout', '2018-02-06 21:27:12', 5),
-(40, 'Login', '2018-02-06 21:27:19', 1),
-(41, 'Logout', '2018-02-06 21:27:50', 1),
-(42, 'Login', '2018-02-06 21:27:58', 5),
-(43, 'Made product selection with transaction id: 180206-1100', '2018-02-06 22:00:56', 5),
-(44, 'Made rental selection with transaction id: RE180206-0302', '2018-02-06 22:02:14', 5),
-(45, 'Logout', '2018-02-06 22:06:07', 5),
-(46, 'Login', '2018-02-06 22:09:36', 1),
-(47, 'Login', '2018-02-06 22:16:15', 1),
-(48, 'Saved payment for sales selection with OR number: 1242342311', '2018-02-06 22:18:28', 1),
-(49, 'Made product selection with transaction id: 180206-1222', '2018-02-06 22:22:28', 1),
-(50, 'Logout', '2018-02-06 22:40:07', 1),
-(51, 'Login', '2018-02-06 22:40:14', 1),
-(52, 'Logout', '2018-02-06 22:57:08', 1),
-(53, 'Login', '2018-02-06 22:57:12', 1),
-(54, 'Logout', '2018-02-06 22:57:17', 1),
-(55, 'Login', '2018-02-06 22:57:24', 5),
-(56, 'Login', '2018-02-07 14:18:53', 1),
-(57, 'Logout', '2018-02-07 14:23:33', 1),
-(58, 'Login', '2018-02-07 14:23:39', 5),
-(59, 'Login', '2018-02-07 14:25:40', 3),
-(60, 'Login', '2018-02-07 14:26:33', 1),
-(61, 'Saved payment for rental selection with OR number: RE98654435233', '2018-02-07 14:27:50', 3),
-(62, 'Saved payment for sales selection with OR number: 990075757665', '2018-02-07 14:34:31', 3),
-(63, 'Logout', '2018-02-07 14:52:44', 5),
-(64, 'Login', '2018-02-07 14:52:49', 1),
-(65, 'Logout', '2018-02-07 14:54:17', 1),
-(66, 'Logout', '2018-02-07 14:56:03', 1),
-(67, 'Login', '2018-02-07 14:56:09', 5),
-(68, 'Logout', '2018-02-07 15:12:45', 5),
-(69, 'Login', '2018-02-07 15:12:51', 1),
-(70, 'Logout', '2018-02-07 15:24:51', 1),
-(71, 'Login', '2018-02-07 15:24:57', 5),
-(72, 'Create rental item with an item code: 180209-2509, item name: Projector, item desc: Brand: Acer, Color: White, unit:set, rental fee: 100, status: Y, gate_pass=Y and rental fee per day: Y', '2018-02-07 15:26:05', 5),
-(73, 'Edit rental item with an item code: 180225-0125, item name: Grass Cutter, item desc: Brand:Honda,Color: Red, unit:set, rental fee: 100, status: Y, gate_pass=Y and rental fee per day: Y', '2018-02-07 15:30:21', 5),
-(74, 'Logout', '2018-02-07 17:13:50', 5),
-(75, 'Login', '2018-02-07 17:13:54', 1),
-(76, 'Made rental selection with transaction id: RE180207-2944', '2018-02-07 17:44:46', 1),
-(77, 'Made rental selection with transaction id: RE180207-5650', '2018-02-07 17:51:41', 1),
-(78, 'Saved payment for rental selection with OR number: 23423422333', '2018-02-07 18:02:54', 1),
-(79, 'Saved payment for rental selection with OR number: 121232333', '2018-02-07 18:03:31', 1),
-(80, 'Made rental selection with transaction id: RE180207-3011', '2018-02-07 18:11:40', 1),
-(81, 'Login', '2018-02-07 18:19:23', 5),
-(82, 'Logout', '2018-02-07 18:40:29', 5),
-(83, 'Login', '2018-02-07 18:40:51', 6),
-(84, 'Create rental item with an item code: 180214-4114, item name: Tractor, item desc: Brand: Honda, unit:item, rental fee: 200, status: Y, gate_pass=Y and rental fee per day: Y', '2018-02-07 18:41:46', 6),
-(85, 'Made rental selection with transaction id: RE180207-1042', '2018-02-07 18:42:34', 6),
-(86, 'Saved payment for rental selection with OR number: 23424242', '2018-02-07 18:44:42', 1),
-(87, 'Logout', '2018-02-07 18:46:24', 6),
-(88, 'Login', '2018-02-07 18:46:31', 5),
-(89, 'Saved payment for rental selection with OR number: 234242424', '2018-02-07 18:47:02', 1),
-(90, 'Made rental selection with transaction id: RE180207-1955', '2018-02-07 18:55:36', 1),
-(91, 'Saved payment for rental selection with OR number: 34553535', '2018-02-07 20:15:34', 1),
-(92, 'Logout', '2018-02-07 20:17:23', 1);
 
 -- --------------------------------------------------------
 
@@ -670,9 +491,9 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (363, 7, 'Y', 'N', 'X', 'X', 'X', 'X', 'X', 2),
 (364, 8, 'N', 'X', 'X', 'X', 'X', 'X', 'X', 2),
 (365, 9, 'Y', 'Y', 'Y', 'N', 'X', 'Y', 'Y', 2),
-(366, 10, 'N', 'X', 'X', 'X', 'X', 'N', 'X', 2),
+(366, 10, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 2),
 (367, 11, 'Y', 'N', 'X', 'Y', 'X', 'Y', 'X', 2),
-(368, 12, 'Y', 'N', 'X', 'X', 'X', 'X', 'X', 2),
+(368, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 2),
 (369, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 3),
 (370, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 3),
 (371, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 3),
@@ -699,7 +520,7 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (404, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 4),
 (417, 1, 'Y', 'X', 'X', 'N', 'N', 'N', 'X', 5),
 (418, 2, 'N', 'N', 'X', 'X', 'X', 'N', 'X', 5),
-(419, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 5),
+(419, 3, 'Y', 'X', 'X', 'X', 'X', 'N', 'X', 5),
 (420, 4, 'Y', 'N', 'N', 'N', 'N', 'N', 'Y', 5),
 (421, 5, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 5),
 (422, 6, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 5),
@@ -708,7 +529,7 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (425, 9, 'Y', 'Y', 'Y', 'Y', 'X', 'Y', 'Y', 5),
 (426, 10, 'N', 'X', 'X', 'X', 'X', 'N', 'X', 5),
 (427, 11, 'Y', 'N', 'X', 'Y', 'X', 'N', 'X', 5),
-(428, 12, 'Y', 'N', 'X', 'X', 'X', 'X', 'X', 5),
+(428, 12, 'Y', 'Y', 'X', 'X', 'X', 'X', 'X', 5),
 (429, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 7),
 (430, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 7),
 (431, 3, 'Y', 'X', 'X', 'X', 'X', 'Y', 'X', 7),
@@ -916,17 +737,17 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 --
 -- AUTO_INCREMENT for table `expenses_breakdown`
 --
 ALTER TABLE `expenses_breakdown`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `location_marks`
 --
 ALTER TABLE `location_marks`
-  MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_marks` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `module`
 --
@@ -941,62 +762,62 @@ ALTER TABLE `owner_info`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
-  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `project_budget`
 --
 ALTER TABLE `project_budget`
-  MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
+  MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=260;
 --
 -- AUTO_INCREMENT for table `project_duration`
 --
 ALTER TABLE `project_duration`
-  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
-  MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `rental_items`
 --
 ALTER TABLE `rental_items`
-  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `rental_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `rental_specific`
 --
 ALTER TABLE `rental_specific`
-  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 --
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
-  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `user_log`
 --
 ALTER TABLE `user_log`
-  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `user_role`
 --

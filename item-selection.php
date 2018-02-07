@@ -8,6 +8,7 @@
    <script type="text/javascript" src="assets/typeahead.bundle.js"></script>
    <script type="text/javascript" src="assets/handlebars.js"></script>
    <script type="text/javascript" src="assets/typeahead.js"></script>
+
    <link href="assets/typeahead.css" rel="stylesheet">  
    <style>
       #total_and_change h1{
@@ -57,12 +58,12 @@
                   <div class="row">
                      <div class="col-sm-6 form-group">
                           <label>Customer Name:</label>
-                          <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required />
+                          <input autocomplete="off" type="text" data="name" name="customer_name" placeholder="Type here.." class="form-control form-control-sm " required />
                                                
                     </div>
                     <div class="col-sm-6 form-group">
                           <label>Customer Address:</label>
-                          <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
+                          <input autocomplete="off" type="text" data="address" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
                           <br/>                
 
                     </div>
@@ -207,6 +208,8 @@
                        </div>
                 </script>
                 <script src="assets/requiredJS/item_selection.js"></script>
+                <script src="assets/requiredJS/auto_complete_input.js"></script>
+                
           
 
 <?php }else{ echo UnauthorizedOpenTemp(); } ?>

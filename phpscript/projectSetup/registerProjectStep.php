@@ -17,7 +17,7 @@ function insert($array, $proj_id,$find_expr,$created_by,$spec_id){
 						$desc=$val;
 					}else{		
 						 $extra=($find_expr=='production costs')?"(production costs)":"";		
-						 $insert="INSERT INTO project_budget(project_specific_id,project_id, description,amount,created_by) VALUES('$spec_id','{$proj_id}', '".$crud->escape_string($desc)." $extra',  '{$val}','{$created_by}');";
+						 $insert="INSERT INTO project_budget(project_specific_id,project_id, description,amount,created_by) VALUES('$spec_id','{$proj_id}', '".$crud->escape_string($desc)." $extra',  '".str_replace(",","",$val)."','{$created_by}');";
 						  
 					     $result = $crud->executeUnAutoCommit($insert);		
 					}			
@@ -38,7 +38,7 @@ function insertPriceForProduct($product_price,$project_id,$created_by,$spec_id){
 					if($key=="items"){
 						$product_name=$val;
 					}elseif($key=="prices"){
-						$prices=$val;
+						$prices=str_replace(",","",$val);
 					}elseif($key=="unit of measurement"){
 						$unit=$val;
 					}elseif($key=="gate pass value"){

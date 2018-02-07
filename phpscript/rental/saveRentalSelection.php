@@ -13,22 +13,34 @@ if(isset($_POST['rental_id'])){
 	    $number_of_days  = $_POST['no_of_days'];
 	    $date_to_return  = $_POST['date_to_return'];
 
-		$customer_name  = $crud->escape_string($_POST['customer_name']);
+		$customer_name     = $crud->escape_string($_POST['customer_name']);
 		$customer_address  = $crud->escape_string($_POST['customer_address']);
-		$transaction_id  = $crud->escape_string($_POST['transaction_id']);		
-		$total_amount  = str_replace(',', '', $crud->escape_string($_POST['total_amount']));
+		$transaction_id    = $crud->escape_string($_POST['transaction_id']);		
+		$total_amount      = str_replace(',', '', $crud->escape_string($_POST['total_amount']));
+		$lastInsertedId    =0;
 
 		$result=array();		
 
-	
-		 $result[]=$crud->executeUnAutoCommit("INSERT INTO customer(customer_name, customer_address) ".
+		 $c_id=$crud->getData("SELECT customer_id as c_id FROM customer 
+		 				 WHERE customer_name='$customer_name' 
+		 				 AND customer_address='$customer_address' LIMIT 1;");
+
+		 	 
+
+		 if(count($c_id)==0){
+		 	$result[]=$crud->executeUnAutoCommit("INSERT INTO customer(customer_name, customer_address) ".
 							 	   "VALUES ('$customer_name', '$customer_address');");
 		 
-		 $lastInsertedId= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
+		    $insert_id= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
+		    $lastInsertedId= $insert_id[0]['insert_id'];
+		 }else{
+		 	$lastInsertedId= $c_id[0]['c_id'];
+		 }
+		 
 
 		 if($lastInsertedId>0){
 
-		 		$customer_id = $lastInsertedId[0]['insert_id'];
+		 		$customer_id = $lastInsertedId;
 
 		 		$i=0;
 				while($i<count($rental_id)){

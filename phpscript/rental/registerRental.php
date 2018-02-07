@@ -30,7 +30,10 @@ if(isset($_POST['item_code'])){
 			$per_day='Y';
 		}
 		
+
+		$action="";
 		if(isset($_POST['item_id'])){
+			$action="Edit";
 			$item_id  = $crud->escape_string($_POST['item_id']);	
 					 		
 			 		$result = $crud->executeUnAutoCommit("UPDATE rental_items SET item_name='$item_name',
@@ -44,8 +47,8 @@ if(isset($_POST['item_code'])){
 			 																	  status='$status' WHERE rental_id='$item_id'");			
 			 
 		}else{
-			
-			 		$result = $crud->executeUnAutoCommit("INSERT INTO rental_items(item_name,
+			$action="Create";
+			$result = $crud->executeUnAutoCommit("INSERT INTO rental_items(item_name,
 			 																	  item_code,
 			 																	  item_description,
 			 																	  rental_fee,
@@ -65,9 +68,14 @@ if(isset($_POST['item_code'])){
 																			      	  '$status');");		
 			 
 		}
-		 
+		
+		$msg="$action rental item with an item code: $item_code, item name: $item_name, item desc: $item_desc, unit:$unit, rental fee: {$_POST['rental_fee']}, status: $status, gate_pass=$gate_pass and rental fee per day: $per_day";
 
-		 echo print_message($result, '<strong>Success:</strong> Rental Item successfully save.','<strong>Error:</strong> Product not saved, please contact the developer.');	
+		if(user_activity("$msg",$_SESSION['user_id'])){
+		 		echo print_message($result, '<strong>Success:</strong> Rental Item successfully save.','<strong>Error:</strong> Product not saved, please contact the developer.');	
+		}else{
+			    echo print_message(false, '','<strong>Error:</strong> Something wrong with activity log, Please contact the developer.');
+		}
 
 }
 ?>

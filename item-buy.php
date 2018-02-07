@@ -112,12 +112,12 @@
             <div class="row">
                <div class="col-sm-6 form-group">
                     <label>Customer Name:</label>
-                    <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_name']:$rental[0]['customer_name'];?>" />
+                    <input  <?php echo ($found)?"readonly":"";?> autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_name']:$rental[0]['customer_name'];?>" />
                                          
               </div>
               <div class="col-sm-6 form-group">
                     <label>Customer Address:</label>
-                    <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_address']:$rental[0]['customer_address'];?>"/>    
+                    <input  <?php echo ($found)?"readonly":"";?> autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_address']:$rental[0]['customer_address'];?>"/>    
                     <br/>                
 
               </div>

@@ -27,6 +27,7 @@
                                   <th>Customer Name</th>
                                   <th>Customer Address</th>
                                   <th>Rented Items</th>
+                                  <th>Date Rented</th>
                                   
                                   <th>Command</th>
                             </tr>
@@ -38,9 +39,7 @@
         </div>
       <script src="assets/datatables/jquery.dataTables.js"></script>
       <script src="assets/datatables/dataTables.bootstrap4.js"></script> 
-
       <script>   
-
           $(document).ready(function(){       
                   var dataTable = $('#dataTable').DataTable( {
                                                       "processing": true,
@@ -54,8 +53,7 @@
                                                               targets: [3,4], // column or columns numbers
                                                               orderable: false,  // set orderable for selected columns
                                                       }]
-                                  });  
-                 
+                                  });                   
           });
       </script>
 <?php }else{ echo UnauthorizedOpenTemp(); } ?>

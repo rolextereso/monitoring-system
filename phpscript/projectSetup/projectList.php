@@ -76,7 +76,7 @@ foreach($result as $key =>$row){
 	$nestedData[] = $row["project_type"];
 	$nestedData[] = $row["incharge"];
 	$nestedData[] = ($row["product_status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
-	$nestedData[] = "&#8369; ".$row["price"];
+	$nestedData[] = "&#8369; ".number_format($row["price"],2);
 	$nestedData[] = "$edit_product";
 	
 	$data[] = $nestedData;

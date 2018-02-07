@@ -17,7 +17,7 @@ if(isset($_POST['transaction_id'])){
 		 								  AND paid='N';");
 
 		if($paid[0]['unpaid']>=1){
-			 echo print_message(false, '<strong>Success:</strong> Returned selected item successfully save.','<strong>Unable to process:</strong> Pay first the rental fee before to return an item.',$rental_id);
+			 echo print_message(false, '','<strong>Unable to process:</strong> Pay first the rental fee before to return an item.',$rental_id);
 
 		}else{
 			$i=0;

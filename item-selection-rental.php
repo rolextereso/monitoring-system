@@ -54,12 +54,12 @@
                   <div class="row">
                      <div class="col-sm-6 form-group">
                           <label>Customer Name:</label>
-                          <input autocomplete="off" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required />
+                          <input autocomplete="off" data="name" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required />
                                                
                     </div>
                     <div class="col-sm-6 form-group">
                           <label>Customer Address:</label>
-                          <input autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
+                          <input autocomplete="off" type="text" data="address" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
                           <br/>                
 
                     </div>
@@ -245,6 +245,7 @@
                     }); 
                 
                 </script>
+                <script src="assets/requiredJS/auto_complete_input.js"></script>
 <?php }else{ echo UnauthorizedOpenTemp(); } ?>
     </main>
           

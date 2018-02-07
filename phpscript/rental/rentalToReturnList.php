@@ -24,7 +24,8 @@ $sql = "SELECT
 			    ri.transaction_id,   
 				c.customer_name,
 				c.customer_address,
-                GROUP_CONCAT(ri.item_name,'(',ri.item_description,')') as rented_items
+                GROUP_CONCAT(ri.item_name,'(',ri.item_description,')') as rented_items,
+                updated_on
                 FROM rental_items ri
 LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
 INNER JOIN customer c ON c.customer_id=rs.customer_id 
@@ -64,7 +65,8 @@ foreach($result as $key =>$row){
 	$nestedData[] = $row["transaction_id"];
 	$nestedData[] = $row["customer_name"];        
 	$nestedData[] = $row["customer_address"];
-	$nestedData[] = $row["rented_items"];                
+	$nestedData[] = $row["rented_items"];   
+	$nestedData[] = date('F d, Y h:i:s a',strtotime($row["updated_on"]));               
 	$nestedData[] = ($access)?"<a href='rental-return.php?t_id=".$row['transaction_id']."' title='Return Items'><i class='fa fa-arrow-left'></i></a>":"";
 	
 	$data[] = $nestedData;

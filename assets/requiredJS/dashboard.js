@@ -17,6 +17,15 @@ $(document).ready(function(){
             };
             
 
+            function toogleDataSeries(e){
+                    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                      e.dataSeries.visible = false;
+                    } else{
+                      e.dataSeries.visible = true;
+                    }
+                    chart.render();
+            }
+
             function lineGraphByProduct(){
                 var product=$("#product").val();
                 var datefrom=$("#datefrom").val();
@@ -97,6 +106,8 @@ $(document).ready(function(){
                                 });
 
                               chart.render();
+
+                              //toogleDataSeries();
                       });
              
 
@@ -138,6 +149,8 @@ $(document).ready(function(){
                                 });
                             
                             chart.render();  
+
+                            //toogleDataSeries();
                             setTimeout(function(){pieChart()}, 60000);
               });          
             }
@@ -240,11 +253,4 @@ $(document).ready(function(){
                   return (str2.concat(str)).concat(str3);
             }
 
-            function toogleDataSeries(e){
-                    if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-                      e.dataSeries.visible = false;
-                    } else{
-                      e.dataSeries.visible = true;
-                    }
-                    chart.render();
-            }
+            

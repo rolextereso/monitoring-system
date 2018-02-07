@@ -1,7 +1,6 @@
 <?php 
     require_once('layout/header.php'); 
     require_once('layout/nav.php');
-
 ?>
     <style>
         .card p{
@@ -57,7 +56,7 @@ if(access_role("Admin Setting","view_page",$_SESSION['user_type'])){
                                 <div class="card-body" style="text-align: center;">
                                       <h4 class="card-title">User Activity</h4>
                                       <p class="card-text">This module used to record user activity in the system.<br/><br/></p>
-                                      <a href="#" class="btn btn-primary">View Setting</a>
+                                      <a href="user_logs.php" class="btn btn-primary">View Setting</a>
                                 </div>
                             </div>
                         </div>

@@ -21,7 +21,7 @@ $sales_query = "SELECT SUM(amount) as amount, p.project_name FROM projects p
 					INNER JOIN  products pd ON pd.project_id=p.project_id	
 					INNER JOIN  sales_specific ss ON ss.product_id=pd.product_id	
 					INNER JOIN sales_record sr ON sr.sales_id = ss.or_number
-					WHERE sr.or_number!='' OR sr.or_number IS NOT NULL GROUP BY p.project_id ORDER BY p.project_id;";   
+					WHERE sr.or_number!=''  GROUP BY p.project_id ORDER BY p.project_id;";   
 
 $sales = $crud->getData($sales_query);
 
