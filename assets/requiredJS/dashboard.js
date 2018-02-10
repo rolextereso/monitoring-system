@@ -242,7 +242,10 @@ $(document).ready(function(){
                   var total = 0 ;
                   var str3;
                   var str2 ;
+
+                  var
                   for (var i = 0; i < e.entries.length; i++){
+                  
                     var str1 = "<span style= \"color:"+e.entries[i].dataSeries.color + "\">" + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y.format(2) + "</strong> <br/>" ;
                     
                     str = str.concat(str1);

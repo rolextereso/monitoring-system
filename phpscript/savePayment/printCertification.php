@@ -167,6 +167,16 @@
 					
 				</table>
 				<br/>
+		
+
+				<div style="border-bottom: 1px solid silver;
+						    margin: 0 auto;
+						    width: 80%;
+						    height: 81px;
+						    padding:3px;
+    						""><small>Please write th OR Number of the Official Reciept <br/>(Countersigned by the cashier)</small>
+					&nbsp;
+				</div>
 				<br/>
 				<div id="footer">
 					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
