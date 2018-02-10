@@ -185,7 +185,7 @@
 										var total=0.00;
 
 										$(selector+" tr:not(.hide) td."+attr).each(function() { 					 	
-					                    		total += parseFloat($(this).text().replace(',',''));
+					                    		total+=parseFloat($(this).text().replace(/,/g,''));
 					                    });
 					                    if(isNaN(total)){
 					                    			$(selector+" td.t"+attr).text(0);

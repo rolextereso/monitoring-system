@@ -8,7 +8,8 @@
                                 LEFT JOIN project_duration pd ON pd.project_id=p.project_id
                                 WHERE pd.status='Y' AND p.created_by $user_id
                                 ");
-    $found=true;      
+    $funds = $crud->getData("SELECT * FROM funds");
+         
 ?>   
 
 <style>
@@ -61,14 +62,33 @@
                                                         <input type="text" required=""  class="form-control form-control-sm" name="entity_name">
                                                   </div>
                                                   <div class="form-group">
-                                                        <label >Projects:</label>
-                                                        <select class="form-control form-control-sm" name="projects" required="">
-                                                          <?php foreach ($projects as $proj){?>
-                                                            <option value="<?php echo $proj['project_duration_id'];?>"><?php echo $proj['project_name'];?>
+                                                        <label >Funds:</label>
+                                                        <select class="form-control form-control-sm" name="funds" >
+                                                            <option value="">Select funds</option>
+                                                          <?php foreach ($funds as $fund_){?>
+                                                            <option value="<?php echo $fund_['id'];?>"><?php echo $fund_['funds'];?>
                                                             </option>
                                                           <?php } ?>
                                                         </select>
                                                   </div>  
+                                                  <div class="form-group">
+                                                        <label >Projects:</label>
+                                                        <select class="form-control form-control-sm" name="projects" required="">
+                                                            <option value="">Select project</option>
+                                                          <?php foreach ($projects as $proj){?>
+                                                            <option value="<?php echo $proj['project_duration_id']."_".$proj['project_id'];?>"><?php echo $proj['project_name'];?>
+                                                            </option>
+                                                          <?php } ?>
+                                                        </select>
+                                                  </div> 
+                                                  
+                                                  <div class="form-group" style="display: none;" id="target_expenses">
+                                                        <label >Target Expenses:</label>
+                                                        <select class="form-control form-control-sm" name="target_expenses" required="">
+                                                               <option value="">Select target expenses</option>
+                                                          
+                                                        </select>
+                                                  </div> 
                                                   <div class="form-group">
                                                      <label>Purpose:</label>
                                                      <textarea required="" rows="5" cols="1" class="form-control " name="purpose" ></textarea>
@@ -158,9 +178,7 @@
                                 currentVal = currentVal.slice(0, -1);                      }
 
                             $(this).val(replaceCommas(currentVal));
-                    });       
-
-                    
+                    });  
               
             });
 
@@ -182,7 +200,7 @@
                                                     $.ajax({
                                                         type: "POST",
                                                         url: url,
-                                                        dataType   : 'json',
+                                                        dataType :'json',
                                                         data: $("#form").serialize(),
                                                         success: function (data)
                                                         {
@@ -204,8 +222,35 @@
               
           });
 
+            $('[name="projects"]').change(function(){
+                  search_by($(this))
+            });   
+
   });
 
+  function search_by($el){
+    
+        if($($el).val()==""){
+            $("#target_expenses").hide();
+        }else{
+           $("#target_expenses").show();
+              $.ajax({
+                    type: "POST",
+                    url: "phpscript/purchase_request/getSearchby.php",
+                    dataType   : 'json',
+                    data: {proj_id:$($el).val()},
+                    success: function (data)
+                    {     var $option="";
+                          $('.option').remove();
+                          $.each(data, function(key, value){                                                     
+                               $option+="<option class='option' value='"+value[0]+"'>"+value[1]+"</option>";                                                    
+                          });  
+                          $("[name='target_expenses']").append($option);
+                    }
+                });
+        }                         
+                 
+  }
 
 </script>
   <?php }else{ echo UnauthorizedOpenTemp(); } ?>

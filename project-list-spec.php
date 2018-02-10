@@ -82,7 +82,7 @@
                                     url :"phpscript/projectSetup/projectListspec.php?id="+$("#id").val(),
                                   },
                                   columnDefs: [{
-                                                  targets: [1,2,3,4,5], // column or columns numbers
+                                                  targets: [1,2,3,4,5,6], // column or columns numbers
                                                   orderable: false,  // set orderable for selected columns
                                               }]
                                 } ); 

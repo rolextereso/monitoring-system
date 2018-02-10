@@ -5,8 +5,6 @@
   }
   include_once("classes/function.php");
 ?>
-
-
 <!DOCTYPE html>
 <!-- saved from url=(0054)https://getbootstrap.com/docs/4.0/examples/dashboard/# -->
 <html lang="en">

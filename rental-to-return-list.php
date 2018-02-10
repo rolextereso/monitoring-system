@@ -27,8 +27,7 @@
                                   <th>Customer Name</th>
                                   <th>Customer Address</th>
                                   <th>Rented Items</th>
-                                  <th>Date Rented</th>
-                                  
+                                  <th>Date Rented</th>                                  
                                   <th>Command</th>
                             </tr>
                       </thead>

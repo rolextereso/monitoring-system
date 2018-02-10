@@ -63,12 +63,26 @@
             $from=date("M Y", strtotime($duration[0]['from_date']));
             $project_name=$project[0]['project_name'];
 
-            $total_expenses = $crud->getData("SELECT 
-                                        CASE WHEN SUM(qty*amount_per_unit) IS NULL THEN 0 ELSE SUM(qty*amount_per_unit) END as total_expenses 
-                                        FROM purchase_request pr
-                                        LEFT JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id
-                                        WHERE project_duration_id=$project_duration_id");
+            // $total_expenses = $crud->getData("SELECT 
+            //                             CASE WHEN SUM(qty*amount_per_unit) IS NULL THEN 0 ELSE SUM(qty*amount_per_unit) END as total_expenses 
+            //                             FROM purchase_request pr
+            //                             LEFT JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id
+            //                             WHERE project_duration_id=$project_duration_id");
                   
+            $actual_expenses = $crud->getData("SELECT 
+                                              CASE WHEN SUM(eb.qty*eb.amount_per_unit) IS NULL 
+                                                     THEN 0 
+                                                    ELSE SUM(eb.qty*eb.amount_per_unit) 
+                                                    END AS expenses_tendered FROM project_budget pb
+                                              LEFT JOIN project_duration pd ON pb.project_specific_id =pd.project_specific_id
+                                              LEFT JOIN purchase_request pr ON pr.project_budget_id=pb.project_budget_id
+                                              LEFT JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id
+                                              WHERE pd.project_specific_id='$b_id' 
+                                              AND pd.status='Y' 
+                                              GROUP BY pb.project_budget_id 
+                                              ORDER BY pb.project_budget_id ASC;");
+
+          
     }
     
 ?>   
@@ -102,20 +116,24 @@
                     <span>for the month <?php echo $from;?> to <?php echo $to;?></span>
                 </div>
                 <br/>
-                 <table class="table table-sm table-dark table-striped">
+                 <table class="table table-sm table-light table-striped">
                     <tr>
                         <th>Expenses</th>
                         <th>Planned Budget</th>
+                        <th>Actual Expenses</th>
                     </tr>
                     
                         <?php $total=0;
+                              $total_actual_expenses=0;
                               $record=populateRecord($duration_data);
                               for($i=0;$i<count($record);$i++){
                                     echo "<tr>";
                                     echo "<td>".$record[$i]['name']."</td>";
                                     for($y=0; $y<count($record[$i]['data']);$y++){
                                       $total+=$record[$i]['data'][$y];
+                                      $total_actual_expenses+=$actual_expenses[$i]['expenses_tendered'];
                                       echo "<td>".number_format($record[$i]['data'][$y],2)."</td>";
+                                      echo "<td>".number_format($actual_expenses[$i]['expenses_tendered'],2)."</td>";
                                     }
                                     echo "</tr>";
                               }
@@ -123,11 +141,13 @@
                     <tr>
                         <td class="planned_budget">Total Planned Budget Expenses: </td>
                         <td class="planned_budget"><?php echo number_format($total,2);?></td>
+                        <td class="planned_budget"></td>
 
                     </tr>
                     <tr>
-                        <td class="present_expenses">Total Present Expenses: </td>
-                        <td class="present_expenses"><?php echo number_format($total_expenses[0]['total_expenses'],2);?></td>
+                        <td class="present_expenses">Total Actual Expenses: </td>
+                        <td class="present_expenses"></td>
+                        <td class="present_expenses"><?php echo number_format($total_actual_expenses,2);?></td>
 
                     </tr>
                   

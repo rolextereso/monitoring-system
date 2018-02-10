@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2018 at 09:18 PM
+-- Generation Time: Feb 10, 2018 at 01:14 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.8
 
@@ -127,6 +127,286 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `chartaccount`
+--
+
+CREATE TABLE `chartaccount` (
+  `AccountID` varchar(20) NOT NULL,
+  `Description` varchar(250) NOT NULL,
+  `usefor` varchar(25) DEFAULT NULL,
+  `fund` varchar(45) DEFAULT NULL,
+  `forstudent` varchar(2) DEFAULT NULL,
+  `Status` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `chartaccount`
+--
+
+INSERT INTO `chartaccount` (`AccountID`, `Description`, `usefor`, `fund`, `forstudent`, `Status`) VALUES
+('644-1', 'Tuition Fee', '0,1', '5', '1', 'Inactive'),
+('606', 'Reg./Entrance Fee', '0,1', '5', '1', 'Inactive'),
+('611', 'Affiliation/Science Laboratory', '0,1', '5', '1', 'Inactive'),
+('678-1B', 'Miscellanous Income-Computer Laboratory', '0,1', '5', '1', 'Inactive'),
+('618', 'Library Fee', '0,1', '5', '1', 'Inactive'),
+('619', 'Medical/Dental Fee', '0,1', '5', '1', 'Inactive'),
+('612-1', 'Athletic Fee', '0,1', '5', '1', 'Inactive'),
+('678-6', 'Internet Fee', '0,1', '5', '1', 'Inactive'),
+('629', 'Fines and Penalties', '0,1', '5', '1', 'Inactive'),
+('615-1', 'Diploma', '0,1', '5', '1', 'Inactive'),
+('615-2', 'Graduation Fee', '0,1', '5', '1', 'Inactive'),
+('424', 'Due to Other Funds', '5', '5', '', 'Inactive'),
+('424-2', 'NSTP Fee', '0,1', '5', '1', 'Inactive'),
+('424- 11-2', 'Student ID', '0,1', '5', '1', 'Inactive'),
+('424-11-3', 'School Organ', '0,1', '5', '1', 'Inactive'),
+('424-11-4', 'Student Insurance', '0,1', '5', '1', 'Inactive'),
+('424-7', 'Jobs Fair Fee', '0,1', '5', '1', 'Inactive'),
+('424-11-5', 'SCUAA Fee', '0,1', '5', '1', 'Inactive'),
+('424-11-6', 'Reg. RD & E', '0,1', '5', '', 'Inactive'),
+('424-8', 'Jr. Graft Watch', '0,1', '5', '', 'Active'),
+('612-2', 'Cultural Fee', '0,1', '5', '1', 'Inactive'),
+('628', 'Other Service Income', '5', '5', '', 'Inactive'),
+('628-5', 'INC Fee', '0,1', '5', '', 'Inactive'),
+('628-15', 'Enrollment Form/Adj. Form/Other Forms', '0,1', '5', '', 'Inactive'),
+('628-10', 'Exam Fee', '0,1', '5', '', 'Inactive'),
+('628-11B', 'Authentication Fee', '0,1', '5', '', 'Inactive'),
+('628-1', 'Certification Fee/Employee', '0,1', '5', '', 'Inactive'),
+('628-7', 'Refund - Travel', '0,1', '5', '', 'Inactive'),
+('628-17', 'Honorable Dismissal', '0,1', '5', '', 'Inactive'),
+('628-16', 'Certificate of Graduation', '0,1,3', '5', '', 'Inactive'),
+('628-18', 'Student Handbook', '0,1', '5', '', 'Inactive'),
+('648', 'Other Business Income', '5', '5', '', 'Inactive'),
+('648-1', 'Intenet Cafe Collection', '0,1', '5', '', 'Inactive'),
+('648-2', 'Copra', '0,1', '5', '', 'Inactive'),
+('648-2-1', 'Coconut Trunk', '0,1', '5', '', 'Inactive'),
+('648-2-2', 'Coconut Shell', '0,1', '5', '', 'Inactive'),
+('648-2-3', 'Charcoal', '0,1', '5', '', 'Inactive'),
+('648-4-3', 'Bamboo', '0,1', '5', '', 'Inactive'),
+('648-4-4', 'Palay', '0,1', '5', '', 'Inactive'),
+('648-15', 'Vermi Cast', '0,1', '5', '', 'Inactive'),
+('648-15-1', 'Vermi Worms', '0,1', '5', '', 'Inactive'),
+('648-7', 'Eggs/Poultry', '0,1', '5', '', 'Inactive'),
+('648-4-2', 'Vegetables', '0,1,2,3', '5', '', 'Inactive'),
+('648-10', 'UCPB Incentives', '0,1', '5', '', 'Inactive'),
+('648-5-1', 'Cow', '0,1', '5', '', 'Inactive'),
+('648-5-2', 'Buffalo', '0,1', '5', '', 'Inactive'),
+('648-2-4', 'Coconut Seednuts', '0,1', '5', '', 'Inactive'),
+('648-6-1', 'Pineapple Suckers', '0,1', '5', '', 'Inactive'),
+('624', 'Transcript of Records', '0,1', '5', '', 'Inactive'),
+('635', 'Dormitory Fee', '0,1', '5', '', 'Inactive'),
+('628-19', 'Misc. Fees (Postage & Envelop)', '0,1', '5', '1', 'Inactive'),
+('611-3', 'Agriculture Laboratory', '0,1', '5', '1', 'Inactive'),
+('628-5A', 'INC Form', '0,1', '5', '', 'Inactive'),
+('628-9B', 'CAV-TOR', '0,1', '5', '', 'Inactive'),
+('424-11-11', 'Raffle Draw (9th Carter Day Celeb.)', '0,1', '5', '', 'Inactive'),
+('416-19A', 'Due to Other NGA\'s-Congressional Scholar', '0,1,3', '6', '1', 'Inactive'),
+('416-19D', 'Due to Other NGA\'s-LPGMA Scholar', '0,1,3', '6', '1', 'Inactive'),
+('642-6-1', 'Rent Income - Dump Truck', '0,1,2,3', '5', '', 'Active'),
+('642-6-2', 'Rent Income - Grass  Cutter', '0,1,2,3', '5', '', 'Inactive'),
+('628-20', 'Request to Offer Subject', '0,1,3', '5', '', 'Inactive'),
+('648-4-2B', 'Banana', '0,3', '5', '', 'Inactive'),
+('424-11-10', '9th Charter Day/Meals & Snacks', '0,1,3', '5', '', 'Inactive'),
+('424-11-7', '9th Charter Day/Polo Shirt', '0,1,3', '5', '', 'Inactive'),
+('624-1', 'Form 137A', '0,3', '5', '', 'Inactive'),
+('428-11-8', 'School Uniform', '0,3', '5', '', 'Inactive'),
+('424- 11-1', 'Validation Sticker', '0,1', '5', '1', 'Inactive'),
+('613-1', 'Clearance  / Student', '0,1,3', '5', '', 'Inactive'),
+('613-2', 'Certification Fee / Good Moral', '0,1,3', '5', '', 'Inactive'),
+('642-6-3', 'Rent Income - Mixer', '0,3', '5', '', 'Inactive'),
+('648-5-3', 'Goat', '0,3', '5', '', 'Inactive'),
+('148', 'Advances to Officers & Employees (Travel Refund)', '0,1,2,3', '8', '', 'Inactive'),
+('648-2-5', 'Young Coconut', '0,3', '5', '', 'Inactive'),
+('648-4-2C', 'Camote', '0,3', '5', '', 'Inactive'),
+('416-16F', 'Needs Assessment Design', '0,1,2,3', '5', '', 'Inactive'),
+('424-11-2A', 'Student ID Holder w/ Sling', '0,2,3', '5', '1', 'Inactive'),
+('648-16A', 'School Share/Coffee Vending Machine', '0,2,3', '5', '', 'Inactive'),
+('648-5-3A', 'Goat Manure', '0,1,2,3', '5', '', 'Inactive'),
+('642-5', 'Rentals/Computer Lab. Room', '0,1,2,3', '5', '', 'Inactive'),
+('424-11-15', 'Hinunangan Beach Park Foundation-Scholars', '0,1,2,3', '5', '', 'Inactive'),
+('613-3', 'Certification Fee - Student', '0,1,3', '5', '', 'Inactive'),
+('628-4', 'Misc. Fees (Test Paper)', '0,1,2,3', '5', '1', 'Inactive'),
+('628-21', 'Payment for damage borrowed books', '0,1,2,3', '5', '', 'Inactive'),
+('648-3', 'Sale of Waste Materials', '0,1,2,3', '5', '', 'Inactive'),
+('648-16F', 'Share/ARCESS Project', '0,1,2,3', '5', '', 'Inactive'),
+('648-4-2D', 'Tilanggit', '0,1,2,3', '5', '', 'Inactive'),
+('628-22', 'Proceeds/Pageant', '0,1,2,3', '5', '', 'Inactive'),
+('642-6-4', 'Rental Water Pump', '0,1,2,3', '5', '', 'Inactive'),
+('648-4-2E', 'Flowers', '0,1,2,3', '5', '', 'Inactive'),
+('416-16E', 'Introduction of Recommended Rubber Clones for Adaptation & Commercialization in Eastern Visayas', '0,1,2,3', '5', '', 'Inactive'),
+('648-17', 'Firewood', '0,1,2,3,4', '5', '', 'Inactive'),
+('628-23', 'Penalties(Faculty/Employee)', '0,1,2,3', '5', '', 'Inactive'),
+('416-16(E)', 'Rubber Seedlings', '0,1,2,3', '5', '', 'Inactive'),
+('424-11-16', 'Counterpart - Graduation', '0,1,2,3', '5', '', 'Inactive'),
+('613-4', 'Copy of Grades', '0,1,2,3', '5', '', 'Inactive'),
+('628-24', 'Permit - Student', '0,1,2,3', '5', '', 'Inactive'),
+('642-6-5', 'Rental of Chairs/Tables', '0', '5', '', 'Inactive'),
+('648-20', 'Penalty-Astray Animals', '0,1,2,3', '5', '', 'Inactive'),
+('642-6-6', 'Rental Social Hall', '0,1,2,3', '5', '', 'Inactive'),
+('628-1A', 'Service Record', '0,1,2,3', '5', '', 'Inactive'),
+('428-11-8A', 'P.E. Uniform', '0,1,2,3', '5', '1', 'Inactive'),
+('628-3', 'Xerox Copy', '0,1,2,3', '5', '', 'Inactive'),
+('40201990 00', 'Other Service Income', '5', '5', '', 'Active'),
+('40201990 99 1', 'Other Service Income - Photocopy', '0,1,2,3,4', '5', '', 'Active'),
+('642-6-7', 'Rental Thresher', '0,1,2,3', '5', '', 'Inactive'),
+('416-20', 'ESGP-PA Financial Assistance', '0,1,2,3,4', '5', '', 'Inactive'),
+('648-21', 'Other Refunds', '0,1,2,3,4', '5', '', 'Inactive'),
+('648-2-6', 'Coconut Seedling', '0,1,2,3', '5', '', 'Inactive'),
+('648-16G', 'Share/Garden-Student', '0,1,2,3', '5', '', 'Inactive'),
+('416-21', 'CHED Scholar - Tulong Dunong Program', '0,1,2,3,4', '5', '', 'Inactive'),
+('628-25', 'Evaluation Fee', '0,1,2,3', '5', '', 'Inactive'),
+('628-26', 'Certified True Copy', '0', '5', '', 'Inactive'),
+('648-22', 'MV Gate Pass Sticker', '0,1', '5', '', 'Inactive'),
+('648-7-1', 'Poultry/Broiler', '0,1,2,3', '5', '', 'Inactive'),
+('416-22', 'OWWA Scholarship Program', '0,1,2,3', '5', '', 'Inactive'),
+('642-6-8', 'Rental Tractor', '0,1,2,3', '5', '', 'Inactive'),
+('628-27', 'Documentary Stamp', '0,1,2,3', '5', '', 'Inactive'),
+('648-14', 'Misc. Income - Diploma Cover', '0,1,2,3,4', '5', '', 'Inactive'),
+('4 02 02 990 99', 'Other Business Income', '5', '5', '', 'Active'),
+('4 02 02 990 99 a', 'Internet Cafe Collection', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b', 'Copra', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b1', 'Coconut Trunk', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b2', 'Coconut Shell', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b3', 'Charcoal', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b4', 'Coconut Seednuts', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b5', 'Young Coconut', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 b6', 'Coconut Seedling', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 c', 'Sales of Waste Products', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d', 'Sales of Agricultural Farm Products', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d2', 'Vegetables', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d3', 'Banana', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d4', 'Camote', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d5', 'Flower', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d6', 'Bamboo', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 d7', 'Palay', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 e', 'Sales of Livestock', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 e1', 'Cow', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 e2', 'Buffalo', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 e3', 'Goat', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 e4', 'Goat Manure', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 f', 'Pineapple Sucker', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 g', 'Poultry - Egg', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 g1', 'Poultry - Broiler', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 h', 'use of Vehicle', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 i', 'Bookbinding', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 j', 'UCPB Incentive', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 k', 'Student\'s Uniform', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 k1', 'P.E. Uniform', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 L', 'Picturials', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 m', 'Yearbook', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 n', 'Diploma Cover', '0,1,2,3', '5', '1', 'Active'),
+('4 02 02 990 99 o', 'Vermi Cast', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 o1', 'Vermi Worms', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 p', 'Share - Coffee Vending Machine', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 p1', 'Share - ARCESS Project', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 p2', 'Share - Garden (Student\'s)', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 q', 'Firewood', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 r', 'Penalty - Astray Animals', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 s', 'Other Refund', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 990 99 t', 'MV Gate Pass Sticker', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99', 'Other Service Income', '5', '5', '', 'Active'),
+('4 02 01 990 99 a', 'Certification Fee - Employee', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 a1', 'Service Records', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 b', 'Mimeographing Services', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 c', 'Photocopying Services', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 d', 'Misc. Fees / Test Paper', '0,1,2,3', '5', '1', 'Active'),
+('4 02 01 990 99 e', 'INC Fee', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 e1', 'INC Form', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 g', 'Travel Refund', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 i2', 'CAV - TOR', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 i', 'CAV', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 i1', 'CAV - Diploma', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 j', 'Exam Fee', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 k', 'Authentication Fee', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 k1', 'Authentication Fee - Diploma', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 k2', 'Authentication Fee - TOR', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 k3', 'Authentication Fee - OJT Certification', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 k4', 'Authentication Fee - Other Documents', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 m', 'Enrollment/Adjustment/Other Forms', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 n', 'Certificate of Graduation', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 o', 'Honorable Dismissal', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 L', 'Student Handbook', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 p', 'Misc. Fees / Postage & Envelop', '0,1,2,3', '5', '1', 'Active'),
+('4 02 01 990 99 q', 'Request to Offer Subject', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 r', 'Payment for Damage Borrowed Books', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 s', 'Proceeds/Pageant', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 t', 'Penalties - Faculty/Employee', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 u', 'Permit - Student', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 v', 'Evaluation Fee', '0,1,2,3', '5', '', 'Active'),
+('4 02 01 990 99 x', 'Documentary Stamp', '0,1,2,3', '5', '1', 'Active'),
+('4 02 02 010 01', 'Tuition Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('2 04 01 010 00 h', 'Trust Liabilities - Hinunangan Beach Park Foundation', '0,1,2,3,4', '7', '', 'Active'),
+('4 02 02 010 02 b', 'Income Collected from Students-Registration Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 a', 'Income Collected from Students-Permit Fees', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 010 02 c', 'Income Collected from Students-Science Laboratory', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 d', 'Income Collected from Students-Agriculture Laboratory', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 e', 'Income Collected from Students-Athletic Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 f', 'Income Collected from Students-Cultural Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 g', 'Income Collected from Students-Diploma Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 h', 'Income Collected from Students-Graduation Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 i', 'Income Collected from Students-Library Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 j', 'Income Collected from Students-Medical/Dental/Laboratory Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 99 a', 'Other School Fees-Clearance/Certification Fees', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 010 99 b', 'Other School Fees-Transcript of Records Fees', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 01 140 00', 'Fines & Penalties - Service Income', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 130 00', 'Income from Hostels/Dormitories & Other Like Facilities', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 050 00', 'Rent/Lease Income', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 010 02 k', 'Income Collected from Students-Computer Laboratory', '0,1,2,3,4', '5', '1', 'Active'),
+('4 02 02 010 02 L', 'Income Collected from Students-Internet Fees', '0,1,2,3,4', '5', '1', 'Active'),
+('2 04 01 010 00 a1', 'Trust Liabilities - NSTP-ROTC', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 a2', 'Trust Liabilities - NSTP-CWTS', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 b', 'Trust Liabilities-Students\\\' Insurance', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 c', 'Trust Liabilities - Students\\\' ID', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 c1', 'Trust Liabilities - Validation Sticker', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 c2', 'Trust Liabilities - Students\\\' ID Holder with Sling', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 0O', 'Guaranty/Security Deposits Payable', '0,1,2,3,4', '7', '', 'Active'),
+('2 04 01 010 00 d', 'Trust Liabilities - Jobs Fair Fee', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 e', 'Trust Liabilities - SCUAA Fee', '0,1,2,3,4', '7', '1', 'Active'),
+('2 04 01 010 00 g', 'Trust Liabilities - School Publication', '0,1,2,3,4', '7', '1', 'Active'),
+('1 03 05 990 00 c', 'Other Receivables', '0,1,2,3,4', '5', '', 'Active'),
+('4020201002abcd', 'Income-jamajam', '0,1,2,3', '5', '1', 'Active'),
+('4 02 02 050 00 i', 'Rent - Costume', '0,1,2,3', '5', '', 'Active'),
+('424-2a', 'NSTP-ROTC Fee', '0,1,2,3,4', '5', '1', 'Inactive'),
+('424-2b', 'NSTP-CWTS Fee', '0,1,2,3,4', '5', '1', 'Inactive'),
+('4 02 02 990 99 u', 'Rubber Seedlings', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 990 99 b7', 'Coco Vinegar', '0,1,2,3', '5', '', 'Active'),
+('2 02 01 050 00 e11', 'Due to NGAs-CHED ESGP-PA (H)', '0,1,2,3,4', '5', '', 'Active'),
+('2 02 01 050 00 g12', 'Due to NGAs-Cong. Scholars-LPGMA (H)', '0,1,2,3,4', '7', '', 'Active'),
+('2 02 01 050 00 i1', 'Due to NGAs-OWWA (H)', '0,1,2,3,4', '7', '', 'Active'),
+('2 02 01 050 00 e16', 'Due to NGAs-CHED Tulong Dunong (H)', '0,1,2,3,4', '5', '', 'Active'),
+('5 02 02 010 00', 'Refund - Registration Fee', '0,1,2,3,4', '8', '', 'Active'),
+('4 02 02 990 99 a10', 'Miscellaneous - Sale of Bid Forms', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 990 99 d8', 'Bread Fruit', '0,1,2,3,4', '5', '', 'Active'),
+('2 02 01 050 00 n1', 'Due to NGA\'s - DOLE', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 990 99 d7a', 'Palay Seeds', '0,1,2,3,4', '5', '', 'Active'),
+('2 04 01 010 00 m', 'Trust Liabilities - Sale of Bid Forms', '0,1,2,3,4', '7', '', 'Active'),
+('2 04 01 010 00 i', 'Due to Other Funds - Others', '0,1,2,3,4', '7', '', 'Active'),
+('4 02 02 050 00 f', 'Rent - Tractor', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 990 99 p3', 'Share-Garden', '0,1,2,3,4', '5', '', 'Active'),
+('2 02 01 050 00 e30', 'Due to NGAs - CHED An Waray', '0,1,2,3,4', '5', '', 'Active'),
+('642-6-9', 'Rental - Land', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 050 00 g', 'Rent - Tables & Chairs', '0,1,2,3,4', '5', '', 'Active'),
+('1 03 05 000 00', 'Other Receivables', '5', '5', '', 'Active'),
+('1 03 05 010 00', 'Receivables-Disallowances/Charges', '0,1,2,3,4', '8', '', 'Active'),
+('2 04 01 010 00 j', 'Due to Other Fund - Others (Counterpart)', '0,1,2,3,4', '7', '', 'Active'),
+('1 99 01 040 00', 'Advances to Oficers & Employees - Travel Refund', '0,1,2,3', '8', '', 'Active'),
+('4 02 01 990 99 y', 'Other Service Income - NSTP-ROTC Retention', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 990 99 j1', 'CSB Incentive', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 990 99 d9', 'Cassava', '0,1,2,3', '5', '', 'Active'),
+('2 02 01 050 00 e31', 'Due to NGAs - DSWD Educational Assistance (H)', '0,1,2,3', '7', '', 'Active'),
+('4 02 02 040 00', 'Seminar/Training Fees', '0,1,2,3,4', '5', '', 'Active'),
+('4 02 02 050 00 j', 'Rent - Accreditation Center', '0,1,2,3', '5', '', 'Active'),
+('5 02 02 020 00', 'Scholarship Grants/Expenses', '0,1,2,3', '8', '', 'Active'),
+('4 02 02 010 01 a', 'Preparatory English', '0,1,2,3', '5', '1', 'Active'),
+('4 02 01 990 99 z', 'Practice Teaching/OJT Fee', '0,1,2,3', '5', '1', 'Active'),
+('4 02 02 010 02 n', 'Income Collected from Students - Practice Teaching/OJT Fee', '0,1,2,3', '5', '1', 'Active'),
+('4 02 02 990 99 e5', 'Buffalo Manure', '0,1,2,3', '5', '', 'Active'),
+('4 02 02 050 00 h', 'Rent - Mixer', '0,1,2,3', '5', '', 'Active'),
+('2 02 01 050 00 b7', 'Due to NGAs - DOST - CAPE (H)', '0,1,2,3', '7', '', 'Active'),
+('4 02 02 050 00 d', 'Rent - Generator', '0,1,2,3', '5', '', 'Active');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -165,8 +445,32 @@ CREATE TABLE `expenses_breakdown` (
 --
 
 INSERT INTO `expenses_breakdown` (`id`, `ORNumber`, `item_description`, `qty`, `amount_per_unit`, `unit`, `purchase_request_id`) VALUES
-(11, '1313313131313', 'Abuno', 1, 1110, 'Sack', 9),
-(12, NULL, 'Abuno', 1, NULL, 'sack', 10);
+(14, '23233454', 'Tarpaulin(3000x3000)', 4, 250, 'pc', 12),
+(15, '57575757322', 'Salary of Labor', 10, 250, 'pax', 13),
+(16, NULL, 'Gasoline', 3.5, NULL, 'ltr', 14),
+(17, '2142424243', 'Abuno', 3, 1000, 'sack', 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `funds`
+--
+
+CREATE TABLE `funds` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `funds` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `funds`
+--
+
+INSERT INTO `funds` (`id`, `funds`) VALUES
+(5, 'RA'),
+(7, 'Trust Funds'),
+(8, 'MDS'),
+(9, 'General Fund'),
+(10, 'Fund 164');
 
 -- --------------------------------------------------------
 
@@ -270,7 +574,9 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `created_on`, `created_by`, `project_id`, `unit_of_measurement`, `product_status`, `project_specific_id`, `for_gate_pass`) VALUES
 (88, 'Product 1', 103, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y'),
 (89, 'Product 2', 104, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y'),
-(90, 'Product 3', 105, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y');
+(90, 'Product 3', 105, '2018-02-06 21:59:47', 5, 27, 'seedling', 'Y', '18-02064759', 'Y'),
+(100, 'Cocunot Seedling', 115, '2018-02-09 22:49:00', 1, 32, 'seedling', 'Y', '18-02090049', 'Y'),
+(101, 'Bunot', 116, '2018-02-09 22:49:00', 1, 32, 'pc', 'Y', '18-02090049', 'N');
 
 -- --------------------------------------------------------
 
@@ -292,7 +598,11 @@ CREATE TABLE `product_price` (
 INSERT INTO `product_price` (`price_id`, `price`, `created_updated_on`, `created_by`) VALUES
 (103, 210, '2018-02-06 21:59:47', 5),
 (104, 210, '2018-02-06 21:59:47', 5),
-(105, 120, '2018-02-06 21:59:47', 5);
+(105, 120, '2018-02-06 21:59:47', 5),
+(109, 100, '2018-02-09 22:44:19', 1),
+(110, 100, '2018-02-09 22:44:19', 1),
+(115, 100, '2018-02-09 22:49:00', 1),
+(116, 100, '2018-02-09 22:49:00', 1);
 
 -- --------------------------------------------------------
 
@@ -316,7 +626,8 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`project_id`, `project_type`, `project_name`, `project_description`, `project_status`, `project_incharge`, `created_on`, `created_by`) VALUES
-(27, 'Non-Agricultural', 'Rubber', '                                        ', 'Y', 5, '2018-02-06 21:59:47', 5);
+(27, 'Non-Agricultural', 'Rubber', '                                        ', 'Y', 5, '2018-02-06 21:59:47', 5),
+(32, 'Agricultural', 'Coconut', '                                        ', 'Y', 1, '2018-02-09 22:49:00', 1);
 
 -- --------------------------------------------------------
 
@@ -349,7 +660,16 @@ INSERT INTO `project_budget` (`project_budget_id`, `project_specific_id`, `proje
 (266, '18-02064759', 27, 'Salaries other than Labor ', 10, 'N', 5, '2018-02-06 21:59:47'),
 (267, '18-02064759', 27, 'Other Administrative Expenses ', 10, 'N', 5, '2018-02-06 21:59:47'),
 (268, '18-02064759', 27, 'Registration, Fees, Licenses ', 10, 'N', 5, '2018-02-06 21:59:47'),
-(269, '18-02064759', 27, 'Others ', 10, 'N', 5, '2018-02-06 21:59:47');
+(269, '18-02064759', 27, 'Others ', 10, 'N', 5, '2018-02-06 21:59:47'),
+(307, '18-02090049', 32, 'Cocunot Seedling (production costs)', 200, 'N', 1, '2018-02-09 22:49:00'),
+(308, '18-02090049', 32, 'Bunot (production costs)', 100, 'N', 1, '2018-02-09 22:49:00'),
+(309, '18-02090049', 32, 'Marketing Expenses ', 1210, 'N', 1, '2018-02-09 22:49:00'),
+(310, '18-02090049', 32, 'Other Marketing Expenses ', 1210, 'N', 1, '2018-02-09 22:49:00'),
+(311, '18-02090049', 32, 'Other Related Marketing Expenses ', 1210, 'N', 1, '2018-02-09 22:49:00'),
+(312, '18-02090049', 32, 'Salaries other than Labor ', 120, 'N', 1, '2018-02-09 22:49:00'),
+(313, '18-02090049', 32, 'Other Administrative Expenses ', 120, 'N', 1, '2018-02-09 22:49:00'),
+(314, '18-02090049', 32, 'Registration, Fees, Licenses ', 120, 'N', 1, '2018-02-09 22:49:00'),
+(315, '18-02090049', 32, 'Others ', 120, 'N', 1, '2018-02-09 22:49:00');
 
 -- --------------------------------------------------------
 
@@ -373,7 +693,8 @@ CREATE TABLE `project_duration` (
 --
 
 INSERT INTO `project_duration` (`project_duration_id`, `project_specific_id`, `from_date`, `to_date`, `created_by`, `created_on`, `status`, `project_id`) VALUES
-(8, '18-02064759', '2018-02-07', '2018-07-31', 5, '2018-02-06 21:59:47', 'Y', 27);
+(8, '18-02064759', '2018-02-07', '2018-07-31', 5, '2018-02-06 21:59:47', 'Y', 27),
+(13, '18-02090049', '2018-02-10', '2018-02-28', 1, '2018-02-09 22:49:00', 'Y', 32);
 
 -- --------------------------------------------------------
 
@@ -390,16 +711,20 @@ CREATE TABLE `purchase_request` (
   `created_by` int(11) DEFAULT NULL,
   `approved` enum('Y','N','O') DEFAULT 'O',
   `pr_no` varchar(45) DEFAULT NULL,
-  `updated_on` datetime DEFAULT NULL
+  `updated_on` datetime DEFAULT NULL,
+  `project_budget_id` int(11) DEFAULT NULL,
+  `funds` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_request`
 --
 
-INSERT INTO `purchase_request` (`purchase_request_id`, `entity_name`, `project_duration_id`, `purpose`, `created_on`, `created_by`, `approved`, `pr_no`, `updated_on`) VALUES
-(9, 'Southern Leyte State University', 8, 'For rubber project', '2018-02-06 22:03:07', 5, 'Y', '180242-0242', '2018-02-07 06:25:44'),
-(10, 'Southern Leyte State University', 8, 'For Rubber Project', '2018-02-07 18:36:43', 1, 'Y', '180203-3603', '2018-02-08 02:48:03');
+INSERT INTO `purchase_request` (`purchase_request_id`, `entity_name`, `project_duration_id`, `purpose`, `created_on`, `created_by`, `approved`, `pr_no`, `updated_on`, `project_budget_id`, `funds`) VALUES
+(12, 'Southern Leyte State University', 8, 'for rubber project', '2018-02-08 18:26:30', 1, 'Y', '180241-2541', '2018-02-09 02:36:08', 263, 5),
+(13, 'Southern Leyte State University', 8, 'For rubber project', '2018-02-08 18:52:38', 1, 'Y', '180208-5208', '2018-02-09 02:52:50', 266, 5),
+(14, 'Southern Leyte State University', 8, 'For rubber project', '2018-02-08 21:43:16', 5, 'N', '180227-4227', '2018-02-09 05:47:09', 268, 5),
+(15, 'Southern Leyte State University', 13, 'For coconut project', '2018-02-09 23:39:55', 1, 'Y', '180236-3536', '2018-02-10 07:59:08', 309, 5);
 
 -- --------------------------------------------------------
 
@@ -462,7 +787,8 @@ INSERT INTO `rental_specific` (`rental_specific_id`, `rental_id`, `date_return`,
 (76, 11, '2018-02-10', 300, '2018-02-07 17:51:41', 1, 124, 'RE180207-5650', '2018-02-08', 116, 'Y', 3),
 (77, 10, '2018-02-16', 900, '2018-02-07 18:11:40', 1, 124, 'RE180207-3011', '2018-02-08', 117, 'Y', 9),
 (78, 12, '2018-02-13', 1200, '2018-02-07 18:42:34', 6, 125, 'RE180207-1042', '2018-02-08', 118, 'Y', 6),
-(79, 10, '2018-02-10', 300, '2018-02-07 18:55:36', 1, 125, 'RE180207-1955', '2018-02-08', 119, 'Y', 3);
+(79, 10, '2018-02-10', 300, '2018-02-07 18:55:36', 1, 125, 'RE180207-1955', '2018-02-08', 119, 'Y', 3),
+(80, 10, '2018-02-10', 200, '2018-02-08 21:44:09', 5, 124, 'RE180208-5743', '2018-02-09', 120, 'Y', 2);
 
 -- --------------------------------------------------------
 
@@ -493,7 +819,9 @@ INSERT INTO `sales_record` (`sales_id`, `or_number`, `total_amount`, `mode_of_pa
 (116, '121232333', 300, 'cash', '2018-02-07 17:51:41', 1, 124, 'N'),
 (117, '234242424', 900, 'cash', '2018-02-07 18:11:40', 1, 124, 'N'),
 (118, '23424242', 1200, 'cash', '2018-02-07 18:42:34', 1, 125, 'N'),
-(119, '34553535', 300, 'cash', '2018-02-07 18:55:36', 1, 125, 'N');
+(119, '34553535', 300, 'cash', '2018-02-07 18:55:36', 1, 125, 'N'),
+(120, '242423242', 200, 'cash', '2018-02-08 21:44:09', 1, 124, 'N'),
+(121, '2342424', 300, 'cash', '2018-02-10 00:04:11', 1, 124, 'N');
 
 -- --------------------------------------------------------
 
@@ -517,7 +845,8 @@ CREATE TABLE `sales_specific` (
 
 INSERT INTO `sales_specific` (`sales_specific_id`, `product_id`, `quantity`, `amount`, `or_number`, `transaction_id`, `paid`) VALUES
 (14, 88, 3, 630, 112, '180206-1100', 'Y'),
-(15, 89, 2, 420, 114, '180206-1222', 'Y');
+(15, 89, 2, 420, 114, '180206-1222', 'Y'),
+(16, 101, 3, 300, 121, '180210-4003', 'Y');
 
 -- --------------------------------------------------------
 
@@ -623,7 +952,21 @@ INSERT INTO `user_log` (`user_log_id`, `msg`, `created_on`, `user_id`) VALUES
 (89, 'Saved payment for rental selection with OR number: 234242424', '2018-02-07 18:47:02', 1),
 (90, 'Made rental selection with transaction id: RE180207-1955', '2018-02-07 18:55:36', 1),
 (91, 'Saved payment for rental selection with OR number: 34553535', '2018-02-07 20:15:34', 1),
-(92, 'Logout', '2018-02-07 20:17:23', 1);
+(92, 'Logout', '2018-02-07 20:17:23', 1),
+(93, 'Login', '2018-02-07 20:25:09', 1),
+(94, 'Login', '2018-02-08 15:37:34', 1),
+(95, 'Logout', '2018-02-08 19:03:52', 1),
+(96, 'Login', '2018-02-08 19:03:59', 5),
+(97, 'Logout', '2018-02-08 19:04:14', 5),
+(98, 'Login', '2018-02-08 19:04:24', 1),
+(99, 'Logout', '2018-02-08 19:34:40', 1),
+(100, 'Login', '2018-02-08 19:35:01', 5),
+(101, 'Made rental selection with transaction id: RE180208-5743', '2018-02-08 21:44:09', 5),
+(102, 'Login', '2018-02-08 21:45:08', 1),
+(103, 'Saved payment for rental selection with OR number: 242423242', '2018-02-08 21:45:51', 1),
+(104, 'Login', '2018-02-09 14:08:36', 1),
+(105, 'Made product selection with transaction id: 180210-4003', '2018-02-10 00:04:11', 1),
+(106, 'Saved payment for sales selection with OR number: 2342424', '2018-02-10 00:04:31', 1);
 
 -- --------------------------------------------------------
 
@@ -671,7 +1014,7 @@ INSERT INTO `user_role` (`user_role`, `module_id`, `view_page`, `view_command`, 
 (364, 8, 'N', 'X', 'X', 'X', 'X', 'X', 'X', 2),
 (365, 9, 'Y', 'Y', 'Y', 'N', 'X', 'Y', 'Y', 2),
 (366, 10, 'N', 'X', 'X', 'X', 'X', 'N', 'X', 2),
-(367, 11, 'Y', 'N', 'X', 'Y', 'X', 'Y', 'X', 2),
+(367, 11, 'Y', 'N', 'X', 'Y', 'X', 'N', 'X', 2),
 (368, 12, 'Y', 'N', 'X', 'X', 'X', 'X', 'X', 2),
 (369, 1, 'Y', 'X', 'X', 'Y', 'Y', 'Y', 'X', 3),
 (370, 2, 'Y', 'Y', 'X', 'X', 'X', 'Y', 'X', 3),
@@ -778,6 +1121,12 @@ ALTER TABLE `expenses_breakdown`
   ADD KEY `pk_proj_idx` (`purchase_request_id`);
 
 --
+-- Indexes for table `funds`
+--
+ALTER TABLE `funds`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `location_marks`
 --
 ALTER TABLE `location_marks`
@@ -840,7 +1189,8 @@ ALTER TABLE `project_duration`
 ALTER TABLE `purchase_request`
   ADD PRIMARY KEY (`purchase_request_id`),
   ADD KEY `fk_proj_idx` (`project_duration_id`),
-  ADD KEY `fk_user_idx` (`created_by`);
+  ADD KEY `fk_user_idx` (`created_by`),
+  ADD KEY `fk_funds_idx` (`funds`);
 
 --
 -- Indexes for table `rental_items`
@@ -921,7 +1271,12 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `expenses_breakdown`
 --
 ALTER TABLE `expenses_breakdown`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+--
+-- AUTO_INCREMENT for table `funds`
+--
+ALTER TABLE `funds`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `location_marks`
 --
@@ -941,32 +1296,32 @@ ALTER TABLE `owner_info`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 --
 -- AUTO_INCREMENT for table `product_price`
 --
 ALTER TABLE `product_price`
-  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `price_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `project_budget`
 --
 ALTER TABLE `project_budget`
-  MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
+  MODIFY `project_budget_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
 --
 -- AUTO_INCREMENT for table `project_duration`
 --
 ALTER TABLE `project_duration`
-  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `project_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
-  MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `purchase_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `rental_items`
 --
@@ -976,17 +1331,17 @@ ALTER TABLE `rental_items`
 -- AUTO_INCREMENT for table `rental_specific`
 --
 ALTER TABLE `rental_specific`
-  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `rental_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `sales_record`
 --
 ALTER TABLE `sales_record`
-  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `sales_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
 --
 -- AUTO_INCREMENT for table `sales_specific`
 --
 ALTER TABLE `sales_specific`
-  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `sales_specific_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -996,7 +1351,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_log`
 --
 ALTER TABLE `user_log`
-  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `user_log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 --
 -- AUTO_INCREMENT for table `user_role`
 --
@@ -1048,6 +1403,7 @@ ALTER TABLE `project_duration`
 -- Constraints for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
+  ADD CONSTRAINT `fk_funds` FOREIGN KEY (`funds`) REFERENCES `funds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_proj_duration` FOREIGN KEY (`project_duration_id`) REFERENCES `project_duration` (`project_duration_id`),
   ADD CONSTRAINT `fk_user` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`);
 

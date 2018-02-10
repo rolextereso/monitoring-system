@@ -184,7 +184,7 @@ $(document).ready(function(){
                             $.each(data, function(key,value){
                                             
                                             $.each(value.sales, function(key, value){                                                     
-                                                  $sales.push({y: parseFloat(value[0]),label: value[1]});                                    
+                                                  $sales.push({y: parseFloat(value[0] || 0),label: value[1]});                                    
                                             });
 
                                             $.each(value.expenses, function(key, value){                                                     

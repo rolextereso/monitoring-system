@@ -17,7 +17,7 @@ function getData($result){
 		return $record;
 }
 
-$sales_query = "SELECT SUM(amount) as amount, p.project_name FROM projects p
+$sales_query = "SELECT CASE WHEN SUM(amount) IS NULL THEN 0 ELSE SUM(amount) END as amount, p.project_name FROM projects p
 					INNER JOIN  products pd ON pd.project_id=p.project_id	
 					INNER JOIN  sales_specific ss ON ss.product_id=pd.product_id	
 					INNER JOIN sales_record sr ON sr.sales_id = ss.or_number

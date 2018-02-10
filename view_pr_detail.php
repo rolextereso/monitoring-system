@@ -19,7 +19,7 @@
       
              $pr_id= $crud->escape_string($_GET['pr_id']);  
 
-             $sql = "SELECT pr.*,eb.*,p.project_name, 
+             $sql = "SELECT pr.*,eb.*,p.project_name, f.funds,pb.description as target_expenses,
                             CONCAT(u.firstname,' ',u.lastname) as user_created,
                             ut.user_type as designation FROM purchase_request pr 
                       INNER JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id 
@@ -28,6 +28,8 @@
                       INNER JOIN projects p ON p.project_id= pd.project_id
                       INNER JOIN users u ON u.user_id= pr.created_by                  
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
+                      INNER JOIN funds f ON f.id=pr.funds
+                      INNER JOIN project_budget pb ON pb.project_budget_id=pr.project_budget_id
                       WHERE pr.pr_no='$pr_id' ";  
           
              $pr = $crud->getData($sql);
@@ -227,6 +229,12 @@
                                 <td class="border-t border-l"> &nbsp;</td>   
                                 <td class="border-t border-l">&nbsp;</td>   
                                 <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                                    
+                                <td colspan="4" class="border-t border-l" style="width:30%;">&nbsp;Budget Taken: <?php echo $pr[0]['target_expenses']; ?></td>   
+                                <td class="border-t border-l" colspan="3"> &nbsp;Funds Taken: <?php echo $pr[0]['funds']; ?></td>   
+                                                                                       
                             </tr>
                             <tr>
                                 <td class="border-t">Purpose:</td>

@@ -6,34 +6,52 @@ include_once("../../classes/function.php");
  
 $crud = new Crud();
 
-function insert($production_cost,$production_cost_amount, $proj_id,$find_expr,$created_by,$spec_id){
+function insert($array, $proj_id,$find_expr,$created_by,$spec_id){
 			global $crud;
 
-	   	
+	   		$desc="";
 	   		$result=false;
-			for($i=0; $i<count($production_cost);$i++) {
-				
+			foreach($array as $value) {
+				foreach($value as $key => $val) {
+					if($key==$find_expr){
+						$desc=$val;
+					}else{		
 						 $extra=($find_expr=='production costs')?"(production costs)":"";		
-						 $insert="INSERT INTO project_budget(project_specific_id,project_id, description,amount,created_by) VALUES('$spec_id','{$proj_id}', '".$crud->escape_string($production_cost[$i])." $extra',  '".str_replace(",","",$production_cost_amount[$i])."','{$created_by}');";
+						 $insert="INSERT INTO project_budget(project_specific_id,project_id, description,amount,created_by) VALUES('$spec_id','{$proj_id}', '".$crud->escape_string($desc)." $extra',  '".str_replace(",","",$val)."','{$created_by}');";
 						  
 					     $result = $crud->executeUnAutoCommit($insert);		
-								
+					}			
+				}				
 			}
 			return $result;			
 }
 
-function insertPriceForProduct($product_desc,$product_price,$unit,$gate_pass,$project_id,$created_by,$spec_id){
-	   
-	global $crud;
+function insertPriceForProduct($product_price,$project_id,$created_by,$spec_id){
+	    $product_name="";
+		$prices=0;
+		$unit="";
+		$for_gate_pass="";
+		global $crud;
 
-	for($i=0; $i<count($product_desc);$i++) {
+	foreach($product_price as $value) {
+				foreach($value as $key => $val) {
+					if($key=="items"){
+						$product_name=$val;
+					}elseif($key=="prices"){
+						$prices=str_replace(",","",$val);
+					}elseif($key=="unit of measurement"){
+						$unit=$val;
+					}elseif($key=="gate pass value"){
+						$for_gate_pass=$val;
+					}		
+				}
 				 $result=$crud->executeUnAutoCommit("INSERT INTO product_price(price, created_by) ".
-								 "VALUES ('{$product_price[$i]}', '$created_by');");
+								 "VALUES ('$prices', '$created_by');");
 
 				 $product_id= $crud->getData("SELECT LAST_INSERT_ID() AS insert_id");
 				 if(count($product_id)>0){
 				 		$lastId=$product_id[0]['insert_id'];
-				 		$result = $crud->executeUnAutoCommit("INSERT INTO products(product_name,product_price, 	project_id, unit_of_measurement,created_by,project_specific_id,for_gate_pass) VALUES ('{$product_desc[$i]}', '$lastId', '$project_id', '{$unit[$i]}','$created_by','$spec_id','{$gate_pass[$i]}');");		
+				 		$result = $crud->executeUnAutoCommit("INSERT INTO products(product_name,product_price, 	project_id, unit_of_measurement,created_by,project_specific_id,for_gate_pass) VALUES ('$product_name', '$lastId', '$project_id', '$unit','$created_by','$spec_id','$for_gate_pass');");		
 				 }				
 	}
 	return $result;
@@ -45,20 +63,14 @@ $result=array();
 if(isset($_POST['proj_name'])){
 
 		$project_name = $crud->escape_string($_POST['proj_name']);
-		$project_description  = $crud->escape_string($_POST['project_description']);
-		$project_incharge  = $crud->escape_string($_POST['project_incharge']);
-		$project_type  = $crud->escape_string($_POST['project_type']);
-		$project_started  = $crud->escape_string($_POST['project_started']);
-		$project_ended = $crud->escape_string($_POST['project_ended']);
-		$production_cost = $_POST['production_cost'];
-		$production_cost_amount = $_POST['production_cost_amount'];
+		$project_description  = $crud->escape_string($_POST['proj_desc']);
+		$project_incharge  = $crud->escape_string($_POST['proj_incharge']);
+		$project_type  = $crud->escape_string($_POST['proj_type']);
+		$project_started  = $crud->escape_string($_POST['proj_started']);
+		$project_ended = $crud->escape_string($_POST['proj_ended']);
+		$production_cost = $_POST['prod_cost'];
 		$expenses = $_POST['expenses'];
-		$expenses_amount = $_POST['expenses_amount'];
-		$product_desc = $_POST['product_desc'];
-		$product_price = $_POST['price_amount'];
-		$unit = $_POST['unit'];
-		$gate_pass = $_POST['gate_pass'];
-
+		$product_price = $_POST['prod_price'];
 		$created_by=$_SESSION['user_id'];		
 		$spec_id=date('y-mdsi');
 
@@ -83,11 +95,9 @@ if(isset($_POST['proj_name'])){
 
 			
 
-
-
-			$result[]=insert($production_cost,$production_cost_amount,$project_id_,'production costs',$created_by,$spec_id);
-			$result[]=insert($expenses,$expenses_amount,$project_id_,'expenses',$created_by,$spec_id);
-			$result[]=insertPriceForProduct($product_desc,$product_price,$unit,$gate_pass,$project_id_,$created_by,$spec_id);
+			$result[]=insert($production_cost,$project_id_,'production costs',$created_by,$spec_id);
+			$result[]=insert($expenses,$project_id_,'expenses',$created_by,$spec_id);
+			$result[]=insertPriceForProduct($product_price,$project_id_,$created_by,$spec_id);
 		}else{
 
 			$update_current="UPDATE project_duration SET status='N' WHERE project_id='$project_id_';";
@@ -100,9 +110,9 @@ if(isset($_POST['proj_name'])){
 
 			$result[]=$crud->executeUnAutoCommit($insert_duration);
 
-			$result[]=insert($production_cost,$production_cost_amount,$project_id_,'production costs',$created_by,$spec_id);
-			$result[]=insert($expenses,$expenses_amount,$project_id_,'expenses',$created_by,$spec_id);
-			$result[]=insertPriceForProduct($product_desc,$product_price,$unit,$gate_pass,$project_id_,$created_by,$spec_id);
+			$result[]=insert($production_cost,$project_id_,'production costs',$created_by,$spec_id);
+			$result[]=insert($expenses,$project_id_,'expenses',$created_by,$spec_id);
+			$result[]=insertPriceForProduct($product_price,$project_id_,$created_by,$spec_id);
 		}
 		
 
