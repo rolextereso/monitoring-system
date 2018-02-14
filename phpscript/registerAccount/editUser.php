@@ -10,7 +10,7 @@ if(isset($_POST['username'])){
 		$result=false;
 		$status='N';
 
-		$user_id   = $crud->escape_string($_POST['user_id']);	
+		$userid   = $crud->escape_string($_POST['userid']);	
 		$firstname = $crud->escape_string($_POST['firstname']);
 		$lastname  = $crud->escape_string($_POST['lastname']);
 		$username  = $crud->escape_string($_POST['username']);
@@ -25,28 +25,28 @@ if(isset($_POST['username'])){
 			$password  = $crud->escape_string($_POST['password']);
 			$hint	   = $crud->escape_string($_POST['hint']);
 
-			$query = "SELECT * FROM users WHERE user_id=$user_id AND password=AES_ENCRYPT('$oldpassword',username) LIMIT 1;";
+			$query = "SELECT * FROM account WHERE userid='$userid' AND password='$oldpassword' LIMIT 1;";
 
 			$checkResult = $crud->getData($query);
 
 			$correct_oldpassword=(count($checkResult)==1)?true:false;
 
 			if($correct_oldpassword){
-				$result = $crud->execute("UPDATE users SET firstname='$firstname', ".
-										 "lastname= '$lastname', ".
+				$result = $crud->execute("UPDATE account SET FirstName='$firstname', ".
+										 "LastName= '$lastname', ".
 										 "username= '$username', ".
 										 "user_type='$access_role',".
-										 "password= AES_ENCRYPT('$password',username),".
-										 "hint= '$hint', status='$status' WHERE user_id=$user_id;");
+										 "password= '$password',".
+										 "hint= '$hint', status='$status' WHERE userid='$userid';");
 
 			}
 
 		}else{
-			$result = $crud->execute("UPDATE users SET firstname='$firstname', 
-										  lastname= '$lastname', 
+			$result = $crud->execute("UPDATE account SET FirstName='$firstname', 
+										  LastName= '$lastname', 
 										  user_type='$access_role',
-										  password=AES_ENCRYPT(AES_DECRYPT(password,username),'$username'),
-										  username= '$username' , status='$status' WHERE user_id=$user_id;");
+										
+										  username= '$username' , status='$status' WHERE userid='$userid';");
 		}
 		
 
@@ -71,7 +71,7 @@ if(is_array($_FILES) && isset($_FILES['userImage']['tmp_name'])) {
 		$targetPath = "../../img/".$_FILES['userImage']['name'];
 		$imagePath  = "img/".$_FILES['userImage']['name'];
 		if(move_uploaded_file($sourcePath,$targetPath)) {
-				$result = $crud->execute("UPDATE users SET profile_pic='$imagePath' where user_id={$_POST['user_id']};");
+				$result = $crud->execute("UPDATE account SET profile_pic='$imagePath' where userid='{$_POST['userid']}';");
 				if($result){
 					$response = array('type' => 'success', 'message' => '<strong>Success:</strong> Profile picture saved.');
 					echo json_encode($response);

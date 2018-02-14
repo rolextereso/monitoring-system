@@ -4,7 +4,7 @@ class DbConfig
     private $_host = 'localhost';
     private $_username = 'root';
     private $_password = '';
-    private $_database = 'monitoringsystem';
+    private $_database = 'enrolment';
     
     protected $connection;
     

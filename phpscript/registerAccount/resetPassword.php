@@ -8,12 +8,12 @@ $crud = new Crud();
 if(isset($_POST['newpassword'])){
 		
 
-			$user_id   = $crud->escape_string($_POST['user_id']);
+			$userid   = $crud->escape_string($_POST['userid']);
 			$newpassword  = $crud->escape_string($_POST['newpassword']);
 			
-			$result = $crud->execute("UPDATE users SET ".
-										 "password= AES_ENCRYPT('$newpassword',username) ".
-										 "WHERE user_id=$user_id;");
+			$result = $crud->execute("UPDATE account SET ".
+										 "password= '$newpassword' ".
+										 "WHERE userid='$userid';");
 		if($result){
 			$response = array('type' => 'success', 'message' => '<strong>Success:</strong> Password successfully saved.');
 			echo json_encode($response);

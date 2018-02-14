@@ -6,7 +6,7 @@
     $user_id=specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
     $projects = $crud->getData("SELECT p.*,pd.project_duration_id FROM projects p                          
                                 LEFT JOIN project_duration pd ON pd.project_id=p.project_id
-                                WHERE pd.status='Y' AND p.created_by $user_id
+                                WHERE pd.status='Y' AND (p.created_by $user_id OR p.project_incharge $user_id )
                                 ");
     $funds = $crud->getData("SELECT * FROM funds");
          
@@ -59,7 +59,7 @@
                                                                                             
                                                  <div class="form-group">
                                                         <label>Entity Name:</label>
-                                                        <input type="text" required=""  class="form-control form-control-sm" name="entity_name">
+                                                        <input type="text" required="" value="Southern Leyte State University-CAFES" class="form-control form-control-sm" name="entity_name">
                                                   </div>
                                                   <div class="form-group">
                                                         <label >Funds:</label>
@@ -210,7 +210,21 @@
                                                                        .fadeIn(100,function(){
                                                                            $(this).fadeOut(5000);
                                                                        });
-                                                            $('#form')[0].reset();
+
+                                                            if(data.type=='alert-success'){
+                                                                        var d=new Date(),
+                                                                        day=d.getHours(),
+                                                                        minute=d.getMinutes(),
+                                                                        seconds=d.getSeconds(),
+                                                                        month=d.getMonth(),
+                                                                        year=d.getFullYear();
+
+                                                                         $('#form')[0].reset();
+                                                                        
+                                                                         $("[name='pr_no']").val(""+seconds+year+day+"-"+minute+seconds);
+                                                                       
+
+                                                           }
 
                                                         }
                                                     });

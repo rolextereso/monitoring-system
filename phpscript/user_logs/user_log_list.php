@@ -21,7 +21,7 @@ $columns = array(
 
 $sql = "SELECT msg, ul.created_on, firstname, lastname
 		FROM user_log ul 
-		INNER JOIN users u ON u.user_id= ul.user_id 
+		INNER JOIN account u ON u.user_id= ul.user_id 
 		WHERE u.user_id ".specific_user(access_role("User Logs","view_command",$_SESSION['user_type']));
 
 

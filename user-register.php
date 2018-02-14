@@ -25,7 +25,7 @@
 
 </style>
 
-<?php require_once('layout/nav.php');?>
+<?php require_once('layout/nav.php');  ?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
 <?php if(access_role("Users Setting","add_command",$_SESSION['user_type'])){?>

@@ -182,7 +182,7 @@
                         <br/>               
                         <label> Transaction ID:</label>
                         <div class="input-group form-group">                
-                          <input style="font-weight: bolder;" autocomplete="off" readonly="" type="text" class="form-control"  name="transaction_id" value="<?php echo date('ymd-si');?>" >
+                          <input style="font-weight: bolder;" autocomplete="off" readonly="" type="text" class="form-control"  name="transaction_id" value="OP<?php echo date('ymd-si');?>" >
                         </div>
                         <hr/>
                       <?php if(access_role("Rental or Product Selection","Save_Changes",$_SESSION['user_type'])){?> 

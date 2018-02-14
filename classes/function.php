@@ -55,7 +55,7 @@ function specific_user($access=false){
 	if($access==true){
 		 $user=" IS NOT NULL";
     }else{
-    	  $user="=".$_SESSION['user_id'];
+    	  $user="='".$_SESSION['user_id']."'";
     }
 
     return $user;
@@ -69,6 +69,26 @@ function user_activity($msg="",$user_id){
 	
 	return $result;
 
+}
+
+function semester_year(){
+	global $crud;
+
+	 	$current_year=2017;//$current_year=date("Y");
+        $year_semester="";
+
+        $exists_semester2 = $crud->getData("SHOW TABLES LIKE 'paid_assess".$current_year."2';");
+        $exists_semester1 = $crud->getData("SHOW TABLES LIKE 'paid_assess".$current_year."1';");
+
+        if(count($exists_semester2)==1){
+          $year_semester="{$current_year}2";
+        }elseif(count($exists_semester1)==1){
+          $year_semester="{$current_year}1";
+        }else{
+          $current_year=$current_year-1;
+          $year_semester="{$current_year}2";
+        }
+    return $year_semester;
 }
 
 

@@ -49,11 +49,13 @@
        $b_id = $crud->escape_string($_GET['b_id']);
        $p_id= $crud->escape_string($_GET['p_id']);
     
-            $duration = $crud->getData("SELECT  project_duration_id, to_date,  from_date FROM project_duration WHERE project_specific_id='$b_id';");
+            $duration = $crud->getData("SELECT  project_duration_id, to_date,  from_date,status FROM project_duration WHERE project_specific_id='$b_id';");
 
             $project = $crud->getData("SELECT  project_name FROM projects WHERE project_id='$p_id';");
 
             $duration_data = $crud->getData("SELECT  description, amount FROM project_budget WHERE project_specific_id='$b_id';");
+
+   
             
 
             $found=(count($duration)==1 &&  count( $project)==1)?true:false;
@@ -78,9 +80,13 @@
                                               LEFT JOIN purchase_request pr ON pr.project_budget_id=pb.project_budget_id
                                               LEFT JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id
                                               WHERE pd.project_specific_id='$b_id' 
-                                              AND pd.status='Y' 
+                                              AND pd.status='{$duration[0]['status']}' 
                                               GROUP BY pb.project_budget_id 
                                               ORDER BY pb.project_budget_id ASC;");
+
+           
+
+            
 
           
     }
@@ -126,13 +132,14 @@
                         <?php $total=0;
                               $total_actual_expenses=0;
                               $record=populateRecord($duration_data);
+                           
                               for($i=0;$i<count($record);$i++){
                                     echo "<tr>";
                                     echo "<td>".$record[$i]['name']."</td>";
                                     for($y=0; $y<count($record[$i]['data']);$y++){
-                                      $total+=$record[$i]['data'][$y];
+                                      $total+=$record[$i]['data'][0];
                                       $total_actual_expenses+=$actual_expenses[$i]['expenses_tendered'];
-                                      echo "<td>".number_format($record[$i]['data'][$y],2)."</td>";
+                                      echo "<td>".number_format($record[$i]['data'][0],2)."</td>";
                                       echo "<td>".number_format($actual_expenses[$i]['expenses_tendered'],2)."</td>";
                                     }
                                     echo "</tr>";

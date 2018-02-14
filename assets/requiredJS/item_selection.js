@@ -8,7 +8,7 @@ $(function() {
                                           size: "small",                                         
                                           message: "Are you sure?", 
                                           callback: function(result){ 
-                                                   if(result){
+                                                   if(result && $("#total_amount_").val()!=0 ){
                                                           var url = "phpscript/savePayment/saveSelection.php";
                                                           
                                                               // POST values in the background the the script URL
@@ -38,7 +38,7 @@ $(function() {
 
                                                                          $('#form')[0].reset();
                                                                          $('tr[row]').remove();
-                                                                         $("[name='transaction_id']").val(""+seconds+year+month+day+"-"+minute+seconds);
+                                                                         $("[name='transaction_id']").val("OP"+seconds+year+month+day+"-"+minute+seconds);
                                                                          totalAmount();
 
                                                                          bootbox.confirm({
@@ -54,8 +54,10 @@ $(function() {
                                                                       
                                                                   }
                                                               });
-                                                          }
-                                                  }
+                                                          }else{
+                                                              alert("Please select an item ");
+                                                           }
+                                                   }
                                       
                                     });
                                     return false;

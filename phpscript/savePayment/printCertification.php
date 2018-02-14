@@ -128,10 +128,10 @@
 				<div id="customer_info">
 					<label>Customer Name:</label><span> <b><?php echo $customer[0]['customer_name'];?></b>  </span><br/>
 					<label>Customer Address:</label><span><b> <?php echo $customer[0]['customer_address'];?></b></span><br/>
-					<label>Transaction #:</label><span> <b><?php echo $customer[0]['transaction_id'];?> </b></span>					
+					<label>OP Number:</label><span> <b><?php echo $customer[0]['transaction_id'];?> </b></span>					
 				</div>
 				<div id="body">
-					<h3>Certification</h3>
+					<h3>Order of Payment</h3>
 				</div>
 				<table border="1">
 					<tr>
@@ -161,12 +161,13 @@
 					 	} 
 					 ?>
 					<tr>
-						<td colspan="2"> Total</td>
-						<td style="text-align: center;">&#8369;&nbsp;<?php echo number_format($total_amount,2);?></td>
+						<td colspan="2" style="background-color: lightgray;"> Total</td>
+						<td style="text-align: center; background-color: lightgray;">&#8369;&nbsp;<?php echo number_format($total_amount,2);?></td>
 					</tr>
 					
 				</table>
 				<br/>
+				
 		
 
 				<div style="border-bottom: 1px solid silver;
@@ -177,9 +178,10 @@
     						""><small>Please write th OR Number of the Official Reciept <br/>(Countersigned by the cashier)</small>
 					&nbsp;
 				</div>
+				
 				<br/>
 				<div id="footer">
-					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
+					<label>Issued by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
 					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
 				</div>
 		</div>

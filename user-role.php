@@ -146,7 +146,7 @@
                     data: {user_type: $("[name='user_type']").val()},
                     success: function (data)
                     {
-                        console.log(data.data);
+                        
                         if(data.data.length>1){
                           var row="";                                     
                                 $.each(data.data, function(key, value){  

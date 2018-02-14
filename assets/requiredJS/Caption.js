@@ -11,8 +11,12 @@
 			    msgId="msg",
 				addLocationBtn='<div id="control-container">'+
 							   '<button class="btn btn-primary" id="'+addLocBtnID+'">+</button>'+
-							   '<span id="'+msgId+'"></span>'+
+							   '<span id="'+msgId+'"></span><br/><br/>'+
+							   '<a href="gis_map.php" title="Go to GIS Map"><button class="btn btn-primary" ><i class="fa fa-map-marker"></i></button></a>'+
 							   '</div>',
+				addLinkBtn='<div id="control-container">'+
+							   '<a href="gis_map.php" title="Go to GIS Map"><button class="btn btn-primary" ><i class="fa fa-map-marker"></i></button></a>'+
+							'</div>',
 				locationContainer='<div id="'+locationContainerID+'"></div>'
 				message=[" Click the map to mark the location"," Click the button again to mark another location"];
 			
@@ -36,6 +40,8 @@
 
 				if(settings.addMark){
 					$(addLocationBtn).insertBefore(parent);
+				}else{
+					$(addLinkBtn).insertBefore(parent);
 				}
 				$(locationContainer).insertAfter(parent);			
 

@@ -22,16 +22,20 @@ $columns = array(
 
 $sql = "SELECT pd.product_id,pr.project_id, price, product_name, project_name, project_type, CONCAT(firstname,' ',lastname) AS incharge, pd.product_status  ";
 $sql.=" FROM projects pr";
-$sql.=" LEFT JOIN products pd ON pd.project_id= pr.project_id ";
-$sql.=" LEFT JOIN project_duration pr_d ON pr_d.project_specific_id=pd.project_specific_id";
-$sql.=" LEFT JOIN product_price pc ON pc.price_id= pd.product_price ";
-$sql.=" LEFT JOIN users u ON u.user_id= pr.project_incharge WHERE pr_d.status='Y' AND pr.created_by ".specific_user(access_role("Project List","view_command",$_SESSION['user_type']));
+$sql.=" INNER JOIN products pd ON pd.project_id= pr.project_id ";
+$sql.=" INNER JOIN project_duration pr_d ON pr_d.project_specific_id=pd.project_specific_id";
+$sql.=" INNER JOIN product_price pc ON pc.price_id= pd.product_price ";
+$sql.=" INNER JOIN account u ON u.user_id= pr.project_incharge WHERE pr_d.status='Y' AND ( pr.created_by ".specific_user(access_role("Project List","view_command",$_SESSION['user_type'] ))." OR pr.project_incharge ".specific_user(access_role("Project List","view_command",$_SESSION['user_type'])).")";
+
+
 
 $result = $crud->getData($sql);
 $totalData= count($result);
 $totalFiltered=$totalData;
 
 $sql=$sql;
+
+
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 

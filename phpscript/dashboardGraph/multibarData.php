@@ -14,14 +14,34 @@ function getData($result){
 				$record[]= $row_data;
 			    
 		}
-		return $record;
+		return (count($record)>0)? $record : 0;
 }
 
-$sales_query = "SELECT CASE WHEN SUM(amount) IS NULL THEN 0 ELSE SUM(amount) END as amount, p.project_name FROM projects p
-					INNER JOIN  products pd ON pd.project_id=p.project_id	
-					INNER JOIN  sales_specific ss ON ss.product_id=pd.product_id	
-					INNER JOIN sales_record sr ON sr.sales_id = ss.or_number
-					WHERE sr.or_number!=''  GROUP BY p.project_id ORDER BY p.project_id;";   
+$sales_query = "SELECT 
+					CASE WHEN 
+							(SELECT SUM(amount) FROM projects ps
+										LEFT JOIN  products pd ON pd.project_id=ps.project_id	
+										LEFT JOIN  sales_specific ss ON ss.product_id=pd.product_id	
+										LEFT JOIN sales_record sr ON sr.sales_id = ss.or_number AND sr.or_number !=''
+										WHERE sr.or_number!='' AND ps.project_id=p.project_id ) != 0 	
+							THEN 
+										(SELECT SUM(amount) FROM projects ps
+										LEFT JOIN  products pd ON pd.project_id=ps.project_id	
+										LEFT JOIN  sales_specific ss ON ss.product_id=pd.product_id	
+										LEFT JOIN sales_record sr ON sr.sales_id = ss.or_number AND sr.or_number !=''
+										WHERE sr.or_number!='' AND ps.project_id=p.project_id ) 
+						ELSE 
+										0
+						END
+					as amount,
+					p.project_name
+		            FROM projects p
+							LEFT JOIN  products pd ON pd.project_id=p.project_id	
+							LEFT JOIN  sales_specific ss ON ss.product_id=pd.product_id	
+							LEFT JOIN sales_record sr ON sr.sales_id = ss.or_number
+							LEFT JOIN project_duration pds ON pds.project_id=p.project_id
+							WHERE pds.project_duration_id IS NOT NULL
+							GROUP BY p.project_id ORDER BY p.project_id;";   
 
 $sales = $crud->getData($sales_query);
 

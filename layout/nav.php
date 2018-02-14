@@ -13,13 +13,13 @@
 
                 <?php if(access_role("Location Map","view_page",$_SESSION['user_type'])){?>
                          <li class="nav-item ">
-                              <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="location-map.php")? 'active': '';?>"  href="location-map.php"><i class="fa fa-map-marker"></i> Location Map </a>
+                              <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="location-map.php") || (basename($_SERVER['PHP_SELF'])=="gis_map.php")? 'active': '';?>"  href="location-map.php"><i class="fa fa-map-marker"></i> Location Map </a>
                          </li>
                 <?php } ?>
 
                 <?php if(access_role("Rental or Product Selection","view_page",$_SESSION['user_type'])){?>
                         <li class="nav-item">
-                              <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"  ><i class="fa fa-hand-pointer-o"></i>  Rental or Product Selection</a>                      
+                              <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"  ><i class="fa fa-hand-pointer-o"></i>  Order of Payment</a>                      
                         </li>
                 <?php } ?>
 
@@ -45,7 +45,7 @@
 
                 <?php if(access_role("Rental Item List","view_page",$_SESSION['user_type'])){?>
                       <li class="nav-item">
-                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"><i class="fa fa-car"></i> Rental Items </a>
+                        <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="rental-list.php") || (basename($_SERVER['PHP_SELF'])=="rental-register.php")? 'active': '';?>" href="rental-list.php"><i class="fa fa-car"></i> Rental Items  </a>
                       </li>
                 <?php } ?>
 

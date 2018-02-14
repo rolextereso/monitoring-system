@@ -9,8 +9,18 @@
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-cube"></i> Projects </li>
               </ol>
+              <ul class="nav nav-tabs">
+                          <li class="nav-item">
+                               <a class="nav-link active" href="project-list.php">Budgeted Project List</a>
+                          </li>
+                         <?php if(access_role("Project List","view_command",$_SESSION['user_type'])){?> 
+                          <li class="nav-item">
+                              <a class=" nav-link" href="project_assigned.php">Assigned Projects</a>
+                          </li>   
+                          <?php } ?>                           
+              </ul>
            </nav>
-
+           <br/>
            <div class="table-responsive">                          
                     <table class="table table-hover" id="dataTable" width="100%" cellpadding="0" cellspacing="0">
                       <thead class="thead-dark">
@@ -38,8 +48,7 @@
                   var dataTable = $('#dataTable').DataTable( {
                                             "processing": true,
                                             "serverSide": true,
-                                            "searching" : true,
-                                            
+                                            "searching" : true,                                            
                                             "bLengthChange": false,
                                             "ajax":{
                                               url :"phpscript/projectSetup/projectList.php" 

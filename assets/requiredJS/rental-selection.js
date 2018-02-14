@@ -8,7 +8,7 @@ $(function() {
                                           size: "small",                                         
                                           message: "Are you sure?", 
                                           callback: function(result){ 
-                                                   if(result){
+                                                   if(result && $("#total_amount_").val()!=0){
                                                           var url = "phpscript/rental/saveRentalSelection.php";
                                                           
                                                               // POST values in the background the the script URL
@@ -54,7 +54,9 @@ $(function() {
                                                                       
                                                                   }
                                                               });
-                                                          }
+                                                          }else{
+                                                              alert("Please select an item ");
+                                                           }
                                                   }
                                       
                                     });

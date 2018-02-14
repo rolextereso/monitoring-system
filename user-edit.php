@@ -17,9 +17,9 @@
         //getting id from url
         $id = $crud->escape_string($_GET['u']);
 
-        if(is_numeric($id) && $id!=''){
+        if($id!=''){
 
-            if($id==1){
+            if($id=='20130501655106'){
                 $where_clause=" AND user_type_id=1";
             }else{
                 $where_clause=" AND user_type_id!=1";
@@ -27,14 +27,14 @@
 
             $user_type_ = $crud->getData("SELECT * FROM user_type WHERE status='Y' $where_clause");
             //selecting data associated with this particular id
-            $result = $crud->getData("SELECT * FROM users WHERE user_id=$id LIMIT 1");
+            $result = $crud->getData("SELECT * FROM account WHERE userid='$id' LIMIT 1");
             
             $user_found=(count($result)==1)?true:false;
            
             foreach ($result as $res) {
-                $user_id   = $res['user_id'];
-                $firstname = $res['firstname'];
-                $lastname  = $res['lastname'];
+                $userid   = $res['userid'];
+                $firstname = $res['FirstName'];
+                $lastname  = $res['LastName'];
                 $username  = $res['username'];
                 $user_type =$res['user_type'];
                 $status =$res['status'];
@@ -66,7 +66,7 @@
                       <div class="row">
                         <div class="col-md-7">
                                <form data-toggle="validator" role="form" id="form" action="post">
-                                        <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
+                                        <input type="hidden" name="userid" value="<?php echo $userid;?>">
                                         <div class="form-row">
                                               <div class="col-md-6">
                                                   <div class="form-group">
@@ -150,7 +150,7 @@
                       </div>
                       <div class="col-md-4">
                         <form id="uploadForm"  method="post">
-                              <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
+                              <input type="hidden" name="userid" value="<?php echo $userid;?>">
                               <div id="profile-container">
                                   <img id="pic" class="img-fluid" src="<?php echo ($profile_pic=='')? 'img/pic_avatar.jpg':$profile_pic;?>"  />
                                     <img class="spinner"  src="assets/img/spinner.gif" style="display: none;" >

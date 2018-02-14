@@ -13,28 +13,28 @@ $requestData= $_REQUEST;
 
 $columns = array( 
 // datatable column index  => database column name
-	0 =>'firstname', 
-	1 => 'lastname',
+	0 =>'FirstName', 
+	1 => 'LastName',
 	2=> 'username'
 );
-$where_="WHERE u.user_id=".$_SESSION['user_id']."  ";
+$where_="WHERE u.userid=".$_SESSION['user_id_']."  AND IGP='9' ";
 if($_SESSION['user_type']=='1'){
-	$where_=" ";
+	$where_=" WHERE IGP='9' ";
 }
 
 //fetching data in descending order (lastest entry first)
-$query = "SELECT * FROM users FROM users u LEFT JOIN user_type ut ON u.user_type=ut.user_type_id $where_";
+$query = "SELECT *  FROM account u LEFT JOIN user_type ut ON u.user_type=ut.user_type_id $where_";
 $result = $crud->getData($query);
 
 $totalData= count($result);
 $totalFiltered=$totalData;
 
 $sql = "SELECT u.*, ut.user_type as type_of_user ";
-$sql.=" FROM users u LEFT JOIN user_type ut ON u.user_type=ut.user_type_id  $where_";
+$sql.=" FROM account u LEFT JOIN user_type ut ON u.user_type=ut.user_type_id  $where_";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
-	$sql.=" AND ( firstname LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR lastname LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" AND ( FirstName LIKE '".$requestData['search']['value']."%' ";    
+	$sql.=" OR LastName LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR ut.user_type LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR username LIKE '".$requestData['search']['value']."%' )";
 }
@@ -53,17 +53,17 @@ $data=array();
 foreach($result as $key =>$row){
 	$nestedData=array(); 
     $nestedData[] = "<img src='".($row["profile_pic"]==''?'img/pic_avatar.jpg':$row["profile_pic"])."' width='20' height='20'/>";
-	$nestedData[] = $row["firstname"];
-	$nestedData[] = $row["lastname"];
+	$nestedData[] = $row["FirstName"];
+	$nestedData[] = $row["LastName"];
 	$nestedData[] = $row["username"];
 	$nestedData[] = $row["type_of_user"];
 	$nestedData[] = ($row["status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 
 
-	$command= "<a title='Edit Profile' href='user-edit.php?u=".$row["user_id"]."' class='edit btn btn-success'><i class='fa fa-pencil-square-o'></i></a>&nbsp;";
+	$command= "<a title='Edit Profile' href='user-edit.php?u=".$row["userid"]."' class='edit btn btn-success'><i class='fa fa-pencil-square-o'></i></a>&nbsp;";
 
 	if($_SESSION['user_type']=='1'){
-		$command .= "<a title='Reset Password' href='user-reset-pass.php?u=".$row["user_id"]."' class='edit btn btn-danger'><i class='fa fa-cog'></i></a> ";
+		$command .= "<a title='Reset Password' href='user-reset-pass.php?u=".$row["userid"]."' class='edit btn btn-danger'><i class='fa fa-cog'></i></a> ";
 	}
 
 	$nestedData[] = $command;

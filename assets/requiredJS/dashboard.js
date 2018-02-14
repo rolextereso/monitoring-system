@@ -107,7 +107,7 @@ $(document).ready(function(){
 
                               chart.render();
 
-                              //toogleDataSeries();
+                             // toogleDataSeries();
                       });
              
 
@@ -150,7 +150,7 @@ $(document).ready(function(){
                             
                             chart.render();  
 
-                            //toogleDataSeries();
+                           // toogleDataSeries();
                             setTimeout(function(){pieChart()}, 60000);
               });          
             }
@@ -228,7 +228,7 @@ $(document).ready(function(){
                                   }]
                         });
                         chart.render();
-
+                       // toolTipFormatter();
                   setTimeout(function(){multi_bar()}, 60000);
               });          
 
@@ -236,14 +236,12 @@ $(document).ready(function(){
             }
 
             function toolTipFormatter(e) {
-       
-
                   var str = "";
                   var total = 0 ;
                   var str3;
                   var str2 ;
 
-                  var
+   
                   for (var i = 0; i < e.entries.length; i++){
                   
                     var str1 = "<span style= \"color:"+e.entries[i].dataSeries.color + "\">" + e.entries[i].dataSeries.name + "</span>: <strong>"+  e.entries[i].dataPoint.y.format(2) + "</strong> <br/>" ;

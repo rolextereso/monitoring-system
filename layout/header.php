@@ -93,7 +93,7 @@
 
                  <?php if(access_role("Rental or Product Selection","view_page",$_SESSION['user_type'])){?>
                      <li class="nav-item header-nav">
-                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"> Rental or Product Selection</a>
+                      <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="item-selection.php") || (basename($_SERVER['PHP_SELF'])=="item-selection-rental.php")? 'active': '';?>" href="item-selection.php"> Order of Payment</a>
                     </li>
                 <?php } ?>
 
@@ -161,7 +161,7 @@
               <ul class="navbar-nav ml-auto">           
                 <li class="nav-item">
                       <img src="<?php echo ($_SESSION['pic']=='')? 'img/pic_avatar.jpg':$_SESSION['pic'];?>" width="20" height="20" />
-                      <a class="nav-link " title=" Update Profile Information" style="display: inline-block;" href="user-edit.php?u=<?php echo $_SESSION['user_id'];?>"> <?php echo $_SESSION['lastname'].', '.$_SESSION['firstname'];?> </a>
+                      <a class="nav-link " title=" Update Profile Information" style="display: inline-block;" href="user-edit.php?u=<?php echo $_SESSION['user_id_'];?>"> <?php echo $_SESSION['lastname'].', '.$_SESSION['firstname'];?> </a>
                 </li>    
                 <li class="nav-item">
                       <a class="nav-link" href="javascript:void(0)" onclick="logout()"><i class="fa fa-fw fa-sign-out"></i>Logout</a>

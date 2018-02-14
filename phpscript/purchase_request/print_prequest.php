@@ -1,7 +1,7 @@
 <?php
-	require_once('../../classes/Crud.php');
+    require_once('../../classes/Crud.php');
 
-    $crud = new Crud();
+     $crud = new Crud();
 
     $found        =false;
     $entity_name  = "";
@@ -10,21 +10,25 @@
     $date_created = "";
     $created_by   = "";
     $designation  = "";
+    $status_request ="";
+    $pr_id="";
 
 
     if(isset($_GET['pr_id'])){
       
              $pr_id= $crud->escape_string($_GET['pr_id']);  
 
-             $sql = "SELECT pr.*,eb.*,p.project_name, 
+             $sql = "SELECT pr.*,eb.*,p.project_name, f.funds,pb.description as target_expenses,
                             CONCAT(u.firstname,' ',u.lastname) as user_created,
                             ut.user_type as designation FROM purchase_request pr 
                       INNER JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id 
                       INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id
-                  
+
                       INNER JOIN projects p ON p.project_id= pd.project_id
                       INNER JOIN users u ON u.user_id= pr.created_by                  
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
+                      INNER JOIN funds f ON f.id=pr.funds
+                      INNER JOIN project_budget pb ON pb.project_budget_id=pr.project_budget_id
                       WHERE pr.pr_no='$pr_id' ";  
           
              $pr = $crud->getData($sql);
@@ -37,6 +41,7 @@
                 $date_created  = $row['created_on'];
                 $created_by    = $row['user_created'];
                 $designation   = $row['designation'];
+                $status_request =$row['approved'];
              }
 
              $sql = "SELECT CONCAT(u.firstname,' ',u.lastname) as name,
@@ -46,11 +51,12 @@
              $campus_dean = $crud->getData($sql);
     }
     
+    
 ?>   
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Purchase Request</title>
+    <title>Purchase Request</title>
 </head>
 <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
 <link href="../../assets/bootstrap.css" rel="stylesheet">
@@ -86,7 +92,7 @@
     }
 </style>
 <body>
-		 <div class="container">
+         <div class="container">
 
                 <div class="page">
                 
@@ -199,6 +205,12 @@
                                 <td class="border-t border-l"> &nbsp;</td>   
                                 <td class="border-t border-l">&nbsp;</td>   
                                 <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                                    
+                                <td colspan="4" class="border-t border-l" style="width:30%;">&nbsp;Budget Taken: <?php echo $pr[0]['target_expenses']; ?></td>   
+                                <td class="border-t border-l" colspan="3"> &nbsp;Funds Taken: <?php echo $pr[0]['funds']; ?></td>   
+                                                                                       
                             </tr>
                             <tr>
                                 <td class="border-t">Purpose:</td>

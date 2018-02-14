@@ -4,7 +4,7 @@
 
     $crud = new Crud();
 
-    $users = $crud->getData("SELECT * FROM users ;");
+    $users = $crud->getData("SELECT * FROM account WHERE IGP='9' ;");
 
     $project_id= "";
     $project_name= "";
@@ -56,7 +56,9 @@
 <?php if(access_role("Project List","view_page",$_SESSION['user_type'])){?> 
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='project-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Project List</a> / Project / <h2><?php echo  $project_name;?></h2></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      <a href='<?php echo (isset($_GET['assigned']))? "project_assigned.php":"project-list.php";?>'>
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back</a> / Project / <h2><?php echo  $project_name;?></h2></li>
               </ol>
            </nav>
 
@@ -94,7 +96,7 @@
                                                               ?>
                                                               <option value="<?php echo $res['user_id'];?>"
                                                                 <?php echo($res['user_id']==$project_incharge)?'Selected':'';?>
-                                                                ><?php echo $res['firstname'].' '.$res['lastname'];?></option>                                                                         
+                                                                ><?php echo $res['FirstName'].' '.$res['LastName'];?></option>                                                                         
                                                               <?php } ?>
                                                         </select>
                                                   </div>

@@ -1,15 +1,16 @@
 <?php
     require_once('layout/header.php');
     require_once('classes/Crud.php');
+    require_once('classes/function.php');
 
     $crud = new Crud();
 
-    $user_id="";
+    $user_id="WHERE IGP ='9' ";
     if($_SESSION['user_type']!=1){
-      $user_id=" WHERE user_id=".$_SESSION['user_id'];
+      $user_id=" WHERE user_id=".$_SESSION['user_id']." AND IGP='9'";
     }
 
-    $users = $crud->getData("SELECT * FROM users $user_id;");
+    $users = $crud->getData("SELECT * FROM account $user_id;");
 
     $project_id= "";
     $project_name= "";
@@ -34,7 +35,7 @@
             $found=(count($projects)==1)?true:false;
             $found_project=(count($projects)==1)?true:false;
 
-            $disabled=($found)?"disabled":"";
+            $disabled="";
             $add_item=true;
             
             foreach ($projects as $res) {
@@ -45,6 +46,14 @@
                 $project_type =$res['project_type'];                   
             }
       }
+    }else if(!isset($_GET['p_id'])){
+       $projects = $crud->getData("SELECT * FROM projects pr 
+                                  WHERE pr.project_status='Y' 
+                                  AND ( pr.created_by ".specific_user(access_role("Project List","view_command",$_SESSION['user_type'] ))." OR pr.project_incharge ".
+                                  specific_user(access_role("Project List","view_command",$_SESSION['user_type'])).")");
+      
+        $found=(count($projects)>=1)?true:false;
+
     }else{
        $found=true;
     }
@@ -116,13 +125,22 @@
                         <form role="form" action="" method="post" id="form">
                           <div class="row setup-content" id="step-1">
                             <div class="col-md-12 col-md-offset-3 ">
-                                <input type="hidden" id="proj_id" name="project_id" value="<?php echo $project_id;?>"/>
+                              
                                 <h5> Step 1 : Enter Project Information</h5><br/>
                                  <div class="row">
                                 <div class="col-md-6">
                                 <div class="form-group">
                                   <label class="control-label">Project Name *</label>
-                                  <input <?php echo $disabled;?> maxlength="100" type="text" required="required" class="form-control form-control-sm" placeholder="Enter project name" name="proj_name" id="proj_name" value="<?php echo $project_name;?>" />
+                                   <select <?php echo $disabled;?> id="proj_name" name="proj_name" class="form-control form-control-sm" required="required">
+                                      <option value="">Select type</option>
+                                      <?php
+                                          foreach ($projects as $row) {
+                                      ?>
+                                      <option value="<?php echo $row['project_id'];?>"
+                                        <?php echo($row['project_id']==$project_id)?'Selected':'';?>>
+                                        <?php echo $row['project_name']; ?></option>                                                                         
+                                      <?php } ?>
+                                  </select>
                                 </div>
                                 <div class="form-group">
                                   <label class="control-label">Project Type *</label>
@@ -141,7 +159,7 @@
                                                               ?>
                                                               <option value="<?php echo $res['user_id'];?>"
                                                                 <?php echo($res['user_id']==$project_incharge)?'Selected':'';?>
-                                                                ><?php echo $res['firstname'].' '.$res['lastname'];?></option>                                                                         
+                                                                ><?php echo $res['FirstName'].' '.$res['LastName'];?></option>                                                                         
                                                               <?php } ?>
                                   </select>
                                 </div>
@@ -291,7 +309,7 @@
               </div>
         </div>
           <?php }else{?>
-                         <h2 style="text-align: center;width: 100%;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>ID Not Found, maybe because project is not exist.</small></h2>
+                         <h2 style="text-align: center;width: 100%;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>ID Not Found, maybe because project is not exist/not yet setup. Please contact authorized personnel</small></h2>
 
 
            <?php } ?>
@@ -315,6 +333,10 @@
 
         format_amount();  
         auto_complete();  
+
+        $("#proj_name").change(function(){
+           getProject_info($(this).val());
+        });
 
         var navListItems = $('div.setup-panel div a'),
                 allWells = $('.setup-content'),
@@ -366,15 +388,21 @@
             
             $(".form-group").removeClass("has-error");
             for(var i=0; i<curInputs.length; i++){
-                if (!curInputs[i].validity.valid){
+                if(!curInputs[i].validity.valid){
                     isValid = false;
                     $(curInputs[i]).closest(".form-group").addClass("has-error");
-                }
-            }            
-
-            if (isValid){
-                nextStepWizard.removeAttr("disabled").trigger('click');              
+                }               
             }
+
+           if(validateDate()){
+                  isValid = false;
+                  //$(curInputs[i]).closest(".form-group").addClass("has-error");
+                  alert("Make sure that project started is less than project ended");
+            }
+
+           if (isValid){
+                 nextStepWizard.removeAttr("disabled").trigger('click');              
+           }
             
         });
 
@@ -422,6 +450,18 @@ function format_amount(){
               $(this).val(number_format(currentVal));
               total_amount(this);
         });
+}
+
+function validateDate(){
+      var $from=$("#project_started").datepicker('getDate');
+      var $to =$("#project_ended").datepicker('getDate');
+
+      var error=false;
+      if($from > $to){
+          error=true;
+      }
+     
+      return error;
 }
 
 function total_amount(el){
@@ -493,6 +533,25 @@ function auto_complete(){
                               });
                         }
       });
+}
+
+function getProject_info(value){
+       $.ajax({
+                    url: "phpscript/projectSetup/getProject.php", 
+                    type: 'POST',
+                    data: {query: value},
+                    dataType: 'json',
+                    success: function (data) {
+
+                        $("#project_type option").removeAttr("selected");
+                        $("#proj_desc").html("");
+                     
+                       if(data.length>=1){                     
+                          $("#project_type option[value='"+data[0].project_type+"']").prop('selected', true)
+                          $("#proj_desc").html(data[0].project_description);
+                       }
+                    }
+            });
 }
 
 function gate_pass(){

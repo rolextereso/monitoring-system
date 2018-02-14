@@ -16,14 +16,14 @@
         $id = $crud->escape_string($_GET['u']);
          
         //selecting data associated with this particular id
-        $result = $crud->getData("SELECT * FROM users WHERE user_id=$id LIMIT 1");
+        $result = $crud->getData("SELECT * FROM account WHERE userid='$id' LIMIT 1");
         
         $user_found=(count($result)==1)?true:false;
        
         foreach ($result as $res) {
-            $user_id = $res['user_id'];
-            $firstname = $res['firstname'];
-            $lastname = $res['lastname'];
+            $userid = $res['userid'];
+            $firstname = $res['FirstName'];
+            $lastname = $res['LastName'];
             $username = $res['username'];
           
           
@@ -53,7 +53,7 @@
                       <div class="row">
                         <div class="col-md-6">
                                <form data-toggle="validator" role="form" id="form" action="post">
-                                        <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
+                                        <input type="hidden" name="userid" value="<?php echo $userid;?>">
                                         User Name: <h5><?php echo $firstname.' '.$lastname;?></h5>
                                         <hr/>
                                         <div class="form-group">
