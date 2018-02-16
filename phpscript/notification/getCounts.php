@@ -5,13 +5,13 @@ include_once("../../classes/Crud.php");
 include_once("../../classes/function.php");
 
 $crud = new Crud();
-$add_where=" IS NOT NULL";
-$add_where_upaid="";
-if($_SESSION['user_type']!=1){
-	$add_where_rented=" ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']));
-	$add_where_pr=" ".specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
-	$add_where_upaid="AND user_id ".specific_user(access_role("Transaction List","view_command",$_SESSION['user_type']));
-}
+
+
+
+$add_where_rented=" ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']));
+$add_where_pr=" ".specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
+$add_where_upaid="AND user_id ".specific_user(access_role("Transaction List","view_command",$_SESSION['user_type']));
+
 
 $rented_items     =$crud->getData("SELECT count(DISTINCT rs.transaction_id) as rented_item 
 	                               FROM rental_specific rs 
