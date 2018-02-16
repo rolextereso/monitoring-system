@@ -19,7 +19,7 @@ $columns = array(
 	2 =>'customer_address', 
 	
 );
-
+$authorized_view=" AND user_id ".specific_user(access_role("Transaction List","view_command",$_SESSION['user_type']));
 //this will get the total row of the query;
 $sql = "SELECT sr.sales_id,
 		ss.transaction_id as sales_transaction_id, 
@@ -32,7 +32,7 @@ $sql = "SELECT sr.sales_id,
 		LEFT JOIN  rental_specific rsp ON rsp.sales_id=sr.sales_id
         LEFT JOIN  rental_items rit ON rit.rental_id=rsp.rental_id
       
-		WHERE (ss.paid='N' OR  rsp.paid='N') AND sr.or_number ='' GROUP BY sr.sales_id ";
+		WHERE (ss.paid='N' OR  rsp.paid='N') AND sr.or_number ='' $authorized_view GROUP BY sr.sales_id ";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -49,7 +49,7 @@ $sql = "SELECT sr.sales_id,
 		LEFT JOIN customer c ON c.customer_id =sr.customer_id 
 		LEFT JOIN  rental_specific rsp ON rsp.sales_id=sr.sales_id
         LEFT JOIN  rental_items rit ON rit.rental_id=rsp.rental_id     
-		WHERE (ss.paid='N' OR  rsp.paid='N') AND sr.or_number ='' ";
+		WHERE (ss.paid='N' OR  rsp.paid='N') AND sr.or_number ='' $authorized_view ";
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
 	$sql.=" AND (ss.transaction_id LIKE '".$requestData['search']['value']."%' ";
