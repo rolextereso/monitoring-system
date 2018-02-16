@@ -8,20 +8,21 @@ $crud = new Crud();
 $add_where=" IS NOT NULL";
 $add_where_upaid="";
 if($_SESSION['user_type']!=1){
-	$add_where= "='".$_SESSION['user_id']."'";
+	$add_where_rented=" ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']));
+	$add_where_pr=" ".specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
 	$add_where_upaid="AND user_id ".specific_user(access_role("Transaction List","view_command",$_SESSION['user_type']));
 }
 
-$rented_items     =$crud->getData("SELECT count(rental_specific_id) as rented_item 
+$rented_items     =$crud->getData("SELECT count(DISTINCT rs.transaction_id) as rented_item 
 	                               FROM rental_specific rs 
 	                               INNER JOIN rental_items ri ON ri.rental_id=rs.rental_id 
-	                               WHERE date_returned IS NULL AND ri.created_by $add_where;");
+	                               WHERE date_returned IS NULL AND ri.created_by $add_where_rented;");
 
 $onprocess_request=$crud->getData("SELECT count(purchase_request_id) as onprocess_request 
 	                               FROM purchase_request pr
 								   INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id
 								   INNER JOIN projects p ON p.project_id = pd.project_id
-									WHERE approved='O' AND p.project_incharge $add_where;");
+								   WHERE approved='O' AND p.project_incharge $add_where_pr;");
 
 $unpaid_transaction =$crud->getData("SELECT count(sales_id) as unpaid_transaction 
 	                               FROM sales_record WHERE or_number='' $add_where_upaid;");

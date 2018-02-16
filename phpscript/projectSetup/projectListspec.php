@@ -23,7 +23,7 @@ $sql = "SELECT pb.created_on, project_duration_id,p.project_id, pb.project_speci
 $sql.=" FROM project_budget pb";
 $sql.=" INNER JOIN project_duration pd ON pd.project_specific_id=pb.project_specific_id  ";
 $sql.=" INNER JOIN projects p ON p.project_id=pb.project_id  ";
-$sql.=" INNER JOIN users u ON u.user_id= pb.created_by ";
+$sql.=" INNER JOIN account u ON u.user_id= pb.created_by ";
 $sql.=" WHERE pb.project_id=".$requestData['id']." ";
 
 

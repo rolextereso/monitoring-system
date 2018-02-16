@@ -87,7 +87,7 @@ $(function() {
                       change(currentVal);               
 
                 });
-            });
+             });
 
             function change(value){
                    if($('#change').length==1){                 
@@ -97,6 +97,6 @@ $(function() {
                    }
             }
 
-          var windowClose=function(){
+            var windowClose=function(){
 
-          }
+            }

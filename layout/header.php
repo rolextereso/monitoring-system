@@ -56,14 +56,21 @@
               }
               
               .btn{
-                font-size: 13px;
+                  font-size: 13px;
               }
 
               .has-error .form-control {
-                border-color: #a94442;
-                -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-                box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                  border-color: #a94442;
+                  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+                  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
               }
+
+              .un_authorized{
+                  border: 1px solid #e1a3a3;
+                  padding: 8px 13px;
+                  background: #ffdede;
+                  color: #a64c4c;
+                }    
           </style>
 
 </head>
@@ -162,7 +169,10 @@
                 <li class="nav-item">
                       <img src="<?php echo ($_SESSION['pic']=='')? 'img/pic_avatar.jpg':$_SESSION['pic'];?>" width="20" height="20" />
                       <a class="nav-link " title=" Update Profile Information" style="display: inline-block;" href="user-edit.php?u=<?php echo $_SESSION['user_id_'];?>"> <?php echo $_SESSION['lastname'].', '.$_SESSION['firstname'];?> </a>
-                </li>    
+                </li> 
+                <li class="nav-item">
+                      <a class="nav-link" href="help.php" <?php echo (basename($_SERVER['PHP_SELF'])=="help.php")? 'active': '';?>" ><i class="fa fa-question-circle"></i> Help</a>
+                </li>   
                 <li class="nav-item">
                       <a class="nav-link" href="javascript:void(0)" onclick="logout()"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
                 </li>

@@ -81,7 +81,7 @@
                                     " <td>"+value.date_paid+"</td>"+
                             "</tr>"; 
                       });
-                       console.log($temp);
+                      // console.log($temp);
                   $(".table tbody").prepend($temp);
                   $("#total_amount span").html($totalAmount);
               }

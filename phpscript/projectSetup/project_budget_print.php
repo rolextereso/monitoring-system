@@ -1,7 +1,64 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Print</title>
+</head>
+<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+ <link href="../../assets/bootstrap.css" rel="stylesheet">
+<style>
+	body{		
+		padding: 0;
+		font-family: 'Slabo 27px', serif;
+		font-size: 14px;
+	}
+	.container{
+		margin: 0 auto;
+		width: 80%;		
+	}
 
-<?php
-    require_once('layout/header.php');
-    require_once('classes/Crud.php');
+	#body{
+		text-align: center;
+	}
+
+	table {
+	    border-collapse: collapse;
+	    margin: 0 auto;
+	    border-color: silver;
+	    width: 80%;
+	}
+
+	#customer_info, #footer, #header{
+		 margin: 0 auto;
+		 width: 80%;
+		
+	}
+
+	h4,p{
+		padding: 0;
+		margin:0;
+	}
+
+	.clearfix{
+		content:"";
+		clear:both;
+		display: table;
+	}
+
+	.card-body h2, .card-body h6{
+        margin-bottom: 0px;
+        width: 100%;
+        text-align: center;
+        font-family: Arial;
+    }
+</style>
+<?php    
+
+    require_once('../../classes/function.php');
+   
+
+  
+    $header=header_info();   
 
     $crud = new Crud();
 
@@ -10,8 +67,6 @@
     $found=false;  
     $project_name="";
     $date_header="";
-    $b_id = "";
-    $p_id = "";
 
     function populateRecord($array){
             $record=array();
@@ -81,34 +136,38 @@
           
     }
     
-?>   
+?>  
+<style>
+	.planned_budget,.present_expenses{
+		font-weight: bolder;
+
+	}
+	.planned_budget{
+		background: #91d691;
+	}
+	.present_expenses{
+		background:#e89595;
+	}
+</style> 
+
+	
  
- <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
- <style>
-    .planned_budget{
-          font-size: 26px;
-          color: #a6eea0;
-          background: #186c25;
-    }
-
-    .present_expenses{
-        font-size: 26px;
-        color: #f7bbbb;
-        background: #b22b2b;
-    }
-</style>
-
-<?php require_once('layout/nav.php');?>
-
-        <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-           <nav aria-label="breadcrumb" role="navigation">
-              <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><a href='project-list-spec.php?id=<?php echo $p_id;?>'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Project Budget List</a> </li>
-              </ol>
-           </nav>
-           <?php $path="'phpscript/projectSetup/project_budget_print.php?b_id=$b_id&p_id=$p_id'"; ?>
-           <button onclick="WindowPopUp(<?php echo $path;?>,'print','1011','962')" class="btn btn-primary"><i class="fa fa-print"></i> Print</button>
-           <?php if($found){?>
+<body>
+		<div class="container">
+			<br/>
+			<br/>
+			<div id="content" >
+				<div id="header">
+					<img src="<?php echo "../../".$header['logo'];?>" width="50" height="50" style="float:left;margin-right:6px;">
+					<div style="float:left;line-height: 19px;" >
+						<h4><?php echo $header['company_name'];?></h4>
+						<p> <?php echo $header['company_address'];?></p>
+						<p> <?php echo $header['contact_no'];?></p>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<br/>
+				<?php if($found){?>
                 <div style="text-align: center;">
                     <h3 style="text-transform: uppercase;">PROJECT BUDGET OF <?php echo $project_name;?></h3>
                     <span>for the month <?php echo $from;?> to <?php echo $to;?></span>
@@ -157,10 +216,13 @@
 
 
            <?php } ?>
-              
-        </div>
-      </main>
-     
+				<br/>
+				<br/>
+				<div id="footer">
+					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
+					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
+				</div>
+		</div>
 
-     
-<?php require_once('layout/footer.php');?>      
+</body>
+</html>

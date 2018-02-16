@@ -49,7 +49,7 @@
     }else if(!isset($_GET['p_id'])){
        $projects = $crud->getData("SELECT * FROM projects pr 
                                   WHERE pr.project_status='Y' 
-                                  AND ( pr.created_by ".specific_user(access_role("Project List","view_command",$_SESSION['user_type'] ))." OR pr.project_incharge ".
+                                  AND (  pr.project_incharge ".
                                   specific_user(access_role("Project List","view_command",$_SESSION['user_type'])).")");
       
         $found=(count($projects)>=1)?true:false;
@@ -95,8 +95,16 @@
               </div>
               <div class="card-body">
                     <?php if($found_project){ ?>
-                      <div id="note">
+                      <div class="un_authorized">
                           <b>Note: </b>Successful setup for the new budget for the project means changing the status of current project to archive and the newly created budget is the current budget of the project.
+                      </div>
+              
+                    <?php } ?>
+                    <?php if(count($projects)==0){ ?>
+                      <div class="un_authorized">
+                          <b>Note: </b>Unable to proceed to step 2 in project budget setup because you don't have project assigned to you.
+                          <br/>
+                          Please ask assistance to the authorized personnel.
                       </div>
               
                     <?php } ?>
@@ -132,7 +140,7 @@
                                 <div class="form-group">
                                   <label class="control-label">Project Name *</label>
                                    <select <?php echo $disabled;?> id="proj_name" name="proj_name" class="form-control form-control-sm" required="required">
-                                      <option value="">Select type</option>
+                                      <option value="">Select Project Name</option>
                                       <?php
                                           foreach ($projects as $row) {
                                       ?>
@@ -216,7 +224,7 @@
                                                           <td></td> 
                                                           <td>
                                                               <div class="form-group"> 
-                                                                  <input type="text" required="" class="form-control-sm form-control" name="production_cost[]"> 
+                                                                  <input type="text" required="" class="form-control-sm form-control" name="production_cost[]" data="production_name"> 
                                                               </div>
                                                           </td> 
                                                           <td>
@@ -309,9 +317,19 @@
               </div>
         </div>
           <?php }else{?>
-                         <h2 style="text-align: center;width: 100%;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>ID Not Found, maybe because project is not exist/not yet setup. Please contact authorized personnel</small></h2>
+          <div>
+                          <h2 style="width: 65%;margin: 0 auto;display: block!important;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>
+                             Reasons:
+                             <ul>
+                                <li>Project id not found, maybe because project is not exist</li>
+                                <li>User account don't have assigned project(s)</li>
+                                
+                             </ul>
+                             Please ask assistance to the authorized personnel.
+                           </small>
+                         </h2>
 
-
+          </div>
            <?php } ?>
         </div>
 <script type="text/javascript" src="assets/typeahead.bundle.js"></script>
@@ -482,7 +500,7 @@ function setup_price(){
        temp="",
        classes="form-control-sm form-control",
        $price="<div class='form-group'><input type='"+type+"' required class='"+classes+" amount_' name='price_amount[]' value='0'/></div> ";
-       $unit_="<div class='form-group'><input type='"+type+"' required class='"+classes+"' name='unit[]' value=''/></div> ";
+       $unit_="<div class='form-group'><input type='"+type+"' autocomplete='off' required class='"+classes+"' data='unit' name='unit[]' value=''/></div> ";
        $check="<div class='form-group'><input type='checkbox' class='gate_pass'  name='gate_pass[]' value='Y'/>"+
                                       "<input type='checkbox' style='display:none;' checked  class='gate_pass'  name='gate_pass[]' value='N'/></div> ";
 
@@ -500,7 +518,8 @@ function setup_price(){
 
     });
     format_amount();
-     gate_pass();
+    gate_pass();
+    auto_complete();
 }
 
 function delete_row(){
@@ -511,7 +530,7 @@ function delete_row(){
 }
 
 function auto_complete(){
-      $("[name='production_cost[]']").typeahead({
+      $("[name='production_cost[]'],[name='unit[]']").typeahead({
                           hint: true,
                           highlight: true,
                           minLength: 1
@@ -520,11 +539,11 @@ function auto_complete(){
                         limit: 12,
                         async: true,            
                         source: function (query, processSync, processAsync) {
-                              // var data="name";
+                              var data=$(this.$el[0].parentElement.parentElement).children("input").first().attr("data");
                               return $.ajax({
                                       url: "phpscript/projectSetup/getDescFromChartAccount.php", 
                                       type: 'GET',
-                                      data: {query: query},
+                                      data: {query: query,type:data},                               
                                       dataType: 'json',
                                       success: function (json) {
                                         // in this example, json is simply an array of strings

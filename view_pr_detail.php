@@ -26,7 +26,7 @@
                       INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id
 
                       INNER JOIN projects p ON p.project_id= pd.project_id
-                      INNER JOIN users u ON u.user_id= pr.created_by                  
+                      INNER JOIN account u ON u.user_id= pr.created_by                  
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
                       INNER JOIN funds f ON f.id=pr.funds
                       INNER JOIN project_budget pb ON pb.project_budget_id=pr.project_budget_id
@@ -46,7 +46,7 @@
              }
 
              $sql = "SELECT CONCAT(u.firstname,' ',u.lastname) as name,
-                             ut.user_type as designation FROM users u             
+                             ut.user_type as designation FROM account u             
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
                       WHERE ut.user_type='Campus Dean' AND u.status='Y' LIMIT 1;";
              $campus_dean = $crud->getData($sql);

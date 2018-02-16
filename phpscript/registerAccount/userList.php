@@ -17,7 +17,7 @@ $columns = array(
 	1 => 'LastName',
 	2=> 'username'
 );
-$where_="WHERE u.userid=".$_SESSION['user_id_']."  AND IGP='9' ";
+$where_="WHERE u.user_id=".$_SESSION['user_id']."  AND IGP='9' ";
 if($_SESSION['user_type']=='1'){
 	$where_=" WHERE IGP='9' ";
 }

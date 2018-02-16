@@ -6,10 +6,11 @@
     $user_id=specific_user(access_role("Purchase Requests","view_command",$_SESSION['user_type']));
     $projects = $crud->getData("SELECT p.*,pd.project_duration_id FROM projects p                          
                                 LEFT JOIN project_duration pd ON pd.project_id=p.project_id
-                                WHERE pd.status='Y' AND (p.created_by $user_id OR p.project_incharge $user_id )
+                                WHERE pd.status='Y' AND (p.project_incharge $user_id )
                                 ");
     $funds = $crud->getData("SELECT * FROM funds");
          
+    
 ?>   
 
 <style>
@@ -29,7 +30,7 @@
 <?php require_once('layout/nav.php');?>
 
         <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-<?php if(access_role("Purchase Requests","add_command",$_SESSION['user_type'])){?>
+<?php if(access_role("Purchase Requests","view_page",$_SESSION['user_type'])){?>
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
@@ -123,7 +124,19 @@
                                         <div class="form-group">
                                           <div class="form-row">
                                               <div class="col-md-4">
+                                                <?php if(count($projects)>=1){?>
                                                   <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                                <?php } else{ ?>
+                                                <div class="un_authorized">
+                                                    Note: Unable to create project request because:
+                                                      <ul>
+                                                          <li>User account does'nt have assigned project(s)</li>
+                                                          <li>User account did'nt create budget to the assigned project(s)</li>
+
+                                                      </ul>
+                                                      Please ask assistance to the authorized personnel.
+                                                </div>
+                                                <?php } ?>
                                               </div>
                                               <br/><br/>
                                         
@@ -267,7 +280,7 @@
   }
 
 </script>
-  <?php }else{ echo UnauthorizedOpenTemp(); } ?>
+<?php } else { echo UnauthorizedOpenTemp(); } ?>
       </main>
  <script src='assets/validator.min.js'></script>  
  <script src='assets/numberFormat.js'></script>
