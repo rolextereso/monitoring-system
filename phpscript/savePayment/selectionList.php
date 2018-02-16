@@ -71,7 +71,7 @@ $count=1;
 foreach($result as $key =>$row){
 	$nestedData=array(); 
 
-	$access=access_role("Transaction List","view_command",$_SESSION['user_type']);
+	$access=access_role("Transaction List","save_changes",$_SESSION['user_type']);
 	
 	$transaction_id_row=($row["sales_transaction_id"]!=null)?$row["sales_transaction_id"]:$row["rental_transaction_id"];
 	$nestedData[] =$transaction_id_row;    
