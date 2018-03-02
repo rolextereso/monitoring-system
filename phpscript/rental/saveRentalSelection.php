@@ -6,7 +6,33 @@ include_once("../../classes/function.php");
 
 $crud = new Crud();
 
-if(isset($_POST['rental_id'])){
+if(isset($_POST['cancel'])){
+	$result=array();
+
+	
+	if(isset($_POST['canceled_specific_id'])){
+				$canceled_specific_id =$_POST['canceled_specific_id'];
+				$rental_id =$_POST['rental_id'];
+				$i=0;
+				while($i<count($canceled_specific_id)){
+					$result[] = $crud->executeUnAutoCommit(" UPDATE rental_specific 
+														   SET canceled='Y'
+														   	   WHERE rental_specific_id=$canceled_specific_id[$i];");
+
+					$result[] = $crud->executeUnAutoCommit(" UPDATE rental_items
+														   SET availability='Y',transaction_id=''
+														   	   WHERE rental_id=$rental_id[$i];");
+
+					$i++;
+				}
+	}
+
+	
+
+	echo print_message(!in_array("",$result), '<strong>Success:</strong> Changes successfully save.','<strong>Error:</strong> Not saved, please contact the developer.');	
+
+
+}elseif(isset($_POST['rental_id'])){
 
 		$amount          = $_POST['amount'];
 		$rental_id       = $_POST['rental_id'];

@@ -40,7 +40,7 @@ $(function() {
                                                                     
                                                                          specific=data.data[0];//specific either 'rental' or 'sales'
                                                                          or_number=data.data[1];//
-                                                                         if(specific!="no_gate_pass"){
+                                                                         if(specific!="no_gate_pass" && $("[name='salary_deduction']").val()=='false'){
                                                                                bootbox.confirm({
                                                                                   size: "small",                                         
                                                                                   message: "Items needs gate pass,Would you like to print it?", 

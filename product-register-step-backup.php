@@ -224,7 +224,7 @@
                                           <label for="check">Project Status</label>                                                  
                                           <input  id="project_status" name="project_status" type="checkbox" 
                                           <?php //echo($project_status=='Y')?'checked':'';?> />
-                                          <span id="stat" class="italic <?php //echo($project_status=='Y')?'green':'red';?>"><?php //echo($project_status=='Y')?'(Active)':'(Unactive)';?></span>
+                                          <span id="stat" class="italic <?php //echo($project_status=='Y')?'green':'red';?>"><?php //echo($project_status=='Y')?'(Active)':'(Inactive)';?></span>
                                 </div> -->
                                
                               </div>

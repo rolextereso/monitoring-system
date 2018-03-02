@@ -8,7 +8,7 @@ $(function() {
                                           size: "small",                                         
                                           message: "Are you sure?", 
                                           callback: function(result){ 
-                                                   if(result && $("#total_amount_").val()!=0 ){
+                                                   if((result && $("#total_amount_").val()!=0) || $("[name='cancel'").length==1){
                                                           var url = "phpscript/savePayment/saveSelection.php";
                                                           
                                                               // POST values in the background the the script URL
@@ -28,28 +28,25 @@ $(function() {
 
                                                                       var transaction_id=$("[name='transaction_id']").val();
                                                               
-                                                                      if(data.type=='alert-success'){
-                                                                        var d=new Date(),
-                                                                        day=d.getHours(),
-                                                                        minute=d.getMinutes(),
-                                                                        seconds=d.getSeconds(),
-                                                                        month=d.getMonth(),
-                                                                        year=d.getFullYear();
-
-                                                                         $('#form')[0].reset();
-                                                                         $('tr[row]').remove();
-                                                                         $("[name='transaction_id']").val("OP"+seconds+year+month+day+"-"+minute+seconds);
+                                                                      if(data.type=='alert-success' && $("[name='cancel'").length==0){
+                                                                         gen_transaction_id();
                                                                          totalAmount();
 
-                                                                         bootbox.confirm({
-                                                                                            size: "small",                                         
-                                                                                            message: "Would you like to print the certification?", 
-                                                                                            callback: function(result){ 
-                                                                                                     if(result){
-                                                                                                        WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=sales','print','480','450');
-                                                                                                     }
-                                                                                            }
-                                                                         });
+                                                                       
+
+                                                                             if(!$("[name='terms']").is(":checked")){
+                                                                                 dialog_(transaction_id)
+                                                                              }
+
+                                                                            $('#form')[0].reset();
+                                                                            $('tr[row]').remove();
+                                                                      }else if($("[name='cancel'").length==1){
+                                                                        if($("#total_amount_").val()!=0){
+                                                                           dialog_(transaction_id);
+                                                                        }
+                                                                       
+                                                                        $("#cancelation button").attr("disabled","disabled");
+                                                                        $("#cancelation span").hide();
                                                                       }
                                                                       
                                                                   }
@@ -63,6 +60,49 @@ $(function() {
                                     return false;
                         }
                   });
-            });
+
+   $("[name='terms']").change(function(){
+      if(this.checked){
+          $("[name='transaction_id']").val("").removeAttr("readonly");
+          $("[name='transaction_id']").focus();        
+      }else{
+          gen_transaction_id();
+          $("[name='transaction_id']").attr("readonly","readonly");
+
+         
+      }
+
+   });
+
+    $("[name='transaction_id']").click(function(){
+        if(!$("[name='terms']").is(":checked")){
+          $(".tt-menu").hide();
+        }
+    })
+});
+
+function gen_transaction_id(){
+  var d=new Date(),
+      day=d.getHours(),
+      minute=d.getMinutes(),
+      seconds=d.getSeconds(),
+      month=d.getMonth(),
+      year=d.getFullYear();
+
+      $("[name='transaction_id']").val("OP"+seconds+year+month+day+"-"+minute+seconds);
+}
+
+function dialog_(transaction_id){
+  bootbox.confirm({
+                      size: "small",                                         
+                      message: "Would you like to print the certification?", 
+                      callback: function(result){ 
+                               if(result){
+                                  WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=sales','print','480','450');
+                               }
+                      }
+   });
+}
+
 
          

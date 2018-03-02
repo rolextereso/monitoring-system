@@ -1,4 +1,4 @@
-   $('[name="customer_name"],[name="customer_address"]').typeahead({
+$('[name="customer_name"],[name="customer_address"]').typeahead({
                           hint: true,
                           highlight: true,
                           minLength: 1
@@ -20,3 +20,9 @@
                               });
                         }
 });
+
+       
+
+      
+
+

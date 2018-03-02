@@ -1,5 +1,3 @@
-// Principal Author: Rolex Tereso
-// Email: rolexjun098@gmail.com
 
 (function($) {	
 					$.fn.budget = function( options ) {
@@ -29,8 +27,9 @@
 							$(selector+' .table-add').click(function () {
 							 				
 							  var $clone = $(selector).find('table tr.hide').clone(true).removeClass('hide table-line');
-							
+							  
 							  $(selector).find('table').append($clone);
+						
 							});
 
 							$(selector+' [contenteditable="true"]:not(._0)').keyup(function (event) {

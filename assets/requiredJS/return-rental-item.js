@@ -3,9 +3,9 @@ $(function() {
 
         if(!e.isDefaultPrevented() ) {
            if($(".checkboxes").length==0){
-                alert("No item need to return");
+                alert("No items to return");
            }else if($(".checkboxes:checked").length==0){
-                alert("Click the checkbox for the returned item");
+                alert("Click the checkbox first to return an item");
            }else{
                    bootbox.confirm({
                       size: "small",                                         

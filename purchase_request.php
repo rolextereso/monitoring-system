@@ -8,7 +8,7 @@
                                 LEFT JOIN project_duration pd ON pd.project_id=p.project_id
                                 WHERE pd.status='Y' AND (p.project_incharge $user_id )
                                 ");
-    $funds = $crud->getData("SELECT * FROM funds");
+    //$funds = $crud->getData("SELECT * FROM funds");
          
     
 ?>   
@@ -54,7 +54,7 @@
 
                                               <div class="col-md-4">
                                                 <div class="form-group">
-                                                        <label>PR No.:</label>
+                                                        <label>PR Transaction No.:</label>
                                                         <input type="text"  class="form-control form-control-sm" readonly="" name="pr_no" value="<?php echo date('yms-is');?>">
                                                   </div>
                                                                                             
@@ -62,16 +62,16 @@
                                                         <label>Entity Name:</label>
                                                         <input type="text" required="" value="Southern Leyte State University-CAFES" class="form-control form-control-sm" name="entity_name">
                                                   </div>
-                                                  <div class="form-group">
+                                                  <!-- <div class="form-group">
                                                         <label >Funds:</label>
                                                         <select class="form-control form-control-sm" name="funds" >
                                                             <option value="">Select funds</option>
-                                                          <?php foreach ($funds as $fund_){?>
-                                                            <option value="<?php echo $fund_['id'];?>"><?php echo $fund_['funds'];?>
+                                                          <?php //foreach ($funds as $fund_){?>
+                                                            <option value="<?php //echo $fund_['id'];?>"><?php //echo $fund_['funds'];?>
                                                             </option>
-                                                          <?php } ?>
+                                                          <?php //} ?>
                                                         </select>
-                                                  </div>  
+                                                  </div>   -->
                                                   <div class="form-group">
                                                         <label >Projects:</label>
                                                         <select class="form-control form-control-sm" name="projects" required="">
@@ -83,13 +83,13 @@
                                                         </select>
                                                   </div> 
                                                   
-                                                  <div class="form-group" style="display: none;" id="target_expenses">
+                                                  <!-- <div class="form-group" style="display: none;" id="target_expenses">
                                                         <label >Target Expenses:</label>
                                                         <select class="form-control form-control-sm" name="target_expenses" required="">
                                                                <option value="">Select target expenses</option>
                                                           
                                                         </select>
-                                                  </div> 
+                                                  </div>  -->
                                                   <div class="form-group">
                                                      <label>Purpose:</label>
                                                      <textarea required="" rows="5" cols="1" class="form-control " name="purpose" ></textarea>
@@ -124,7 +124,7 @@
                                         <div class="form-group">
                                           <div class="form-row">
                                               <div class="col-md-4">
-                                                <?php if(count($projects)>=1){?>
+                                                <?php if(count($projects)>=1 && access_role("Purchase Requests","save_changes",$_SESSION['user_type'])){?>
                                                   <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                                                 <?php } else{ ?>
                                                 <div class="un_authorized">
@@ -132,6 +132,8 @@
                                                       <ul>
                                                           <li>User account does'nt have assigned project(s)</li>
                                                           <li>User account did'nt create budget to the assigned project(s)</li>
+                                                          <li>User account is not authorized to save PR.</li>
+
 
                                                       </ul>
                                                       Please ask assistance to the authorized personnel.
@@ -194,12 +196,14 @@
                     });  
               
             });
-
+            
+           
 
             $('#form').on('submit', function (e) {
               // if the validator does not prevent form submit
                    if($(".table tbody tr").length==0){
                       alert("Please add an item");
+
                    }else if (!e.isDefaultPrevented()) {
                       bootbox.confirm({
                                         size: "small",                                         
@@ -224,18 +228,30 @@
                                                                            $(this).fadeOut(5000);
                                                                        });
 
+                                                            
+
                                                             if(data.type=='alert-success'){
                                                                         var d=new Date(),
                                                                         day=d.getHours(),
                                                                         minute=d.getMinutes(),
                                                                         seconds=d.getSeconds(),
                                                                         month=d.getMonth(),
-                                                                        year=d.getFullYear();
+                                                                        year=d.getFullYear(),
+                                                                        prev_op_num=$("[name='pr_no']").val();
 
                                                                          $('#form')[0].reset();
                                                                         
                                                                          $("[name='pr_no']").val(""+seconds+year+day+"-"+minute+seconds);
-                                                                       
+
+                                                                          bootbox.confirm({
+                                                                              size: "small",                                         
+                                                                              message: "Would you like to print the purchase request?", 
+                                                                              callback: function(result){ 
+                                                                                       if(result){
+                                                                                          WindowPopUp('phpscript/purchase_request/print_prequest.php?pr_id='+prev_op_num,'print','914','650');
+                                                                                       }
+                                                                              }
+                                                                          });
 
                                                            }
 
@@ -244,40 +260,40 @@
                                               }
                                        }
                                     });
-                             return false;
+                            
                     }
+                    return false;
               
-          });
+            });
 
-            $('[name="projects"]').change(function(){
-                  search_by($(this))
-            });   
+            // $('[name="projects"]').change(function(){
+            //       search_by($(this))
+            // });   
 
-  });
+});
 
-  function search_by($el){
-    
-        if($($el).val()==""){
-            $("#target_expenses").hide();
-        }else{
-           $("#target_expenses").show();
-              $.ajax({
-                    type: "POST",
-                    url: "phpscript/purchase_request/getSearchby.php",
-                    dataType   : 'json',
-                    data: {proj_id:$($el).val()},
-                    success: function (data)
-                    {     var $option="";
-                          $('.option').remove();
-                          $.each(data, function(key, value){                                                     
-                               $option+="<option class='option' value='"+value[0]+"'>"+value[1]+"</option>";                                                    
-                          });  
-                          $("[name='target_expenses']").append($option);
-                    }
-                });
-        }                         
+  // function search_by($el){    
+  //       if($($el).val()==""){
+  //           $("#target_expenses").hide();
+  //       }else{
+  //          $("#target_expenses").show();
+  //             $.ajax({
+  //                   type: "POST",
+  //                   url: "phpscript/purchase_request/getSearchby.php",
+  //                   dataType   : 'json',
+  //                   data: {proj_id:$($el).val()},
+  //                   success: function (data)
+  //                   {     var $option="";
+  //                         $('.option').remove();
+  //                         $.each(data, function(key, value){                                                     
+  //                              $option+="<option class='option' value='"+value[0]+"'>"+value[1]+"</option>";                                                    
+  //                         });  
+  //                         $("[name='target_expenses']").append($option);
+  //                   }
+  //               });
+  //       }                         
                  
-  }
+  // }
 
 </script>
 <?php } else { echo UnauthorizedOpenTemp(); } ?>

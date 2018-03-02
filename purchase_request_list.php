@@ -4,7 +4,15 @@
 ?>   
  
  <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+<style>
+    .warning, .info, .dark, .success, .danger{
+        height: 7px;
+        width: 5px;
+        cursor: pointer;
+    }
 
+
+</style>
 
 <?php require_once('layout/nav.php');?>
 
@@ -16,8 +24,17 @@
                      
               </ol>
            </nav>
-          <a href='purchase_request.php' class="btn btn-success" style="margin-left: 17px;" ><i class="fa fa-plus" aria-hidden="true"></i> Create new request</a>
-           <br/><br/> 
+           <?php if(access_role("Purchase Requests","add_command",$_SESSION['user_type'])){?>
+                  <a href='purchase_request.php' class="btn btn-success" style="margin-left: 17px;" ><i class="fa fa-plus" aria-hidden="true"></i> Create new request</a>
+          <?php } ?>
+           <br/><br/>
+           <div style="text-align: center;">
+           <span class="badge badge-warning warning" title="Waiting for funds">&nbsp;</span><label id="warning"> &nbsp;Waiting for funds</label>&nbsp;
+           <span class="badge badge-info info" title="Waiting for Head Approval">&nbsp;</span><label id="info"> &nbsp;Waiting for Head Approval</label>&nbsp;
+           <span class="badge badge-dark dark" title="Waiting for funds">&nbsp;</span><label id="dark"> &nbsp;Waiting for the PR Number</label>&nbsp;
+           <span class="badge badge-success success" title="Completed">&nbsp;</span><label id="success"> &nbsp;Completed</label>&nbsp;
+           <span class="badge badge-danger danger" title="Disapproved">&nbsp;</span><label id="danger"> &nbsp;Disapproved</label>
+         </div>
            <div class="table-responsive"> 
                                         
                     <table class="table table-hover" id="dataTable" width="100%" cellpadding="0" cellspacing="0">

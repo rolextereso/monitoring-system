@@ -32,7 +32,7 @@ $sql = "SELECT sr.sales_id,
 		LEFT JOIN  rental_specific rsp ON rsp.sales_id=sr.sales_id
         LEFT JOIN  rental_items rit ON rit.rental_id=rsp.rental_id
       
-		WHERE (ss.paid='N' OR  rsp.paid='N') AND sr.or_number ='' $authorized_view GROUP BY sr.sales_id ";
+		WHERE (ss.paid='N' OR  rsp.paid='N' ) AND (rsp.canceled='N' or ss.canceled='N') AND sr.or_number ='' $authorized_view GROUP BY ss.transaction_id, rsp.transaction_id ";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -40,16 +40,22 @@ $totalFiltered = $totalData;
 
 
 $sql = "SELECT sr.sales_id,
+		c.customer_id,
 		ss.transaction_id as sales_transaction_id, 
 		rsp.transaction_id as rental_transaction_id, 
-        customer_name, 
-        customer_address 
+        CASE WHEN count(ss.transaction_id)>1 THEN CONCAT(customer_name,' etc.') ELSE customer_name END  AS customer_name, 
+        CASE WHEN count(ss.transaction_id)>1 THEN CONCAT(customer_address,' etc.') ELSE customer_address END  AS customer_address,
+		(CASE WHEN rit.rental_id IS NOT  NULL THEN 'rental' ELSE 'sales' END) AS specific_,
+		bm.order_payment_id
 		FROM sales_record sr
 		LEFT JOIN  sales_specific ss  ON ss.or_number=sr.sales_id 
 		LEFT JOIN customer c ON c.customer_id =sr.customer_id 
 		LEFT JOIN  rental_specific rsp ON rsp.sales_id=sr.sales_id
-        LEFT JOIN  rental_items rit ON rit.rental_id=rsp.rental_id     
-		WHERE (ss.paid='N' OR  rsp.paid='N') AND sr.or_number ='' $authorized_view ";
+        LEFT JOIN  rental_items rit ON rit.rental_id=rsp.rental_id 
+        LEFT JOIN  bundle_remittance bm ON bm.order_payment_id=ss.transaction_id    
+		WHERE (ss.paid='N' OR  rsp.paid='N' ) AND (rsp.canceled='N' or ss.canceled='N') AND sr.or_number ='' $authorized_view ";
+
+
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
 	$sql.=" AND (ss.transaction_id LIKE '".$requestData['search']['value']."%' ";
@@ -60,10 +66,17 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 
 $result = $crud->getData($sql);
-$totalFiltered = $totalData;; 
+$totalData= count($result);
+$totalFiltered = $totalData; 
 
-$sql.="  GROUP BY sr.sales_id ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
-///echo $sql;
+$sql.="  GROUP BY 
+			(case when ss.transaction_id = (SELECT order_payment_id FROM bundle_remittance WHERE remittance_id=1) then CONCAT(c.customer_id , ss.transaction_id) else ss.transaction_id end),
+			(case when rsp.transaction_id = (SELECT order_payment_id FROM bundle_remittance WHERE remittance_id=1)  then CONCAT(c.customer_id , rsp.transaction_id) else rsp.transaction_id end)
+
+          ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+//echo $sql;
+
 $result = $crud->getData($sql);
 
 $data=array();
@@ -73,11 +86,24 @@ foreach($result as $key =>$row){
 
 	$access=access_role("Transaction List","save_changes",$_SESSION['user_type']);
 	
-	$transaction_id_row=($row["sales_transaction_id"]!=null)?$row["sales_transaction_id"]:$row["rental_transaction_id"];
+	
+	$transaction_id_row=($row["sales_transaction_id"]!=null)?$row["sales_transaction_id"]
+						:$row["rental_transaction_id"];
+	$transaction_id_link=($row["sales_transaction_id"]!=null)?$row["sales_transaction_id"].'@:'.$row['customer_id']
+						:$row["rental_transaction_id"].'@:'.$row['customer_id'];
+	$url=($row['specific_']=="sales")?	"item-selection":"item-selection-rental";				
+	$cancel=($row['order_payment_id']!=null)?"": " | <a href='$url.php?transaction_id=".$transaction_id_row."'><i title='Click to cancel transaction' class='fa fa-arrow-left'></i></a>";
+	
 	$nestedData[] =$transaction_id_row;    
 	$nestedData[] =$row["customer_name"];
 	$nestedData[] =$row["customer_address"];
-	$nestedData[] = ($access)?"<a href='item-buy.php?transaction_id=".$transaction_id_row."'><i class='fa fa-money'></i></a>": "";
+	$nestedData[] = ($access)?
+							"<a href='item-buy.php?transaction_id=".$transaction_id_link."'><i title='Click to open Transaction' class='fa fa-money'></i></a> |
+							 <a href='javascript:void(0);' onclick=WindowPopUp('phpscript/savePayment/printCertification.php?id=".$transaction_id_link."&for=".$row['specific_']."','print','480','450')><i title='Click to print certification' class='fa fa-file-text'></i></a> ".$cancel
+
+							
+							 : 
+							   "<a href='javascript:void(0);' onclick=WindowPopUp('phpscript/savePayment/printCertification.php?id=".$transaction_id_link."&for=".$row['specific_']."','print','480','450')><i title='Click to print receipt' class='fa fa-file-text'></i></a> ".$cancel;
 	
 	$data[] = $nestedData;
 }

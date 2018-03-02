@@ -25,7 +25,8 @@
                                       url: url,                                                                      
                                       success: function (data)
                                       {
-                                         if(data=="logout"){                                                    
+                                         if(data=="logout"){ 
+                                              delete_cookie();                                                   
                                               window.location.href="login.php";                                                   
                                          }
                                       }
@@ -34,6 +35,11 @@
                      }
                     });
          }  
+  //this will delete cookie hidealert when the overdue rented alert exists
+  function delete_cookie(){
+     document.cookie="hideAlert=;path=/";
+  }
+
 	</script>   
   
    

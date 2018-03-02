@@ -5,7 +5,8 @@
 
 	$crud = new Crud();
 
-	if(isset($_SESSION['user_id'])){		
+	if(isset($_SESSION['user_id'])){
+
 
 		if(user_activity("Logout",$_SESSION['user_id'])){
 			$crud->commit();
@@ -16,9 +17,6 @@
 			unset($_SESSION['lastname']);
 			unset($_SESSION['username']);
 			unset($_SESSION['user_type']);
-
-			
-
 			echo "logout";
 		}
 	}

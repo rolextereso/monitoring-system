@@ -40,7 +40,7 @@ $sales_query = "SELECT
 							LEFT JOIN  sales_specific ss ON ss.product_id=pd.product_id	
 							LEFT JOIN sales_record sr ON sr.sales_id = ss.or_number
 							LEFT JOIN project_duration pds ON pds.project_id=p.project_id
-							WHERE pds.project_duration_id IS NOT NULL
+							WHERE pds.project_duration_id IS NOT NULL AND pds.status='Y'
 							GROUP BY p.project_id ORDER BY p.project_id;";   
 
 $sales = $crud->getData($sales_query);

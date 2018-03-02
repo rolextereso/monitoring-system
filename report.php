@@ -52,6 +52,9 @@
                           <li class="nav-item">
                               <a class="nav-link " href="report_debit.php">Expenses Breakdown Report</a>
                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" href="report_net.php">Net Profit</a>
+                          </li>
                          
           </ul>
           <br/>
@@ -87,6 +90,7 @@
                                   <label> <b>&nbsp;</b></label>                                                     
                                          <div class="input-daterange input-group" id="datepicker">
                                             <select name="report_type" style="border-color: #ced4da;" >
+                                              <option value="day">Day</option>
                                               <option value="year">Year</option>
                                               <option value="month" selected="">Month</option>
                                             </select>

@@ -115,7 +115,7 @@
                                                               <label for="check">Status</label>                                                  
                                                               <input  id="status" name="status" type="checkbox"
                                                               <?php echo($status=='Y')?'checked':'';?> />
-                                                              <span id="stat" class="italic <?php echo($status=='Y')?'green':'red';?>"><?php echo($status=='Y')?'(Active)':'(Unactive)';?></span>
+                                                              <span id="stat" class="italic <?php echo($status=='Y')?'green':'red';?>"><?php echo($status=='Y')?'(Active)':'(Inactive)';?></span>
 
 
                                                               <label for="check">Need Gate Pass?</label>                                                  

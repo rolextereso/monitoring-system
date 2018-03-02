@@ -37,7 +37,10 @@
                                <a class="nav-link active" href="owner-info.php"><i class="fa fa-hand-pointer-o" ></i> Owner Information</a>
                           </li>
                           <li class="nav-item">
-                              <a class="nav-link" href="user-role.php"> <i class="fa fa-hand-pointer-o" ></i> User Role</a>
+                              <a class="nav-link" href="user-role.php"> <i class="fa fa-male" ></i> User Role</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="bundle-remittance.php"> <i class="fa fa-cubes" ></i> Bundle Remittance</a>
                           </li>
                          
               </ul>

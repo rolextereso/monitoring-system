@@ -1,4 +1,4 @@
-<?php
+r<?php
     require_once('layout/header.php');
     require_once('classes/Crud.php');
     require_once('classes/function.php');
@@ -96,7 +96,7 @@
               <div class="card-body">
                     <?php if($found_project){ ?>
                       <div class="un_authorized">
-                          <b>Note: </b>Successful setup for the new budget for the project means changing the status of current project to archive and the newly created budget is the current budget of the project.
+                          <b>Note: </b>The newly created budget will be the current budget and the other will become archive.
                       </div>
               
                     <?php } ?>
@@ -186,8 +186,7 @@
                               <div class="col-md-6">
                                  <div class="form-group">
                                       <label>Project Description</label>
-                                      <textarea <?php echo $disabled;?> rows="5" class="form-control " id="proj_desc" name="project_description" style="margin-top: 0px; margin-bottom: 0px;">
-                                        <?php echo($project_description=='')?'':$project_description;?></textarea>
+                                      <textarea <?php echo $disabled;?> rows="5" class="form-control " id="proj_desc" name="project_description" style="margin-top: 0px; margin-bottom: 0px;"><?php echo($project_description=='')?'':$project_description;?></textarea>
                                   </div>
 
                               </div>
@@ -208,7 +207,7 @@
                                                   <thead class="thead-dark">
                                                     <tr>
                                                       <th scope="col" style="width:2%;"></th>           
-                                                      <th scope="col">Production Costs </th>
+                                                      <th scope="col">Product Name </th>
                                                       <th scope="col" style="width:20%;">Planned Budget</th>                                                     
                                                     </tr>
                                                   </thead>
@@ -349,6 +348,7 @@
                       todayHighlight: true,       
         });  
 
+       
         format_amount();  
         auto_complete();  
 
@@ -395,7 +395,8 @@
                 isValid = true;
 
             if(curStepBtn=="step-1"){
-                 budget("production_cost");                
+                 budget("production_cost");
+
             }else if(curStepBtn=="step-2"){
                  budget("expenses",true);                
             }else if(curStepBtn=="step-3"){
@@ -495,7 +496,7 @@ function total_amount(el){
 function setup_price(){
    var body=$("#price_table");
 
-   $("#price_table tbody tr").remove();
+  
    var type="text",
        temp="",
        classes="form-control-sm form-control",
@@ -504,19 +505,21 @@ function setup_price(){
        $check="<div class='form-group'><input type='checkbox' class='gate_pass'  name='gate_pass[]' value='Y'/>"+
                                       "<input type='checkbox' style='display:none;' checked  class='gate_pass'  name='gate_pass[]' value='N'/></div> ";
 
-   $("[name='production_cost[]']").each(function() { 
-       var $product="<div class='form-group'><input type='"+type+"' readonly class='"+classes+"' value='"+$(this).val()+"' name='product_desc[]'/> </div>";
+  if($("#price_table tbody tr").length==0){                                   
+       $("[name='production_cost[]']").each(function() { 
+           var $product="<div class='form-group'><input type='"+type+"' readonly class='"+classes+"' value='"+$(this).val()+"' name='product_desc[]' /> </div>";
 
-       $temp ="<tr>"+
-              " <td>"+$product+"</td>"+                        
-              " <td>"+$price+"</td>"+
-              " <td>"+$unit_+"</td>"+
-              " <td>"+$check+"</td>"+
-            "</tr>";          
+           $temp ="<tr>"+
+                  " <td>"+$product+"</td>"+                        
+                  " <td>"+$price+"</td>"+
+                  " <td>"+$unit_+"</td>"+
+                  " <td>"+$check+"</td>"+
+                "</tr>";          
 
-        $(body).append($temp);
+            $(body).append($temp);
 
-    });
+        });
+    }
     format_amount();
     gate_pass();
     auto_complete();
@@ -597,24 +600,27 @@ function budget(name,expenses=false){
                   "Registration, Fees, Licenses",
                   "Others"];
 
+      var specific=(name=="production_cost")?"data='production_name'": "";
+
       var body=$("#"+name+"_table"),
                   type="text",
                   classes="form-control-sm form-control",        
-                  $item="<div class='form-group'><input type='"+type+"' required class='"+classes+"' name='"+name+"[]'/> </div>",
+                  $item="<div class='form-group'><input "+specific+" type='"+type+"' required class='"+classes+"' name='"+name+"[]'/> </div>",
                   $amount="<div class='form-group'><input data='"+name+"_total' type='"+type+"' required class='"+classes+" amount_' name='"+name+"_amount[]' value='0'/></div> ",
                   $delete="<h5 class='red delete'>&Cross;</h5>";
 
       if(expenses){
-          $("#"+name+"_table tbody tr").remove();
-          step2.forEach(function(exp) {
-               $temp ="<tr>"+
-                          " <td>"+$delete+"</td>"+                        
-                          " <td><div class='form-group'><input type='"+type+"' required class='"+classes+"' name='"+name+"[]' value='"+exp+"'/> </div></td>"+
-                          " <td>"+$amount+"</td>"+
-                        "</tr>";
-              $(body).append($temp);
-          
-          });          
+          if($("#"+name+"_table tbody tr").length==0){
+              step2.forEach(function(exp) {
+                   $temp ="<tr>"+
+                              " <td>"+$delete+"</td>"+                        
+                              " <td><div class='form-group'><input type='"+type+"' required class='"+classes+"' name='"+name+"[]' value='"+exp+"'/> </div></td>"+
+                              " <td>"+$amount+"</td>"+
+                            "</tr>";
+                  $(body).append($temp);
+              
+              }); 
+          }         
           format_amount();
           delete_row();
       }

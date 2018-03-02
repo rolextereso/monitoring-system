@@ -34,7 +34,7 @@
               }
               }).on('typeahead:selected', function(e,suggestion){
                   $(".row_get").remove();
-
+                  input_.typeahead('val','');
                   render(suggestion);                  
                   
 

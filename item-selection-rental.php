@@ -1,5 +1,32 @@
 <?php 
   require_once('layout/header.php'); 
+  require_once('classes/function.php'); 
+
+  $customer_name="";
+  $customer_address="";
+  $total_amount=0.00;
+  $rental=array();
+  $selection_for="";
+
+  $found=true;
+  $cancel=false;
+  if(isset($_GET['transaction_id'])){
+      $out=customer_change_selection($_GET['transaction_id']);
+      $op=$_GET['transaction_id'];
+      if(count($out['rental'])>0){
+          $cancel=true;
+          $customer_name=($out['selection_for']=="sales")? $out['sales'][0]['customer_name']:$out['rental'][0]['customer_name'];
+          $customer_address=($out['selection_for']=="rental")? $out['rental'][0]['customer_address']:$out['sales'][0]['customer_address'];
+          $total_amount=$out['total_amount'];
+          $rental=$out['rental'];
+          $sales_id=$out['rental'][0]['sales_id'];
+          $selection_for=$out['selection_for'];
+      }else{
+        $found=false;
+      }
+     
+
+  }
 ?>
    
    <!-- <script type="text/javascript" src="https://www.tutorialrepublic.com/examples/js/typeahead/0.11.1/typeahead.bundle.js"></script>
@@ -34,18 +61,34 @@
 
  
     <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-
+<?php if($found){ ?>
 <?php if(access_role("Rental or Product Selection","view_page",$_SESSION['user_type'])){?>
                  <nav aria-label="breadcrumb" role="navigation">
-                    <ul class="nav nav-tabs">
-                          <li class="nav-item">
-                               <a class="nav-link active" href="item-selection-rental.php"><i class="fa fa-hand-pointer-o" ></i> Rental Selection</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" href="item-selection.php"> <i class="fa fa-hand-pointer-o" ></i> Product Selection</a>
-                          </li>
-                         
-                    </ul>
+                  <?php if($cancel){?>
+                       <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page"><a href='item-selection-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Transaction List</a> / Cancelation of Transaction</li>
+                      </ol>
+                    <?php } ?>
+
+                     <?php if ($cancel && $selection_for=='rental'){ ?>
+                        <ul class="nav nav-tabs">
+                           
+                              <li class="nav-item">
+                                  <a class="nav-link active"> <i class="fa fa-hand-pointer-o" ></i> Rental Selection</a>
+                              </li>                         
+                          </ul>
+                     
+                    <?php }else{ ?>
+                        <ul class="nav nav-tabs">
+                              <li class="nav-item ">
+                                   <a class="nav-link active" href="item-selection-rental.php"><i class="fa fa-hand-pointer-o" ></i> Rental Selection</a>
+                              </li>
+                              <li class="nav-item">
+                                  <a class="nav-link " href="item-selection.php"> <i class="fa fa-hand-pointer-o" ></i> Product Selection</a>
+                              </li>                         
+                          </ul>
+
+                    <?php } ?>
                 </nav>
           <br/>
            <form data-toggle="validator" role="form" id="form">
@@ -54,12 +97,12 @@
                   <div class="row">
                      <div class="col-sm-6 form-group">
                           <label>Customer Name:</label>
-                          <input autocomplete="off" data="name" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required />
+                          <input <?php echo ($cancel)?"disabled":"";?> autocomplete="off" data="name" type="text" name="customer_name" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo $customer_name;?>" />
                                                
                     </div>
                     <div class="col-sm-6 form-group">
                           <label>Customer Address:</label>
-                          <input autocomplete="off" type="text" data="address" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required/>    
+                          <input <?php echo ($cancel)?"disabled":"";?> autocomplete="off" type="text" data="address" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" value="<?php echo $customer_address;?>" />    
                           <br/>                
 
                     </div>
@@ -67,13 +110,13 @@
                   <div class="row">
                     <div class="col-sm-6">
                           <label>Enter Rental Item</label>
-                          <input  autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm"  spellcheck="false" data-provide="typeahead" placeholder="Type here.." />
+                          <input <?php echo ($cancel)?"disabled":"";?>  autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm"  spellcheck="false" data-provide="typeahead" placeholder="Type here.." />
                           <img class="Typeahead-spinner" src="assets/img/spinner.gif" >
                            <br/>
                     </div>
                     <div class="col-sm-6">
                           <label>Date Return (YYYY-MM-DD)</label>
-                          <input required="" style="background:white;" readonly="" type="text" data-date-format="yyyy-mm-dd" class="date_return form-control form-control-sm"  placeholder="" />
+                          <input <?php echo ($cancel)?"disabled":"";?>  style="background:white;" readonly="" type="text" data-date-format="yyyy-mm-dd" class="date_return form-control form-control-sm"  placeholder="" />
                     </div>
                   </div>            
 
@@ -82,7 +125,7 @@
                   <br/><br/>
                      <div class="col-sm-12" id="total_amount_cont">
                         <span>Total Amount</span>
-                        <h1 id="total_amount" >&#8369; 0.00</h1>
+                        <h1 id="total_amount" >&#8369; <?php echo number_format($total_amount,2);?></h1>
                         <input type='hidden' id="total_amount_" name="total_amount">                 
                      </div>
                       <br/>
@@ -103,7 +146,27 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                
+                                <?php
+                                    $i=2;
+                                    foreach($rental as $res){
+                                ?>                          
+                                <tr id="row<?php echo $i;?>" row="_<?php echo $i;?>" num="<?php echo $i;?>">
+                                      <td>
+                                        <input type="hidden" value="<?php echo $res['rental_specific_id'];?>" name="rental_specific_id[]">
+                                        <input type="hidden" value="<?php echo $res['rental_id'];?>" name="rental_id[]">
+                                        <h5 class="close_item" onclick="remove_selected(<?php echo $i;?>,<?php echo $res['rental_specific_id'];?>)">&Cross;</h5>
+                                      </td>
+                                      <td><?php echo $res['item_name']."(".$res['item_description'].")";?></td>
+                                      <td><?php echo number_format($res['rental_fee'],2);?>/<?php echo ($res['per_day']=='Y')?'day':'rent';?></td>
+                                      <td  colspan="2">                                  
+                                        <div id="_<?php echo $i;?>"><?php echo $res['no_of_days'];?></div>
+                                      </td>
+                                      <input type="hidden" id="a_<?php echo $i;?>" name="amount[]" value="<?php echo $res['rental_fee_amount'];?>"/>
+                                      <td class="amount" amount="<?php echo $res['rental_fee_amount'];?>"><?php echo number_format($res['rental_fee_amount'],2);?></td>
+                                      <td><?php echo date('M d, Y',strtotime($res['date_return']));?></td>                                
+                                      
+                                </tr>
+                                <?php $i++; } ?>
                                 <tr>
                                   <td></td>
                                   <td></td>
@@ -189,17 +252,34 @@
                               </tbody>
                             </table>
                     </div>
-                    <div class="col-sm-3" style="height: 184px;border:1px solid silver;background: #f8f9f5e6;">   
+                    <div class="col-sm-3" style="height: 221px;border:1px solid silver;background: #f8f9f5e6;">   
                         <br/>               
                         <label> Transaction ID:</label>
-                        <div class="input-group form-group">                
+                        <div class="form-group">                
                           <input style="font-weight: bolder;" autocomplete="off" readonly="" type="text" class="form-control"  name="transaction_id" value="<?php echo "RE".date('ymd-si');?>" >
                           
                         </div>
                         <hr/>
+                           <?php if($cancel){?>
+
+                            <table style="display: none;" id="data_canceled">
+
+                            </table>
+                             <div id="cancelation">
+                                <div id="product_canceled_id" style="display: none;"></div>
+                                <input type="hidden" name="cancel" value="cancel"/>
+                                <input type="hidden" name="cancel_op" value="<?php echo $op;?>"/>
+                                <input type="hidden" name="sales_id_sales_or" value="<?php echo $sales_id;?>"/>
+                                <button type="submit" name="submit" class="btn btn-danger btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Save Changes</button>
+                                <span id="rollback" onclick="rollback()" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;display: none;" >&nbsp;Rollback 1 Canceled</span>
+                            </div>
+                      <?php }else{ ?>
                         <?php if(access_role("Rental or Product Selection","save_changes",$_SESSION['user_type'])){?> 
                                <button type="submit" name="submit" class="btn btn-primary btn-block" style="padding: .375rem .75rem;font-size: 1rem;" ><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Save Selection</button>
-                        <?php } ?>
+                        <?php 
+                          }
+                        } 
+                        ?>
                        
                       
                     </div>
@@ -247,6 +327,9 @@
                 </script>
                 <script src="assets/requiredJS/auto_complete_input.js"></script>
 <?php }else{ echo UnauthorizedOpenTemp(); } ?>
-    </main>
+<?php }else{ ?>
+      <h2 style="text-align: center;width: 100%;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>Transaction Not Found, maybe because it is not exist.</small></h2>
+<?php } ?>
+  </main>
           
 <?php require_once('layout/footer.php');?>      

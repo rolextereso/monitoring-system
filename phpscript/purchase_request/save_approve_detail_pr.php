@@ -17,12 +17,14 @@ if(isset($_POST['or']) && isset($_POST['unit_cost'])){
 		while($i<count($or)){
 			$unit_cost_=str_replace(",","","$unit_cost[$i]");
 			$result[] = $crud->executeUnAutoCommit("UPDATE expenses_breakdown SET ORNumber='{$or[$i]}', 
-														 amount_per_unit='{$unit_cost_}' 
+														 amount_per_unit='{$unit_cost_}',updated_on=DATE(NOW()) 
 													WHERE id='{$id[$i]}'");
 			$i++;
 		}		
 
 		echo print_message(!in_array("", $result), '<strong>Success:</strong> Purchased Request detail successfully save.','<strong>Error:</strong> Purchased Request detail not saved, please contact the developer.');	
 
+}else{
+	echo print_message(true, 'Nothing to save right now','');
 }
 ?>

@@ -21,13 +21,16 @@
 
              $sql = "SELECT pr.*,eb.*,p.project_name, 
                             CONCAT(u.firstname,' ',u.lastname) as user_created,
-                            ut.user_type as designation FROM purchase_request pr 
+                            ut.user_type as designation,
+                            pr.purchase_request_number FROM purchase_request pr 
                       INNER JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id 
                       INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id         
                       INNER JOIN projects p ON p.project_id= pd.project_id
-                      INNER JOIN users u ON u.user_id= pr.created_by                  
+                      INNER JOIN account u ON u.user_id= pr.created_by                  
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
                       WHERE pr.pr_no='$pr_id' ";  
+
+                  
           
              $pr = $crud->getData($sql);
              $found=(count($pr)>=1)?true:false;
@@ -40,7 +43,8 @@
                 $date_created  = $row['created_on'];
                 $created_by    = $row['user_created'];
                 $designation   = $row['designation'];
-                $status_request =$row['approved'];
+                $status_request = $row['approved'];
+                $purchase_request_number = $row['purchase_request_number']; 
              }
 
          
@@ -72,8 +76,11 @@
                                              
                                               <div class="col-md-12">
                                               
-                                                        <label><b>PR No.:</b></label>
+                                                        <!-- <label><b>PR Transaction No.:</b></label>
                                                         <span><?php echo $pr_id;?></span>
+                                                        <br/>  -->
+                                                        <label><b>PR No.:</b></label>
+                                                        <span><?php echo $purchase_request_number;?></span>
                                                         <br/> 
                                                         <label><b>Entity Name:</b></label>
                                                         <span><?php echo $entity_name;?>
@@ -104,16 +111,17 @@
                                                                   <td>
                                                                      <input type="hidden" name="id[]" value="<?php echo $row['id'];?>" >
                                                                     <input type='text' 
-                                                                    value="<?php echo $row['ORNumber'];?>" required 
+                                                                    value="<?php echo $row['ORNumber'];?>"  
                                                                     class='form-control-sm form-control' 
-                                                                    name='or[]'/>
+                                                                    name='or[]' <?php echo ($row['ORNumber']!="")? "disabled":"";?>/>
                                                                   </td>
                                                                   <td><?php echo $row['unit'];?></td>
                                                                   <td><?php echo $row['item_description'];?></td>
                                                                   <td><?php echo $row['qty'];?></td>
                                                                   <td>
                                                                     <input type='text' required 
-                                                                    class='form-control-sm form-control unit_cost'  name='unit_cost[]'
+                                                                    class='form-control-sm form-control unit_cost'  name='unit_cost[]' 
+                                                                    <?php echo ($row['amount_per_unit']!="")? "disabled":"";?>
                                                                     value="<?php echo number_format($row['amount_per_unit'],2);?>"/>
                                                                  </td>
                                                               </tr> 
@@ -127,7 +135,7 @@
                                         <div class="form-group">
                                           <div class="form-row">
                                               <div class="col-md-4">
-                                                <?php if(access_role("Purchase Requests","save_changes",$_SESSION['user_type'])){?>
+                                                <?php if($_SESSION['user_type']==5){?>
                                                   <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                                                 <?php } ?>
                                               </div>
@@ -186,15 +194,14 @@
                                                         data: $("#form").serialize(),
                                                         success: function (data)
                                                         {
+                                                     
                                                             $('.alert').removeClass('alert-success, alert-danger')
                                                                        .addClass(data.type)
                                                                        .html(data.message)
                                                                        .fadeIn(100,function(){
                                                                            $(this).fadeOut(5000);
                                                                        });
-                                                            if(data.type=='alert-success'){
-                                                                $("[type='submint']").remove();
-                                                            }
+                                                                                                                      
 
                                                         }
                                                     });

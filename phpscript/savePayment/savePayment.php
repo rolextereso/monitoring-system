@@ -18,16 +18,17 @@ if(isset($_POST['sales_id'])){
 		$selection_for  = $crud->escape_string($_POST['selection_for']);
 		
 
-		$result[]=$crud->executeUnAutoCommit("UPDATE sales_record SET mode_of_payment='Cash', or_number='$OR'".
-											" WHERE sales_id='$sales_id';");
-		$result[]=$crud->executeUnAutoCommit("UPDATE paid_assess{$year_semester} SET sales_id='$sales_id' ".
-											" WHERE ORNo='$OR';");
+		$result[]=$crud->executeUnAutoCommit("UPDATE sales_record SET mode_of_payment='Cash', or_number='$OR',
+			  								 date_save='".date('Y-m-d H:i:s')."'
+											 WHERE sales_id IN($sales_id);");
+		$result[]=$crud->executeUnAutoCommit("UPDATE paid_assess{$year_semester} SET sales_id='$sales_id' 
+											  WHERE ORNo='$OR';");
 
 		if($selection_for=="sales"){
 			
 			 //if($result){
 			 	$result[]=$crud->executeUnAutoCommit("UPDATE sales_specific SET paid='Y' ".
-												   " WHERE or_number='$sales_id';");		
+												   " WHERE or_number IN($sales_id);");		
 			// }
 		}else if($selection_for=="rental"){
 					
@@ -59,8 +60,7 @@ if(isset($_POST['sales_id'])){
 			}
 		}
 					
-		$gate_pass[]="$OR";
-		
+		$gate_pass[]="$OR";		
 		if(user_activity("Saved payment for $selection_for selection with OR number: $OR",$_SESSION['user_id'])){
 		 		echo print_message(!in_array("", $result), '<strong>Success:</strong> Payment successfully save.','<strong>Error:</strong> Payment not saved, please contact the developer.',$gate_pass);	
 		}else{

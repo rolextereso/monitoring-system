@@ -143,7 +143,7 @@
                                                   <span id="stat" class="italic <?php echo($status=='Y')?'green':'red';?>"><?php echo($status=='Y')?'(Active)':'(Unactive)';?></span>
                                         </div>
                                         <div class="form-group">
-                                          <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Edit Account</button>
+                                          <button type="submit" name="submit" class="btn btn-primary btn-block" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Account</button>
                                         </div>
                               </form> 
                               <br/>

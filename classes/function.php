@@ -1,6 +1,7 @@
 <?php
 include_once("Crud.php");
 $crud = new Crud();
+date_default_timezone_set('Asia/Manila');
 
 function print_message($result, $success_msg, $error_msg, $data=array()){
 	global $crud;
@@ -91,6 +92,81 @@ function semester_year(){
     return $year_semester;
 }
 
+
+function customer_change_selection($transaction_id){
+	global $crud;
+   
+    $found=false;
+    $sales_id="";
+    $selection_for="";
+    $total_amount=0;
+
+    if($transaction_id!=""){
+        //getting id from url
+        $id = $crud->escape_string($transaction_id);
+        //selecting data associated with this particular id
+        $sales = $crud->getData("SELECT sr.sales_id, "
+                                 ."           customer_name,"
+                                 ."           customer_address,"
+                                 ."           p.product_name,"
+                                 ."           pp.price,"
+                                 ."           p.unit_of_measurement,"
+                                 ."           ss.amount,"
+                                 ."           ss.sales_specific_id,"
+                                 ."           pp.price,"
+                                 ."           ss.quantity FROM sales_specific ss"
+                                 ."   INNER JOIN sales_record sr ON ss.or_number=sr.sales_id"
+                                 ."   INNER JOIN customer c ON c.customer_id =sr.customer_id"
+                                 ."   INNER JOIN products p ON p.product_id=ss.product_id"
+                                 ."   INNER JOIN product_price pp ON pp.price_id=p.product_price"
+                                 ."  WHERE ss.paid='N' AND sr.or_number ='' AND ss.canceled='N' AND transaction_id='$id';");
+        
+        $rental=$crud->getData("SELECT  
+                                  ri.transaction_id,   
+                                  ri.item_name,
+                                  ri.item_description,
+                                  ri.rental_fee,
+                                  ri.rental_id,
+                                  ri.per_day,
+                                  rs.rental_fee_amount,
+                                  rs.no_of_days,
+                                  rs.date_return,
+                                  rs.rental_specific_id,
+                                  c.customer_name,
+                                  c.customer_address,
+                                  rs.sales_id
+                                  FROM rental_items ri
+                                LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
+                                LEFT JOIN customer c ON c.customer_id=rs.customer_id 
+                                WHERE rs.paid='N' AND rs.canceled='N' AND ri.transaction_id='$id';");
+
+        if(count($sales)>=1){
+            $found=true;
+            $selection_for="sales";           
+
+            foreach($sales as $res_){
+                $total_amount+=$res_['amount'];
+                $sales_id=$res_['sales_id'];
+            } 
+        }else if(count($rental)>=1){
+            $found=true;            
+            $selection_for="rental";
+
+            foreach($rental as $res_){
+                $total_amount+=$res_['rental_fee_amount'];
+                $sales_id=$res_['sales_id'];
+            } 
+        }
+    }
+
+    $data=array('sales_id'=>$sales_id,
+			    'total_amount'=>$total_amount,
+			    'selection_for'=>$selection_for,
+				'sales'=>$sales,
+				'rental'=>$rental);
+
+    return $data;
+}
 
 
 ?>

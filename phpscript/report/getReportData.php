@@ -6,7 +6,7 @@ include_once("collectionReportData.php");
  
 	$out=(collectionReportData($_POST['datefrom'], $_POST['dateto'], $_POST['category'], $_POST['report_type'],$_POST["search_by"]));
 	$output=array("fetch"=>true,
-			      "title"=>"COLLECTION REPORT OF ".$out['category'], 
+			      "title"=>$out['category']." COLLECTION REPORT", 
 			      "search"=>$out['category'],
 			      "data"=>$out['data'], 
 			      "date"=>$out['date'], "total"=>$out['total'],

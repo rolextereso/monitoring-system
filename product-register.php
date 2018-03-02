@@ -118,13 +118,13 @@
                                                               <label for="check">Product Status</label>                                                  
                                                               <input  id="product_status" name="product_status" type="checkbox"
                                                               <?php echo($product_status=='Y')?'checked':'';?> />
-                                                              <span id="stat" class="italic <?php echo($product_status=='Y')?'green':'red';?>"><?php echo($product_status=='Y')?'(Active)':'(Unactive)';?></span>
+                                                              <span id="stat" class="italic <?php echo($product_status=='Y')?'green':'red';?>"><?php echo($product_status=='Y')?'(Active)':'(Inactive)';?></span>
                                                               &nbsp;
 
                                                               <label for="check">For Gate Pass</label>                                                  
                                                               <input  id="for_gate_pass" name="for_gate_pass" type="checkbox"
                                                               <?php echo($for_gate_pass=='Y')?'checked':'';?> />
-                                                              <span id="stat" class="italic <?php echo($for_gate_pass=='Y')?'green':'red';?>"><?php echo($for_gate_pass=='Y')?'(Active)':'(Unactive)';?></span>
+                                                              <span id="stat" class="italic <?php echo($for_gate_pass=='Y')?'green':'red';?>"><?php echo($for_gate_pass=='Y')?'(Active)':'(Inactive)';?></span>
                                                   </div>
                                               </div>
                                               <div class="col-md-6">
@@ -203,7 +203,7 @@
                                                                       if($("#product_id").length==0){
                                                                           $("#measurement_").html("Measurement");
                                                                           $("#price_").html("Price");
-                                                                          $("#stat").html("(Unactive)").removeClass("green").removeClass("red").addClass("red");
+                                                                          $("#stat").html("(Inactive)").removeClass("green").removeClass("red").addClass("red");
                                                                           $('#form')[0].reset();
                                                                       }                                           
 
@@ -229,7 +229,7 @@
                           $(this).next().text('(Active)');
                       }else{
                           $(this).next().removeClass('green').addClass('red');
-                          $(this).next().html('(Unactive)');
+                          $(this).next().html('(Inactive)');
                          
                       }
                   });

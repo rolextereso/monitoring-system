@@ -35,15 +35,20 @@ $sql=$sql;
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
 	$sql.=" AND (entity_name LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR purpose LIKE '".$requestData['search']['value']."%' ";
-	$sql.=" OR item_description LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR FirstName LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR LastName LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR project_name LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR pr_no LIKE '".$requestData['search']['value']."%' )";
 	
 }
 
 $result = $crud->getData($sql);
+$totalData= count($result);
 $totalFiltered = $totalData;; 
 
 $sql.="  GROUP BY pr.pr_no  ORDER BY pr.created_on DESC, ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
+
+//echo $sql;
 
 $result = $crud->getData($sql);
 
@@ -57,14 +62,18 @@ foreach($result as $key =>$row){
 	//$access=access_role("Rental Item List","edit_command",$_SESSION['user_type']);
 	$once_approved="";
 	if($row['approved']=='O'){
-		$approved='<span class="badge badge-warning">On Process</span>';
+		$approved='<span class="badge badge-warning warning" title="Waiting for funds">&nbsp;</span>';
+	}else if($row['approved']=='F'){
+		$approved='<span class="badge badge-info info" title="Waiting for Head Approval">&nbsp;</span>';
 	}else if($row['approved']=='Y'){
-		$approved='<span class="badge badge-success">Approved</span>';
+		$approved='<span class="badge badge-dark dark" title="Waiting for the PR Number">&nbsp;</span>';
+	}else if($row['approved']=='C'){
+		$approved='<span class="badge badge-success success" title="Completed">&nbsp;</span>';
 		if(access_role("Purchase Requests","save_changes",$_SESSION['user_type'])){
-			$once_approved="<a href='purchased_request_save_approved.php?pr_id=".$row['pr_no']."'><i class='fa fa-file-o'></i></a>";
+			$once_approved="<a href='purchased_request_save_approved.php?pr_id=".$row['pr_no']."'><i title='Click to modify items for Purchase Request' class='fa fa-file-o'></i></a>";
 	    }
 	}else{
-		$approved='<span class="badge badge-danger">Disapproved</span>';
+		$approved='<span class="badge badge-danger danger" title="Disapproved">&nbsp;</span>';
 
 	}
 
@@ -77,7 +86,7 @@ foreach($result as $key =>$row){
 	$nestedData[] =($row['updated_on']!="")?Date('F d, Y',strtotime($row['updated_on'])):"";
 	$nestedData[] =$approved;
 
-	$nestedData[] = "<a href='view_pr_detail.php?pr_id=".$row['pr_no']."'><i class='fa fa-folder-open-o'></i></a> 
+	$nestedData[] = "<a href='view_pr_detail.php?pr_id=".$row['pr_no']."'><i title='Click to view Purchase Request ' class='fa fa-folder-open-o'></i></a> 
 					 $once_approved";
 	
 	$data[] = $nestedData;

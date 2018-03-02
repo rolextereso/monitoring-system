@@ -51,6 +51,9 @@
         text-align: center;
         font-family: Arial;
     }
+     table th{
+	  font-weight: normal;
+	}
 </style>
 <?php    
 
@@ -80,7 +83,7 @@
 				<div class="clearfix"></div>
 				<br/>
 				<div class="card-body">
-					<br/><h2 style='margin-bottom:0px;'><?php echo "COLLECTION REPORT OF ".$out['category'];?></h2>
+					<br/><h2 style='margin-bottom:0px;'><?php echo $out['category']." COLLECTION REPORT";?></h2>
                                     <h6 style='margin-bottom:0px;'><?php echo "for the ".$out['report_type']." of <u>".$out['from_date']."</u> to <u>".$out['to_date']."</u>"?></h6>
                                     <br/><br/>
                                     <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'>
@@ -93,7 +96,7 @@
                                     </th>
                                    </thead>
                                     <tfoot class='tfoot-dark' >  
-                                              <tr>
+                                              <tr  style="background-color: lightgray;">
                                               <td> Total </td> 
                                            
                                              <?php foreach($out['total'] as $total)                                               
@@ -120,7 +123,7 @@
 				<br/>
 				<div id="footer">
 					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
-					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
+					<label>Date &amp; Time Printed:</label><span><?php echo date('F d, Y h:i:s a');?> </span><br/>
 				</div>
 		</div>
 

@@ -10,21 +10,37 @@
 
     if(isset($_GET['transaction_id'])){
         //getting id from url
-        $id = $crud->escape_string($_GET['transaction_id']);
+        $exploded = explode("@:",$crud->escape_string($_GET['transaction_id']));
+
+        $id=$exploded[0];
+        $customer_id_=(isset($exploded[1]))?$exploded[1]:"";
+
+        $get = $crud->getData("SELECT order_payment_id as salary_deduction
+                                FROM bundle_remittance WHERE remittance_id=1 ");
+        $etc="etc.";
+        $salary_deduction="false";
+        if($id==$get[0]['salary_deduction']){
+                    $etc="";
+                    $salary_deduction="true";
+        }
+
+
+
         //selecting data associated with this particular id
-        $sales = $crud->getData("SELECT sr.sales_id, "
-                                 ."           customer_name,"
-                                 ."           customer_address,"
-                                 ."           p.product_name,"
-                                 ."          pp.price,"
-                                 ."           p.unit_of_measurement,"
-                                 ."           ss.amount,"
-                                 ."          ss.quantity FROM sales_specific ss"
-                                 ."   INNER JOIN sales_record sr ON ss.or_number=sr.sales_id"
-                                 ."   INNER JOIN customer c ON c.customer_id =sr.customer_id"
-                                 ."   INNER JOIN products p ON p.product_id=ss.product_id"
-                                 ."  INNER JOIN product_price pp ON pp.price_id=p.product_price"
-                                 ."  WHERE ss.paid='N' AND sr.or_number ='' AND transaction_id='$id';");
+        $sales = $crud->getData("SELECT sr.sales_id, 
+                                          CASE WHEN count(ss.transaction_id)>1 THEN CONCAT(customer_name,' $etc') ELSE customer_name END  AS customer_name, 
+                                          CASE WHEN count(ss.transaction_id)>1 THEN CONCAT(customer_address,' $etc') ELSE customer_address END  AS customer_address,
+                                          p.product_name,
+                                          pp.price,
+                                          p.unit_of_measurement,
+                                          ss.amount,
+                                          GROUP_CONCAT(sr.sales_id) as sales_id_,
+                                          ss.quantity FROM sales_specific ss
+                                    INNER JOIN sales_record sr ON ss.or_number=sr.sales_id
+                                    INNER JOIN customer c ON c.customer_id =sr.customer_id
+                                    INNER JOIN products p ON p.product_id=ss.product_id
+                                    INNER JOIN product_price pp ON pp.price_id=p.product_price
+                                    WHERE ss.paid='N' AND sr.or_number ='' AND transaction_id='$id' AND c.customer_id=$customer_id_;");
         
         $rental=$crud->getData("SELECT 
                                   ri.transaction_id,   
@@ -44,14 +60,14 @@
 
        
 
-        if(count($sales)>=1){
+        if(count($sales)>=1 && $sales[0]['sales_id']!=""){
             $found=true;
             $selection_for="sales";
             $total_amount=0;
 
             foreach($sales as $res_){
                 $total_amount+=$res_['amount'];
-                $sales_id=$res_['sales_id'];
+                $sales_id=$res_['sales_id_'];
             } 
         }else if(count($rental)>=1){
             $found=true;
@@ -124,7 +140,7 @@
               </div>
               <div class="col-sm-6 form-group">
                     <label>Customer Address:</label>
-                    <input  <?php echo ($found)?"readonly":"";?> autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" required value="<?php echo ($selection_for=="sales")?$sales[0]['customer_address']:$rental[0]['customer_address'];?>"/>    
+                    <input  <?php echo ($found)?"readonly":"";?> autocomplete="off" type="text" name="customer_address" placeholder="Type here.." class="form-control form-control-sm"  value="<?php echo ($selection_for=="sales")?$sales[0]['customer_address']:$rental[0]['customer_address'];?>"/>    
                     <br/>                
 
               </div>
@@ -132,6 +148,7 @@
             <div class="row">
               <input type="hidden" name="selection_for" value="<?php echo $selection_for;?>"/>
               <input type="hidden" name="sales_id" value="<?php echo $sales_id;?>">
+              <input type="hidden" name="salary_deduction" value="<?php echo $salary_deduction; ?>">
               <div class="col-sm-12">
                     <label>Enter OR Number of the paid item(s)</label>
                     <input autocomplete="off" type="text" class="typeahead tt-query form-control form-control-sm" autocomplete="off" spellcheck="false" placeholder="Type here.."  id="or_number_input"  />
@@ -256,7 +273,7 @@
               <div class="col-sm-3" style="border:1px solid silver;background: #f8f9f5e6;">                  
                   <label> OR Number:</label>
                   <div class="input-group form-group">                
-                    <input autocomplete="off" type="text" class="form-control" placeholder="xxxx-xxx-xxx" name="or" required >
+                    <input readonly autocomplete="off" type="text" class="form-control" placeholder="xxxx-xxx-xxx" name="or" required >
                   </div>
                
                   <hr/>

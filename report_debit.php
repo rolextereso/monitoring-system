@@ -52,6 +52,9 @@
                           <li class="nav-item">
                               <a class="nav-link active" href="report_debit.php">Expenses Breakdown Report</a>
                           </li>
+                           <li class="nav-item">
+                              <a class="nav-link" href="report_net.php">Net Profit</a>
+                          </li>
                          
           </ul>
           <br/>
@@ -76,7 +79,7 @@
                                   <label> <b>Search by:</b></label>
                                   <div class="">
                                        <select name="search_by" class="form-control form-control-sm" style="border-color: #ced4da;" >
-                                              <option value="">All</option>
+                                              <option value="">All Projects</option>
                                               
                                         </select>                                     
                                   </div>
@@ -149,7 +152,7 @@
           });
 
           function printReport(){
-              WindowPopUp('phpscript/report/printExpensesReport.php?datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val()+"&search_by="+$("[name='search_by']").val()+'&category='+$("[name='category']").val()+'&report_type='+$("[name='report_type']").val(),'print','900','650');
+              WindowPopUp('phpscript/report/printExpensesReport.php?datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val()+"&search_by="+$("[name='search_by']").val()+'&category='+$("[name='category']").val()+'&report_type='+$("[name='report_type']").val()+'&proj_name='+$("[name='search_by'] option:selected").html(),'print','900','650');
           }
 
           function searchReport(){
@@ -197,9 +200,11 @@
                   
                           if(data.data.length>0){
                                     var header ="<br/><h2 style='margin-bottom:0px;'>"+data.title+"</h2>";
-                                    header    +="<h6 style='margin-bottom:0px;'>"+data.range+"</h6><br/><br/>";
+                                    header    +="<h6 style='margin-bottom:0px;'>"+data.range+"</h6><br/><br/><br/>";
 
-                                   var  table = " <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'> ";
+                                    var table="<label>Project Name: </label><span><b>"+$("[name='search_by'] option:selected").html()+"</b></span>"; 
+
+                                        table += " <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'> ";
                                         table    += " <thead class='thead-dark'> ";    
                                         table       += " <th>Item Description</th><th>Quantity</th><th>Amount Per Unit</th><th>Unit Cost</th>";
                                         table    += " </thead> ";

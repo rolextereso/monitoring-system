@@ -25,11 +25,12 @@ $sql = "SELECT
 				c.customer_name,
 				c.customer_address,
                 GROUP_CONCAT(ri.item_name,'(',ri.item_description,')') as rented_items,
-                updated_on
+                updated_on,
+				(CASE WHEN rs.date_return<=NOW() THEN 'overdue' ELSE '' END) as due_return
                 FROM rental_items ri
 LEFT JOIN rental_specific rs ON rs.rental_id=ri.rental_id
 INNER JOIN customer c ON c.customer_id=rs.customer_id 
-WHERE ri.availability='N' AND ri.created_by ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']))." AND (date_returned IS NULL OR date_returned ='') ";
+WHERE ri.availability='N' AND rs.canceled='N' AND ri.created_by ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']))." AND (date_returned IS NULL OR date_returned ='') ";
 
 $result = $crud->getData($sql);
 $totalData= count($result);
@@ -38,21 +39,23 @@ $totalFiltered = $totalData;
 
 $sql = $sql;
 
+
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
+	
 	$sql.=" AND (ri.item_name LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR c.customer_name LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR c.customer_address LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR ri.transaction_id LIKE '".$requestData['search']['value']."%' )";
-	
+		
 }
 
 $result = $crud->getData($sql);
-$totalFiltered = $totalData;; 
-
 $sql.=" GROUP BY ri.transaction_id  ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
-
+//echo $sql;
 $result = $crud->getData($sql);
+$totalData= count($result);
+$totalFiltered = $totalData;
 
 $data=array();
 $count=1;
@@ -66,8 +69,9 @@ foreach($result as $key =>$row){
 	$nestedData[] = $row["customer_name"];        
 	$nestedData[] = $row["customer_address"];
 	$nestedData[] = $row["rented_items"];   
-	$nestedData[] = date('F d, Y h:i:s a',strtotime($row["updated_on"]));               
-	$nestedData[] = ($access)?"<a href='rental-return.php?t_id=".$row['transaction_id']."' title='Return Items'><i class='fa fa-arrow-left'></i></a>":"";
+	$nestedData[] = date('F d, Y h:i:s a',strtotime($row["updated_on"]));
+	$nestedData[] = ($row['due_return']=='overdue')?"<button class='btn btn-danger overdue' title='overdue'></button>":""; 
+	$nestedData[] = ($access)?"<a href='rental-return.php?t_id=".$row['transaction_id']."' ><i title= 'Click to Return the Item/s' class='fa fa-arrow-left'></i></a>":"";
 	
 	$data[] = $nestedData;
 }

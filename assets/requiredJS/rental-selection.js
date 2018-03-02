@@ -8,7 +8,7 @@ $(function() {
                                           size: "small",                                         
                                           message: "Are you sure?", 
                                           callback: function(result){ 
-                                                   if(result && $("#total_amount_").val()!=0){
+                                                   if((result && $("#total_amount_").val()!=0) || $("[name='cancel'").length==1){
                                                           var url = "phpscript/rental/saveRentalSelection.php";
                                                           
                                                               // POST values in the background the the script URL
@@ -28,7 +28,7 @@ $(function() {
 
                                                                       var transaction_id=$("[name='transaction_id']").val();
                                                               
-                                                                      if(data.type=='alert-success'){
+                                                                      if(data.type=='alert-success' && $("[name='cancel'").length==0){
                                                                         var d=new Date(),
                                                                         day=d.getHours(),
                                                                         minute=d.getMinutes(),
@@ -40,16 +40,15 @@ $(function() {
                                                                          $('tr[row]').remove();
                                                                          $("[name='transaction_id']").val("RE"+seconds+year+month+day+"-"+minute+seconds);
                                                                          totalAmount();
-
-                                                                         bootbox.confirm({
-                                                                                            size: "small",                                         
-                                                                                            message: "Would you like to print the certification?", 
-                                                                                            callback: function(result){ 
-                                                                                                     if(result){
-                                                                                                        WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=rental','print','480','450')
-                                                                                                     }
-                                                                                            }
-                                                                         });
+                                                                         dialog_(transaction_id);
+                                                                         
+                                                                      }else if($("[name='cancel'").length==1){
+                                                                        if($("#total_amount_").val()!=0){
+                                                                           dialog_(transaction_id);
+                                                                        }
+                                                                       
+                                                                        $("#cancelation button").attr("disabled","disabled");
+                                                                        $("#cancelation span").hide();
                                                                       }
                                                                       
                                                                   }
@@ -64,5 +63,17 @@ $(function() {
                         }
                   });
             });
+
+function dialog_(transaction_id){
+    bootbox.confirm({
+                      size: "small",                                         
+                      message: "Would you like to print the certification?", 
+                      callback: function(result){ 
+                               if(result){
+                                  WindowPopUp('phpscript/savePayment/printCertification.php?id='+transaction_id+'&for=rental','print','480','450')
+                               }
+                      }
+   });
+}
 
          

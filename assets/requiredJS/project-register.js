@@ -43,7 +43,7 @@
 
                                                                     if($("#project_id").length==0){
                                                                         $('#form')[0].reset();
-                                                                        $("#stat").html("(Unactive)").removeClass("green").removeClass("red").addClass("red");
+                                                                        $("#stat").html("(Inactive)").removeClass("green").removeClass("red").addClass("red");
                                                                     }
                                                                 }
                                                             });
@@ -67,7 +67,7 @@
                           $('#stat').text('(Active)');
                       }else{
                           $('#stat').removeClass('green').addClass('red');
-                          $('#stat').html('(Unactive)');
+                          $('#stat').html('(Inactive)');
                          
                       }
                   });

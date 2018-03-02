@@ -1,6 +1,3 @@
-// Principal Author: Rolex Tereso
-// Email: rolexjun098@gmail.com
-
 (function($) {	
 	$.fn.Caption = function(options) {
 

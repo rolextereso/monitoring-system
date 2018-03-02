@@ -20,6 +20,9 @@
           <!-- Custom fonts for this template-->
           <link href="./assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+          <!-- Custom fonts for this template-->
+          <link href="./assets/font-awesome/css/font-chivo.css" rel="stylesheet" type="text/css">
+
           <!-- Bootstrap core CSS -->
           <link href="./assets/bootstrap.css" rel="stylesheet">
 
@@ -33,6 +36,9 @@
           <script src="./assets/requiredJS/openWindow.js"></script>
 
           <style>
+             /* .bg-dark {
+                  background-color: #0b2c4d!important;
+              }*/
               body{
                 font-size: 13px !important;
               }
@@ -70,8 +76,55 @@
                   padding: 8px 13px;
                   background: #ffdede;
                   color: #a64c4c;
-                }    
+                }   
+
+              .unreturn-item{
+                  position: fixed;
+                  bottom: 25px; 
+                  left:25%;
+                  width: 60%;
+                  z-index: 10000;
+                  
+              } 
+
+              .unreturn-item {
+                  padding: .75rem 1.25rem;
+                  margin-bottom: 1rem;
+                  border: 1px solid transparent;
+                  border-radius: .25rem;
+                  color: #721c24;
+                  background-color: #f8d7da;
+                  border-color: #f5c6cb;
+                  display: none;
+              
+              }
+              .bounce {
+                  animation-duration: 1.9s;
+                  animation-iteration-count: infinite;
+                  animation-name: bounce;
+              }
+
+              /*.table .thead-dark th {
+                  background-color: #07284a!important;
+                  border-color: #93bfeb!important;
+              }
+
+              .table .tfoot-dark td {
+   
+                  background-color: #0c335a!important;
+                  border-color: #93bfeb!important;
+              }*/
+
+              /*.bg-dark {
+                  background-color: #04274b!important;
+              }*/
+
+              .badge {
+                font-weight: normal!important;
+                
+              }
           </style>
+  
 
 </head>
 <body>
@@ -79,6 +132,14 @@
     <div class="alert alert-success" >
           
     </div>
+
+    <?php  if(basename($_SERVER['PHP_SELF'])!="rental-to-return-list.php" 
+            && basename($_SERVER['PHP_SELF'])!="rental-return.php"){ ?>
+    <div class="unreturn-item animated bounce" >
+          <span class='badge badge-danger overdue_rented'>2</span> &nbsp; Rented item(s) overdue as of <?php echo date('F d, Y'); ?>
+          <span style="cursor: pointer;" class="close" title="close">×</span>
+    </div>
+    <?php } ?>
 
     <header>  
           <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -170,9 +231,9 @@
                       <img src="<?php echo ($_SESSION['pic']=='')? 'img/pic_avatar.jpg':$_SESSION['pic'];?>" width="20" height="20" />
                       <a class="nav-link " title=" Update Profile Information" style="display: inline-block;" href="user-edit.php?u=<?php echo $_SESSION['user_id_'];?>"> <?php echo $_SESSION['lastname'].', '.$_SESSION['firstname'];?> </a>
                 </li> 
-                <li class="nav-item">
-                      <a class="nav-link" href="help.php" <?php echo (basename($_SERVER['PHP_SELF'])=="help.php")? 'active': '';?>" ><i class="fa fa-question-circle"></i> Help</a>
-                </li>   
+                <!--<li class="nav-item">
+                      <a class="nav-link" href="help/index.htm" <?php echo (basename($_SERVER['PHP_SELF'])=="help/index.htm")? 'active': '';?>" ><i class="fa fa-question-circle"></i> Help</a>
+                </li>  --!> 
                 <li class="nav-item">
                       <a class="nav-link" href="javascript:void(0)" onclick="logout()"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
                 </li>

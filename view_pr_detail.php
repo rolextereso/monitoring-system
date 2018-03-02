@@ -12,37 +12,44 @@
     $created_by   = "";
     $designation  = "";
     $status_request ="";
+    $funds_cluster="";
     $pr_id="";
-
+    $project_id="";
+    $purchase_request_number="";
 
     if(isset($_GET['pr_id'])){
       
              $pr_id= $crud->escape_string($_GET['pr_id']);  
 
-             $sql = "SELECT pr.*,eb.*,p.project_name, f.funds,pb.description as target_expenses,
+             $sql = "SELECT pr.*,pr.updated_on as date_,pr.funds as fund_cluster,eb.*,p.project_id, p.project_name, pb.description as target_expenses,
                             CONCAT(u.firstname,' ',u.lastname) as user_created,
-                            ut.user_type as designation FROM purchase_request pr 
+                            ut.user_type as designation,
+
+                            pr.purchase_request_number FROM purchase_request pr 
                       INNER JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id 
                       INNER JOIN project_duration pd ON pd.project_duration_id=pr.project_duration_id
 
                       INNER JOIN projects p ON p.project_id= pd.project_id
                       INNER JOIN account u ON u.user_id= pr.created_by                  
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
-                      INNER JOIN funds f ON f.id=pr.funds
-                      INNER JOIN project_budget pb ON pb.project_budget_id=pr.project_budget_id
+                      LEFT JOIN funds f ON f.id=pr.funds
+                      LEFT JOIN project_budget pb ON pb.project_budget_id=pr.project_budget_id
                       WHERE pr.pr_no='$pr_id' ";  
           
              $pr = $crud->getData($sql);
              $found=(count($pr)>=1)?true:false;
 
              foreach($pr as $row){
+                $project_id    = $row['project_id'];
                 $entity_name   = $row['entity_name'];
                 $project_name  = $row['project_name'];
                 $purpose       = $row['purpose'];
-                $date_created  = $row['created_on'];
+                $date_created  = $row['date_'];
                 $created_by    = $row['user_created'];
                 $designation   = $row['designation'];
                 $status_request =$row['approved'];
+                $funds_cluster=$row['fund_cluster'];
+                $purchase_request_number=$row['purchase_request_number'];
              }
 
              $sql = "SELECT CONCAT(u.firstname,' ',u.lastname) as name,
@@ -50,6 +57,12 @@
                       INNER JOIN user_type ut ON ut.user_type_id=u.user_type
                       WHERE ut.user_type='Campus Dean' AND u.status='Y' LIMIT 1;";
              $campus_dean = $crud->getData($sql);
+
+             $funds = $crud->getData("SELECT * FROM funds");
+
+             $target_expenses=$crud->getData("SELECT pb.project_budget_id, description FROM project_duration pd
+                    INNER JOIN project_budget pb ON pb.project_specific_id =pd.project_specific_id
+                    WHERE pd.status='Y' and pd.project_id='$project_id';");
     }
     
 ?>   
@@ -57,6 +70,7 @@
  <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
  <style>
+
     .page{
       width: 1060.33px;
       margin: 0 auto;
@@ -68,12 +82,17 @@
        padding: 1.5rem;
        overflow: auto;
     }
+    .table{   
+      border: 2px solid;      
+      
+    }
     table{
-      border: 2px solid;
       width: 989px;
     }   
 
     table td{
+      font-family: Cambria;
+      font-size:14px;
       border-top:none !important;
     }
     .center{
@@ -96,21 +115,77 @@
                     <li class="breadcrumb-item active" aria-current="page"><a href='purchase_request_list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Go to Purchase Request List</a> </li>
               </ol>
            </nav>
-           <?php if($found){?>
-          
+        <?php if($found){?>
+          <!-- O -ongoing , F-funded, C-Completed , Y-approved, N-disapproved  -->
            <div id="approval_stat">
                 <?php if($status_request=='O'){ ?>
-                     <?php if(access_role("Purchase Requests","view_command",$_SESSION['user_type'])){?>
-                            <button class="btn btn-success approval_stat" stat='Y'>Approved</button>&nbsp;
-                            <button class="btn btn-danger approval_stat" stat='N'>Disapproved</button>
-                      <?php } ?>
-                <?php }elseif($status_request=='Y'){ ?>                  
-                        <h3 class="green" style="display: inline;">This request is <b>APPROVED</b></h3>                    
+                        <?php if($_SESSION['user_type']==4) {?>
+                             <div class="row">
+                                    <div class="form-group col-md-4">
+                                          <label >Funds:</label>
+                                          <select class="form-control form-control-sm" name="funds" >
+                                              <option value="">Select funds</option>
+                                            <?php foreach ($funds as $fund_){?>
+                                              <option value="<?php echo $fund_['id'];?>"><?php echo $fund_['id'];?>
+                                              </option>
+                                            <?php } ?>
+                                          </select>
+                                    </div>  
+                                    <div class="form-group col-md-4">
+                                          <label >Target Expenses:</label>
+                                          <select class="form-control form-control-sm" name="target_expenses" required="">
+                                              <option value="">Select Expenses</option>
+                                            <?php foreach ($target_expenses as $exp){?>
+                                              <option value="<?php echo $exp['project_budget_id'];?>"><?php echo $exp['description'];?>
+                                              </option>
+                                            <?php } ?>
+                                          </select>
+                                    </div> 
+                                    <div class="form-group col-md-3"> 
+                                             <label>&nbsp;</label>
+                                              <button class="btn btn-primary btn-block approval_stat" stat='F'> Save</button>&nbsp;
+                                       </div>
+                              </div>
+                        <?php }else{ ?>
+                                       <h3 class="green" style="display: inline;">Waiting for the accounting's funding </h3>
+                                       <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>  
+                        <?php } ?>
+                <?php }elseif($status_request=='F'){ ?>   
+
+                            <?php if($_SESSION['user_type']==3) {?>
+                                 <button class="btn btn-success approval_stat" stat='Y'>Approved</button>&nbsp;
+                                 <button class="btn btn-danger approval_stat" stat='N'>Disapproved</button>
+                             <?php }else{ ?>
+                                       <h3 class="green" style="display: inline;">Waiting for the Campus Head Approval </h3> 
+                                       <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button> 
+                             <?php } ?>
+                <?php }elseif($status_request=='Y'){ ?>   
+
+                            <?php if($_SESSION['user_type']==6) {?>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                              <label >Purchase Request No.:</label>
+                                              <input type="text" name="pr_number" class="form-control form-control-sm" id="pr_number"/>
+                                        </div> 
+                                        <div class="form-group col-md-2"> 
+                                             <label>&nbsp;</label>
+                                              <button class="btn btn-primary btn-block approval_stat" stat='C'> Save</button>&nbsp;
+                                       </div>
+                                    </div>
+
+                             <?php }else{ ?>
+                                       <h3 class="green" style="display: inline;">Waiting for the PR Number by the Supply Officer </h3> 
+                                       <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button> 
+                             <?php } ?>            
+                <?php }elseif($status_request=='C'){ ?>                  
+                        <h3 class="green" style="display: inline;">This request is <b>Completed</b></h3>                  
                         <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>
                 <?php }elseif($status_request=='N'){?>                      
-                        <h3 class="red">This request is <b>REJECTED</b></h3>                     
+                        <h3 class="red">This request is <b>Rejected</b></h3>                     
+                <?php }else{ ?>
+                        <h3 class="red" style="display: inline;">&nbsp; </h3>         
+                          <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>
                 <?php } ?>
-
            </div>
           
            <input type="hidden" id="pr_id" value='<?php echo $pr_id;?>'>
@@ -120,34 +195,46 @@
 
                 <div class="page">
                 
-                         <table class="table table-sm" >
-                            <tr>
+                        
+                               <table class="table table-sm" >                                
+                
+                            <tr style="border-style: hidden;">
                                 <td colspan="7" style="text-align: right;">Appendix 60</td>                               
                             </tr>
-                            <tr>
+                            
+                            <tr style="border-style: hidden;">
                                 <td colspan="7" style="text-align: center;"><h2>PURCHASE REQUEST</h2></td>                    
-                            </tr>                           
-                            <tr>
-                                <td style="width:10%;"><b>Entity name:</b></td>   
+                            </tr> 
+                            
+                            <tr style="border-style: hidden;"> <td></td>
+                            </tr>
+                            
+                            <tr style="border-style: hidden;"><td></td>
+                            </tr> 
+                                                                                                               
+                            <tr style="border-bottom-style: solid;border-left-style: hidden;border-right-style: hidden;">
+                                <td style="width:10%;">Entity name:</td>   
                                 <td colspan="4">&nbsp;<?php echo $entity_name; ?></td> 
-                                <td style="width:18%;">Fund Cluster:</td> 
+                                <td style="width:18%;">Fund Cluster:&nbsp;<span id="cluster"><?php echo ($funds_cluster==0)?"":$funds_cluster;?></span></td> 
                                 <td>&nbsp;</td>                                    
+                            </tr>      
+               
+                            <tr >
+                                <td rowspan="2" style="border-right-style: hidden;">Office/Section:</td>   
+                                <td rowspan="2" class="border-t" style="text-decoration: underline;">&nbsp;<?php echo $project_name; ?></td> 
+                                <td class="border-t" colspan="3" style="border-bottom-style: hidden;border-style: hidden;"  >PR No:
+                                        <span id="pr_number_no"><?php echo $purchase_request_number; ?></span>
+                                </td>
+                                 
+                                <td  class="border-t border-l" style="border-left-style: hidden;" rowspan="2"colspan="2">Date:&nbsp;<?php echo ($date_created!="")? date("F d, Y", strtotime($date_created)): ""; ?></td>                                     
+                                    
                             </tr>
-                            <tr>
-                                <td colspan="7"></td>
+                            <tr >
+                               <td  colspan="2"style="border-right-style: hidden;">Responsibility Center Code:</td>   
+                                <td colspan="2" style="border-right-style: hidden;"class="border-l" >&nbsp;</td>  
+                                                                
                             </tr>
-                            <tr>
-                                <td class="border-t" style="width:10%;">Office/Section:</td>   
-                                <td colspan="2"  class="border-t">&nbsp;<?php echo $project_name; ?></td> 
-                                <td  class="border-t" style="width:5%;">PR No:</td> 
-                                <td  class="border-t">&nbsp;</td>  
-                                <td  class="border-t border-l" colspan="2">Date:&nbsp;<?php echo date("F d, Y", strtotime($date_created)); ?></td>                                     
-                            </tr>
-                            <tr>
-                                <td>Responsibility Center Code:</td>   
-                                <td colspan="4">&nbsp;</td>                      
-                                <td colspan="2" class="border-l">&nbsp;</td>                                                       
-                            </tr>
+                          
                             <tr>
                                 <td class="border-t border-l center">Stock/Property No.</td>   
                                 <td class="border-t border-l center">Unit</td>                      
@@ -166,6 +253,94 @@
                                   <td class="border-t border-l">&nbsp;</td>                                                        
                               </tr>
                             <?php } ?>
+                              <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                                <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            <tr>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
                             <tr>
                                 <td class="border-t border-l">&nbsp;</td>   
                                 <td class="border-t border-l">&nbsp;</td>                      
@@ -231,35 +406,58 @@
                                 <td class="border-t border-l">&nbsp;</td>                                                        
                             </tr>
                             <tr>
-                                                    
-                                <td colspan="4" class="border-t border-l" style="width:30%;">&nbsp;Budget Taken: <?php echo $pr[0]['target_expenses']; ?></td>   
-                                <td class="border-t border-l" colspan="3"> &nbsp;Funds Taken: <?php echo $pr[0]['funds']; ?></td>   
-                                                                                       
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
                             </tr>
                             <tr>
-                                <td class="border-t">Purpose:</td>
-                                <td colspan="6" class="border-t" style="height: 90px;">&nbsp;<?php echo $purpose; ?></td>
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                      
+                                <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;</td>   
+                                <td class="border-t border-l"> &nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>   
+                                <td class="border-t border-l">&nbsp;</td>                                                        
+                            </tr>
+                            
+                            <tr>
+                                <td class="border-t" style="border-right-style: hidden;">Purpose:</td>
+                                <td colspan="6" class="border-t" style="height: 50px;">&nbsp;<?php echo $purpose; ?></td>
                             </tr>
                             <tr>
-                                <td class="border-t" colspan="4">Requested by:</td>
+                                <td class="border-t" style="border-right-style: hidden; text-align: left;"colspan="4">Requested by:</td>
                                 <td class="border-t" colspan="3">Approved by:</td>
                             </tr>
                             <tr>
                                 <td>Signature:</td>
-                                <td  colspan="3"></td>
+                                <td  colspan="3">________________________</td>
                               
-                                <td colspan="3"></td>
+                                <td colspan="3">________________________</td>
                             </tr>
                             <tr>
                                 <td>Printed Name:</td>
-                                <td  colspan="3" style="text-transform: uppercase;"><?php echo $created_by; ?></td>
-                                <td colspan="3" style="text-transform: uppercase;"><?php echo $campus_dean[0]['name'];?></td>
+                                <td  colspan="3" style="text-transform: uppercase;text-decoration: underline;"><?php echo $created_by; ?></td>
+                                <td colspan="3" style="text-transform: uppercase;text-decoration: underline;"><?php echo $campus_dean[0]['name'];?></td>
                             </tr>
                             <tr>
                                 <td>Designation:</td>
-                                <td  colspan="3"><?php echo $designation;?></td>
-                                <td colspan="3" ><?php echo $campus_dean[0]['designation'];?></td>
+                                <td  colspan="3" style="text-decoration: underline;"><?php echo $designation;?></td>
+                                <td colspan="3" style="text-decoration: underline;"><?php echo $campus_dean[0]['designation'];?></td>
                             </tr>
+                           
+                              <tr ><td colspan="7"></td>
+                          
+                             </tr>
+                             <tr>
+                                                    
+                                <td colspan="7" class="border-t" style="width:30%;border-style: hidden;">&nbsp;*Budget Taken: <span id="budget_taken"><?php echo $pr[0]['target_expenses']; ?></span></td>   
+                               </tr>
+                                                                                  
+                            
+                            
+                            
                           </table>
                 </div>
            </div>
@@ -274,20 +472,61 @@
       </main>
       <script>
           $(document).ready(function(){
+   
+
               $(".approval_stat").click(function(){
                       var parent=this;
-                       bootbox.confirm({
+                      var stat=$(parent).attr('stat');
+                      if(stat=='F'){
+                          if( $('[name="target_expenses"]').val()!="" 
+                            && $('[name="funds"]').val()!=""){
+                                call_( $('[name="target_expenses"]').val(),$('[name="funds"]').val(),stat,'');
+                           }else{
+                              alert("Please select funds and target expenses");
+                           }
+                      }else if(stat=='Y' || stat =='N'){
+                             call_('','',stat,'');
+                      }else if(stat=='C'){
+                           if($('#pr_number').val()!=""){
+                                var $pr=$('[name="pr_number"]').val();
+                                
+                               call_('','',stat,$pr);
+                           }else{
+                               alert("Please fill the PR Number ");
+                           }
+                      }
+                     
+
+
+                  });
+           });
+
+          function printPR(){
+              WindowPopUp("phpscript/purchase_request/print_prequest.php?pr_id=<?php echo $pr_id;?>",'print','900','650');
+          }
+
+          function message_alert(msg,type){
+            return '<h3 class="'+type+'" style="display: inline;">'+msg+'</h3><button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>';
+          }
+
+          function call_($target, $funds,$status,$pr_number){
+                           bootbox.confirm({
                         size: "small",                                         
                         message: "Are you sure?", 
                         callback: function(result) { 
                                  if(result){
-                                        var status=$(parent).attr('stat')
-                                        var pr_id =$("#pr_id").val();
+                                        var status=$status;
+                                        var pr_id =$("#pr_id").val();                                     
                                          $.ajax({
                                                 type: "POST",
                                                 url: "phpscript/purchase_request/save_pr_stat.php",
                                                 dataType   : 'json',
-                                                data: { approval_stat:status, pr_id_:pr_id },
+                                                data: { approval_stat:status, 
+                                                        pr_id_:pr_id, 
+                                                        target_exp:$target,
+                                                        funds:  $funds,
+                                                        pr_number:$pr_number
+                                                        },
                                                 success: function (data)
                                                 {
                                                   $('.alert').removeClass('alert-success, alert-danger')
@@ -297,27 +536,35 @@
                                                                  $(this).fadeOut(5000);
                                                              });
                                                    if(data.type=="alert-success"){
-                                                      if(data.data[0]=='Y'){
-                                                            $("#approval_stat").html('<h3 class="green" style="display: inline;">'+
-                                                                                     'This request is <b>APPROVED</b></h3>'+
-                                                                                     '<button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>');
-                                                      }else{
-                                                            $("#approval_stat").html(' <h3 class="red">This request is <b>REJECTED</b></h3>');
+                                                      if(data.data[0]=='F'){
+                                                            var msg='Waiting for the Campus Head Approval';
+
+                                                            $("#cluster").html($funds);
+                                                            $("#budget_taken").html($("[name='target_expenses'] option:selected").html());
+                                                            $("#approval_stat").html(message_alert(msg,'green'));
+                                                      }else if(data.data[0]=='Y'){
+                                                            var msg='Waiting for the PR Number by the Supply Officer';
+                                                            $("#pr_number_no").html($("[name='pr_number']").val());
+                                                            $("#approval_stat").html(message_alert(msg,'green'));
+                                                            
+                                                      }else if(data.data[0]=='N'){
+                                                            var msg='This request is rejected';
+                                                            $("#approval_stat").html(message_alert(msg,'red'));
+                                                      }else if(data.data[0]=='C'){
+                                                             var msg='This request is completed';
+                                                            $("#approval_stat").html(message_alert(msg,'green'));
                                                       }
                                                    }
 
                                                       
                                                 }
+                                      
                                         });
+                                      
                                 }
                       }
 
                     });
-                  });
-           });
-
-          function printPR(){
-              WindowPopUp("phpscript/purchase_request/print_prequest.php?pr_id=<?php echo $pr_id;?>",'print','900','650');
           }
       </script>
      

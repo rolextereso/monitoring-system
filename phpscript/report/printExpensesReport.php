@@ -51,6 +51,9 @@
         text-align: center;
         font-family: Arial;
     }
+     table th{
+	  font-weight: normal;
+	}
 </style>
 <?php    
 
@@ -80,9 +83,10 @@
 				<div class="clearfix"></div>
 				<br/>
 				<div class="card-body">
-					<br/><h2 style='margin-bottom:0px;'><?php echo "BREAKDOWN REPORT OF ".$_GET['category'];?></h2>
-                                    <h6 style='margin-bottom:0px;'><?php echo "for the ".$_GET['report_type']." of <u>".Date('F d, Y',strtotime($_GET['datefrom']))."</u> to <u>".Date('F d, Y',strtotime($_GET['dateto']))."</u>"?></h6>
+					<br/><h2 style='margin-bottom:0px;'><?php echo $_GET['category']." BREAKDOWN REPORT";?></h2>
+                                    <h6 style='margin-bottom:0px;'><?php echo $out['range'];?></h6>
                                     <br/><br/>
+                                    <label>Project Name:</label> <span><b><?php echo $_GET["proj_name"];?></b></span>
                                     <table class='table table-striped table-hover table-sm' width='100%' id='dataTable'>
                                     <thead class='thead-dark'>    
                                    		 <th>Item Description</th>
@@ -91,7 +95,7 @@
                                    		 <th>Unit Cost</th>
                                    	</thead>
                                     <tfoot class='tfoot-dark' >  
-                                        <tr>
+                                        <tr style="background-color: lightgray;">
                                               <td colspan="3"> Total </td> 
                                               <td> <?php echo $out["total"];?> </td>  
                                         </tr>                                        
@@ -129,7 +133,7 @@
 				<br/>
 				<div id="footer">
 					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
-					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
+					<label>Date &amp; Time Printed:</label><span><?php echo date('F d, Y h:i:s a');?> </span><br/>
 				</div>
 		</div>
 

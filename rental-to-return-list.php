@@ -4,7 +4,13 @@
 ?>   
  
  <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-
+ <style>
+  .overdue{
+      width:10px;
+      height:10px;
+      padding: 0px;
+  }
+</style>
 
 <?php require_once('layout/nav.php');?>
 
@@ -27,7 +33,8 @@
                                   <th>Customer Name</th>
                                   <th>Customer Address</th>
                                   <th>Rented Items</th>
-                                  <th>Date Rented</th>                                  
+                                  <th>Date Rented</th> 
+                                  <th></th>                                  
                                   <th>Command</th>
                             </tr>
                       </thead>
@@ -49,7 +56,7 @@
                                                         url :"phpscript/rental/rentalToReturnList.php",
                                                       },
                                                       columnDefs: [ {
-                                                              targets: [3,4], // column or columns numbers
+                                                              targets: [3,4,5,6], // column or columns numbers
                                                               orderable: false,  // set orderable for selected columns
                                                       }]
                                   });                   

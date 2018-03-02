@@ -33,21 +33,22 @@ $sql=$sql;
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter
 
-	if($requestData['search']['value']=='active'){
-		$search='Y';
-	}else{
-		$search='N';
-	}
+	
 	$sql.=" AND (msg LIKE '".$requestData['search']['value']."%' ";    
-	$sql.=" OR ul.created_on LIKE '".$requestData['search']['value']."%' )";
+	$sql.=" OR ul.created_on LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR FirstName LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR created_on LIKE '".date('Y-m-d',strtotime($requestData['search']['value']))."%' ";
+	$sql.=" OR LastName LIKE '".$requestData['search']['value']."%' )";
+
 }
 
 $result = $crud->getData($sql);
+$totalData= count($result);
 $totalFiltered=$totalData;
 
 $sql.=" ORDER BY ul.created_on DESC , ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
-
+//echo $sql;
 $result = $crud->getData($sql);
 $data=array();
 

@@ -24,7 +24,10 @@
                                <a class="nav-link " href="owner-info.php"><i class="fa fa-hand-pointer-o" ></i> Owner Information</a>
                           </li>
                           <li class="nav-item">
-                              <a class="active nav-link" href="user-role.php"> <i class="fa fa-hand-pointer-o" ></i> User Role</a>
+                              <a class="active nav-link" href="user-role.php"> <i class="fa fa-male" ></i> User Role</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="bundle-remittance.php"> <i class="fa fa-cubes" ></i> Bundle Remittance</a>
                           </li>
                          
               </ul>
@@ -68,7 +71,7 @@
                                                         <tr>  
                                                             <th>Module</th> 
                                                             <th>View Page</th> 
-                                                            <th>View Command</th>                                               
+                                                            <th>View Command</th>                                           
                                                             <th>Edit Command</th> 
                                                             <th>Add Command</th> 
                                                             <th>Delete Command</th> 

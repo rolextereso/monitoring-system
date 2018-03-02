@@ -110,7 +110,7 @@
            <button onclick="WindowPopUp(<?php echo $path;?>,'print','1011','962')" class="btn btn-primary"><i class="fa fa-print"></i> Print</button>
            <?php if($found){?>
                 <div style="text-align: center;">
-                    <h3 style="text-transform: uppercase;">PROJECT BUDGET OF <?php echo $project_name;?></h3>
+                    <h3 style="text-transform: uppercase;">PROJECT BUDGET FOR <?php echo $project_name;?></h3>
                     <span>for the month <?php echo $from;?> to <?php echo $to;?></span>
                 </div>
                 <br/>

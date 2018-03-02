@@ -21,14 +21,14 @@ $columns = array(
 
 
 //this will get the total row of the query;
-$sql = "SELECT * FROM rental_items where created_by".specific_user(access_role("Rental or Product Selection","view_command",$_SESSION['user_type']));
+$sql = "SELECT * FROM rental_items where created_by".specific_user(access_role("Rental Item List","view_command",$_SESSION['user_type']));
 
 $result = $crud->getData($sql);
 $totalData= count($result);
 $totalFiltered = $totalData;
 
 
-$sql = "SELECT * FROM rental_items WHERE created_by".specific_user(access_role("Rental or Product Selection","view_command",$_SESSION['user_type']));
+$sql = "SELECT * FROM rental_items WHERE created_by".specific_user(access_role("Rental Item List","view_command",$_SESSION['user_type']));
 
 if( !empty($requestData['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter	
 	$sql.=" AND (item_name LIKE '".$requestData['search']['value']."%' ";    
@@ -39,6 +39,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 
 $result = $crud->getData($sql);
+$totalData= count($result);
 $totalFiltered = $totalData;; 
 
 $sql.="  ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
@@ -59,7 +60,7 @@ foreach($result as $key =>$row){
 	$nestedData[] =($row["per_day"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] =($row["need_gate_pass"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	$nestedData[] =($row["status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
-	$nestedData[] = ($access)?"<a href='rental-register.php?r_id=".$row['rental_id']."'><i class='fa fa-pencil'></i></a>":"";
+	$nestedData[] = ($access)?"<a href='rental-register.php?r_id=".$row['rental_id']."'><i title='Click to Edit' class='fa fa-pencil'></i></a>":"";
 	
 	$data[] = $nestedData;
 }

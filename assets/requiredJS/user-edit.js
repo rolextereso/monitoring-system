@@ -56,7 +56,7 @@ $(document).ready(function(){
                           $('#stat').text('(Active)');
                       }else{
                           $('#stat').removeClass('green').addClass('red');
-                          $('#stat').html('(Unactive)');
+                          $('#stat').html('(Inactive)');
                          
                       }
                   });

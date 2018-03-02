@@ -50,6 +50,7 @@
 <?php 
    
     require_once('../../classes/Crud.php');
+    require_once('../../classes/function.php');
 
     $crud = new Crud();
     
@@ -87,14 +88,14 @@
 		             	    
 
 		             }     
-
-		             $customer = $crud->getData("SELECT ".
-											"	sr.or_number, ".
-											"		c.customer_name, ".							
-											"		c.customer_address  ".
-											"		FROM sales_record sr ".							
-											"		INNER JOIN customer c ON c.customer_id =sr.customer_id ".							
-											"		WHERE sr.or_number=".$id." LIMIT 1");  
+		            
+		             $customer = $crud->getData("SELECT 
+												    sr.or_number, 
+													CASE WHEN count(sr.or_number)>1 THEN CONCAT(c.customer_name,' etc.') ELSE c.customer_name END  AS customer_name, 
+													CASE WHEN count(sr.or_number)>1 THEN CONCAT(c.customer_address,' etc.') ELSE c.customer_address END  AS customer_address
+													FROM sales_record sr 						
+													INNER JOIN customer c ON c.customer_id =sr.customer_id							
+													WHERE sr.or_number='".$id."' LIMIT 1");  
 		             //update printing_status to printed or 'Y'
 					$crud->execute("UPDATE sales_record SET printing_status='Y' WHERE or_number=".$id);            
         }
@@ -156,9 +157,10 @@
 				</table>
 				<br/>
 				<br/>
+
 				<div id="footer">
 					<label>Printed by: </label><span><?php echo $_SESSION['firstname'].' '.$_SESSION['lastname'];?></span><br/>
-					<label>Date &amp; Time Printed:</label><span><?php echo date('Y-m-d H:i:s');?> </span><br/>
+					<label>Date &amp; Time Printed:</label><span><?php echo date('F d, Y h:i:s a');?> </span><br/>
 					
 
 

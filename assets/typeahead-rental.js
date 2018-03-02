@@ -106,6 +106,36 @@
         totalAmount();
   }
 
+  function remove_selected(row,$id){
+    var canceled="<input type='hidden' value='"+$id+"' name='canceled_specific_id[]' />";
+    var data_canceled=$("#row"+row)[0].outerHTML;    
+
+    $("#data_canceled").prepend(data_canceled);
+    $("#product_canceled_id").prepend(canceled);
+
+    
+    check_canceled_selection();
+    remove(row);
+  }
+
+  function check_canceled_selection(){
+    if($("#product_canceled_id").html()==""){
+        $('#rollback').fadeOut();
+    }else{
+        $('#rollback').fadeIn();
+    }
+  }
+
+  function rollback(){
+    var data_reverted=$("#data_canceled tbody tr:first").clone(); 
+   $(".table tbody").prepend(data_reverted); 
+  
+    $("#data_canceled tbody tr").first().remove();
+    $("#product_canceled_id input").first().remove();
+    check_canceled_selection();
+    totalAmount();
+  }
+
    function addQuantityNotPerDay(index, diffDays){  
 
         var quantity=parseInt($("div#_"+index).text())+diffDays;
@@ -159,11 +189,11 @@
   
  function totalAmount(){
         var total = 0.00;
-        var amount= $(".amount");
-        var currentVal = ($('#amount').val()=="")?'0.00':$('#amount').val();
+        var amount= $(".table .amount");
+        var currentVal = ($('.table #amount').val()=="")?'0.00':$('#amount').val();
 
         if(amount.length>0){
-              $(".amount").each(function() {   
+              $(".table .amount").each(function() {   
                     total += parseFloat($(this).text().replace(',',''));
                    
                     $("#total_amount").html('&#8369; '+total.format(2)).addClass("pulse animated green");//animate once amount added

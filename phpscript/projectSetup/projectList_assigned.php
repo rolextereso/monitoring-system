@@ -42,11 +42,14 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 	}
 	$sql.=" AND (project_name LIKE '".$requestData['search']['value']."%' ";    
 	$sql.=" OR project_description LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR FirstName LIKE '".$requestData['search']['value']."%' ";
+	$sql.=" OR LastName LIKE '".$requestData['search']['value']."%' ";
 	$sql.=" OR project_status LIKE '".$search."%' ";
 	$sql.=" OR project_incharge LIKE '".$requestData['search']['value']."%')  ";
 }
 
 $result = $crud->getData($sql);
+$totalData= count($result);
 $totalFiltered=$totalData;
 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";

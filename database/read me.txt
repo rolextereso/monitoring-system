@@ -1,0 +1,1 @@
+palihog og edit ang database pati ang config sa system kay ang database name aho gigamit enrolment2 paki change to enrolment nalang.

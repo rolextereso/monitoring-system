@@ -28,7 +28,7 @@ $(function() {
                                                                       if($("#item_id").length==0){
                                                                           $("#measurement_").html("Unit");
                                                                           $("#rental_").html("Rental Fee");
-                                                                          $("#stat").html("(Unactive)").removeClass("green").removeClass("red").addClass("red");
+                                                                          $("#stat").html("(Inactive)").removeClass("green").removeClass("red").addClass("red");
                                                                           $("#per_day").html("(No)").removeClass("green").removeClass("red").addClass("red");
                                                                           $("#gpass").html("(No)").removeClass("green").removeClass("red").addClass("red");
                                                                           $('#form')[0].reset();
@@ -56,7 +56,7 @@ $(function() {
                           $('#stat').text('(Active)');
                       }else{
                           $('#stat').removeClass('green').addClass('red');
-                          $('#stat').html('(Unactive)');                         
+                          $('#stat').html('(Inactive)');                         
                       }
                   });
 

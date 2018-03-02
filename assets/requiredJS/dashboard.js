@@ -44,7 +44,7 @@ $(document).ready(function(){
             }
 
             function lineGraph(product, datefrom, dateto){
-              var datapoint = [];
+              //var datapoint = [];
               var _data = [];
 
               var title=(product=="")?"All Products": product;
@@ -60,10 +60,10 @@ $(document).ready(function(){
                                         dataPoints:[]
                                     } 
 
-                                    object.title=value.title;
+                                    //object.title=value.title;
                                     object.name=value.name;
                                     $.each(value.data, function(key, value){                  
-                                          object.dataPoints.push({x:  new Date(value[0]), y: parseInt(value[1])});
+                                          object.dataPoints.push({x:  new Date(value[0].toString()), y: parseInt(value[1])});
                                            
                                     });
                                     
@@ -71,20 +71,24 @@ $(document).ready(function(){
 
                                 });
                                
-
+                                console.log(_data);
+                     
                                 var chart = new CanvasJS.Chart("chartContainer", {
                                     animationEnabled: true,
                                     exportEnabled: true,
+                                    zoomEnabled: true, 
                                     theme: "light2",
                                     title:{
                                       text: title+" Revenue"
                                     },
                                     axisX:{
-                                      valueFormatString: "MMM YY",
+                                      valueFormatString: "DD MMM YYYY",
                                       crosshair: {
                                         enabled: true,
                                         snapToDataPoint: true
-                                      }
+                                      },
+                                      intervalType: "day",
+                                      interval: 1
                                     },
                                     axisY: {
                                       title: "Total Amount",
@@ -99,7 +103,7 @@ $(document).ready(function(){
                                       cursor:"pointer",
                                       verticalAlign: "bottom",
                                       horizontalAlign: "left",
-                                      dockInsidePlotArea: true,
+                                      dockInsidePlotArea: false,
                                       itemclick: toogleDataSeries
                                     },
                                     data: _data,
@@ -107,7 +111,7 @@ $(document).ready(function(){
 
                               chart.render();
 
-                             // toogleDataSeries();
+             
                       });
              
 
@@ -198,8 +202,9 @@ $(document).ready(function(){
 
                           var chart = new CanvasJS.Chart("multibarContainer", {
                                   animationEnabled: true,
+                                  zoomEnabled: true, 
                                   title:{
-                                    text: "Sales and Expenses"
+                                    text: "Project Sales and Expenses"
                                   },
                                   axisY: {
                                     title: "Amount"

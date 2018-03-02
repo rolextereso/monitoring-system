@@ -54,7 +54,7 @@ $access_delete=access_role("Project List","delete_command",$_SESSION['user_type'
 foreach($result as $key =>$row){
 	$nestedData=array(); 
 
-	$delete_=($access_delete)?"<a onclick=deleteBudget('".$row['project_specific_id']."'); href='#'><i class='fa fa-trash-o'></i></a>":"";
+	$delete_=($access_delete)?"<a onclick=deleteBudget('".$row['project_specific_id']."'); href='#'><i title='Click to delete Project Budget' class='fa fa-trash-o'></i></a>":"";
 
 	$nestedData[] = $row["project_specific_id"];
     
@@ -65,7 +65,7 @@ foreach($result as $key =>$row){
 	$nestedData[] =($row["status"]=="Y")?"<span class='green'><b>Current</b></span>":"<span>Archive</span>";
 
 	
-	$nestedData[] = "<a href='project-budget-spec.php?b_id=".$row['project_specific_id']."&p_id=".$row['project_id']."'><i class='fa fa-folder-open-o'></i></a> $delete_";
+	$nestedData[] = "<a href='project-budget-spec.php?b_id=".$row['project_specific_id']."&p_id=".$row['project_id']."'><i title='Click to open Project Budget' class='fa fa-folder-open-o'></i></a> $delete_";
 	
 	$data[] = $nestedData;
 }

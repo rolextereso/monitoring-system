@@ -27,7 +27,7 @@ function ifExistsOnArray($value,$amount="",$type="value"){
 
 }
 
-function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searchBy){
+function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searchBy, $net_profit=false){
 	global $crud;
 	global $storage_date,$storage_data;
 
@@ -35,38 +35,55 @@ function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searc
 
 			$search_by=$searchBy;
 			$search_val="";
-			if($category=='PRODUCTS' && $search_by!=""){		
-				$search_val=" AND p.product_id=".$search_by;
-			}elseif ($category=='PROJECTS' && $search_by!=""){
-				$search_val=" AND p.project_id=".$search_by;
-			}elseif($category=='RENTAL ITEMS' && $search_by!=""){
-				$search_val=" AND ri.rental_id=".$search_by;
+			$empty_set="";
+
+			if($net_profit){
+				if ($category=='PRODUCTS' && $search_by!=""){
+					$search_val=" AND p.project_id=".$search_by;
+					$empty_set=" OR sr.date_save IS NULL";
+				}
+			}else{
+				if($category=='PRODUCTS' && $search_by!=""){		
+					$search_val=" AND p.product_id=".$search_by;
+				}elseif ($category=='PROJECTS' && $search_by!=""){
+					$search_val=" AND p.project_id=".$search_by;
+				}elseif($category=='RENTAL ITEMS' && $search_by!=""){
+					$search_val=" AND ri.rental_id=".$search_by;
+				}
 			}
 
-
-			$where=($dateFrom!='' && $dateTo!='')?" WHERE DATE(sr.date_save)>='".$dateFrom."' AND DATE(sr.date_save)<='".$dateTo."'  ".$search_val:" ";
-
-
+			
+			$where=($dateFrom!='' && $dateTo!='')?" WHERE ((DATE(sr.date_save)>='".$dateFrom."' AND DATE(sr.date_save)<='".$dateTo."')  ".$search_val:" ";
+			
 
 			$sold_date="";
 			$date_format="";
 			$group_by="";
 
+			
 			if($report_type=='month'){
 				$sold_date=" DATE_FORMAT(sr.date_save,'%b. %Y') as sold_date";
 				$date_format="F d, Y ";
 				$group_by="MONTH(sr.date_save), YEAR(sr.date_save) ";
-			}else{
+			}else if($report_type=='year'){
 				$sold_date=" YEAR(sr.date_save) as sold_date";
 				$date_format="Y";
 				$group_by=" YEAR(sr.date_save)";
+                
+			}else {
+				$sold_date=" DATE_FORMAT(sr.date_save, '%b. %d, %Y') as sold_date";
+				$date_format="F d, Y";
+				$group_by=" MONTH(sr.date_save), DAY(sr.date_save), YEAR(sr.date_save)";
 			}
+
+
+			
 
 			 $user_id=specific_user(access_role("Reports","view_command",$_SESSION['user_type']));
 
 			if($category=='PRODUCTS'){
 
-				$query= "SELECT ".
+				 $query= "SELECT ".
 						"	 product_name as product, ".
 						"	 report_product_by_".$report_type."(p.product_id,sr.date_save) as amount, ".
 						"		".$sold_date.", ".
@@ -74,12 +91,12 @@ function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searc
 						"		FROM products p ".
 						"		CROSS JOIN sales_specific ss ".
 						"		CROSS JOIN sales_record sr ".
-								$where. " AND p.created_by  ".$user_id
+							$where. " AND p.created_by  ".$user_id. ") ".$empty_set
 						."		GROUP BY  p.product_name, $group_by ORDER BY product_name,sr.date_save;";
 
 			}elseif ($category=='PROJECTS'){
 
-				$query= "SELECT ".
+				 $query= "SELECT ".
 						"	 project_name as product, ".
 						"	 report_project_by_".$report_type."(p.project_id,sr.date_save) as amount, ".
 						"		".$sold_date.", ".
@@ -88,13 +105,11 @@ function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searc
 						"       LEFT JOIN products pd ON pd.project_id=p.project_id	".
 						"		CROSS JOIN sales_specific ss ".
 						"		CROSS JOIN sales_record sr ".
-								$where . " AND p.created_by  ".$user_id
-						."		GROUP BY  p.project_id, $group_by ORDER BY project_name, sr.date_save;";
-
-
-			  
+								$where . ") AND p.project_incharge  ".$user_id
+						."		GROUP BY  p.project_id, $group_by ORDER BY project_name, sr.date_save;";			  
 
 			}elseif($category=='RENTAL ITEMS'){
+
 				 $query="SELECT 
 								CONCAT(ri.item_name,'( ',ri.item_description,' )') as product, 	
 								report_rental_by_".$report_type."(ri.rental_id,sr.date_save) as amount, ".		
@@ -103,9 +118,11 @@ function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searc
 								FROM  sales_record sr	
 								LEFT JOIN  rental_specific rs ON sr.sales_id=rs.sales_id
 								CROSS JOIN  rental_items ri ". 
-									$where. " AND ri.created_by  ".$user_id."
+									$where. ") AND ri.created_by  ".$user_id."
 								GROUP BY  ri.rental_id, $group_by ORDER BY rs.updated_on;";
+
 			}elseif($category=='EXPENSES'){
+
 				 $query="SELECT 
 								CONCAT(ri.item_name,'( ',ri.item_description,' )') as product, 	
 								report_rental_by_month_year(ri.rental_id,sr.date_save) as amount, ".		
@@ -116,6 +133,7 @@ function collectionReportData($dateFrom, $dateTo, $category, $report_type,$searc
 								CROSS JOIN  rental_items ri ". 
 									$where."	
 								GROUP BY  ri.rental_id, MONTH(sr.date_save), YEAR(sr.date_save) ORDER BY rs.updated_on;";
+								
 			}
 
 			$result = $crud->getData($query);

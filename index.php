@@ -76,9 +76,7 @@
                                             <span class="input-group-btn">
                                                <button class="btn btn-secondary" type="button" onclick="lineGraphByProduct()">Search</button>
                                             </span>
-                                            <span class="input-group-btn">
-                                               <button class="btn btn-secondary" type="button" id="print"><i class="fa fa-print"></i> </button>
-                                            </span>
+                                            
                                         </div>
                           </div>
                        </div>                                   
@@ -90,12 +88,9 @@
               <div>
         </div>
       </main>
-
-      
+            
       <script src="assets/bootstrap-datepicker.min.js"></script>
-      <script src="assets/requiredJS/dashboard.js"></script>
- 
-      <script type="text/javascript" src="assets/canvasjs.min.js"></script>
-   
+      <script src="assets/requiredJS/dashboard.js"></script> 
+      <script type="text/javascript" src="assets/canvasjs.min.js"></script>   
      
 <?php require_once('layout/footer.php');?>      

@@ -16,7 +16,7 @@ function expensesDebit($dateFrom, $dateTo, $category, $report_type,$searchBy){
 		}
 
 
-		$where=($dateFrom!='' && $dateTo!='')?" WHERE DATE(pr.updated_on)>='".$dateFrom."' AND DATE(pr.updated_on)<='".$dateTo."'  ".$search_val:" ";
+		$where=($dateFrom!='' && $dateTo!='')?" WHERE DATE(pr.updated_on)>='".$dateFrom."' AND DATE(pr.updated_on)<='".$dateTo."'  ".$search_val." AND eb.updated_on IS NOT NULL ":" ";
 
 		$approved_date="";
 		$date_format="";
@@ -29,7 +29,7 @@ function expensesDebit($dateFrom, $dateTo, $category, $report_type,$searchBy){
 					}
 	
 		$sql = "SELECT 	item_description as item_description, 	
-					eb.qty, 
+					eb.qty as qty, 
 					eb.amount_per_unit,
 					qty*amount_per_unit as unit_cost, 		
 					 $approved_date	
@@ -37,7 +37,8 @@ function expensesDebit($dateFrom, $dateTo, $category, $report_type,$searchBy){
 					LEFT JOIN project_duration pd ON pd.project_id=p.project_id			
 					LEFT JOIN purchase_request pr ON pr.project_duration_id=pd.project_duration_id
 					LEFT JOIN expenses_breakdown eb ON eb.purchase_request_id=pr.purchase_request_id
-					$where 		
+					$where 
+
 					GROUP BY  eb.id, MONTH(pr.updated_on), YEAR(pr.updated_on) 
 					ORDER BY item_description, pr.updated_on;";
 
@@ -62,7 +63,12 @@ function expensesDebit($dateFrom, $dateTo, $category, $report_type,$searchBy){
 			$data[] = $nestedData;
 		}
 
-		$result=array('data'=>$data,'total'=>number_format($total,2));
+		$datefrom=date_create($dateFrom);
+		$dateto=date_create($dateTo);
+		$result=array('data'=>$data,
+					  'total'=>number_format($total,2),
+					  "range"=> "for the ".$report_type." of <u>".date_format($datefrom,$date_format)."</u> to <u>".date_format($dateto,$date_format)."</u>"
+					);
 		return $result;
 	}
 }

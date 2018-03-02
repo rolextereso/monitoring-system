@@ -16,7 +16,7 @@
                                  ."           customer_name,"
                                  ."           customer_address,"
                                  ."           p.product_name,"
-                                 ."          pp.price,"
+                                 ."           pp.price,"
                                  ."           p.unit_of_measurement,"
                                  ."           ss.amount,"
                                  ."          ss.quantity FROM sales_specific ss"
@@ -42,8 +42,6 @@
                                 LEFT JOIN customer c ON c.customer_id=rs.customer_id 
                                 WHERE rs.paid='N' AND ri.transaction_id='$id';");
 
-       
-
         if(count($sales)>=1){
             $found=true;
             $selection_for="sales";
@@ -63,8 +61,6 @@
                 $sales_id=$res_['sales_id'];
             } 
         }
-       
-       
     }
 ?>
    
@@ -312,7 +308,10 @@
             </div>
           </form>
           <?php } else { ?>
-                        <h2 style="text-align: center;width: 100%;"><span style='color:red;'>SYSTEM ERROR 404:</span><br/><small>Transaction Not Found, maybe because it is not exist.</small></h2>
+                        <h2 style="text-align: center;width: 100%;">
+                              <span style='color:red;'>SYSTEM ERROR 404:</span><br/>
+                              <small>Transaction Not Found, maybe because it is not exist.</small>
+                        </h2>
 
           <?php } ?>
         </main>

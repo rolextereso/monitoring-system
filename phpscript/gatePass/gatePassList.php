@@ -50,6 +50,7 @@ if( !empty($requestData['search']['value']) ) {   // if there is a search parame
 }
 
 $result = $crud->getData($sql);
+$totalData= count($result);
 $totalFiltered = $totalData; 
 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
@@ -69,7 +70,7 @@ foreach($result as $key =>$row){
 
 	$nestedData[] = ($row["printing_status"]=='Y')?'<i class="fa fa-check green"></i>':'<i class="fa fa-times red"></i>';
 	
-	$nestedData[] = "<a href='javascript:void(0);' onclick=WindowPopUp('phpscript/gatepass/gatePassPrint.php?or=".$row['or_number']."&specific=".$target_gate_pass."','print','480','450',windowClose)><i class='fa fa-paper-plane'></i></a>";
+	$nestedData[] = "<a href='javascript:void(0);' onclick=WindowPopUp('phpscript/gatepass/gatePassPrint.php?or=".$row['or_number']."&specific=".$target_gate_pass."','print','480','450',windowClose)><i title='Print Gate Pass' class='fa fa-print'></i></a>";
 	
 	$data[] = $nestedData;
 }

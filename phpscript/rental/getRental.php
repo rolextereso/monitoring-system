@@ -17,7 +17,7 @@
                          per_day, 
                          unit,
                          availability FROM rental_items   
-                         WHERE status='Y' AND created_by ".specific_user(access_role("Rental or Product Selection","view_command",$_SESSION['user_type']))." AND (item_name LIKE '%$request%' OR item_description LIKE '%$request%')";
+                         WHERE status='Y' AND created_by ".specific_user(access_role("Rented Items","view_command",$_SESSION['user_type']))." AND (item_name LIKE '%$request%' OR item_description LIKE '%$request%')";
 
 
     
