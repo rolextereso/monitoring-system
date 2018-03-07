@@ -18,11 +18,11 @@
         $id = $crud->escape_string($_GET['u']);
 
         if($id!=''){
-
-            if($id=='20130501655106'){
-                $where_clause=" AND user_type_id=1";
+            $_user_type=$_SESSION['user_type'];
+            if( $user_type==1){
+                $where_clause=" ";
             }else{
-                $where_clause=" AND user_type_id!=1";
+                $where_clause=" AND user_type_id=".$_user_type;
             }
 
             $user_type_ = $crud->getData("SELECT * FROM user_type WHERE status='Y' $where_clause");

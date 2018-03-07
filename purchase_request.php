@@ -117,11 +117,7 @@
                                                             
                                                           </tbody>
                                                       </table>
-                                                  </div>
-
-                                              </div>
-                                        </div>                                  
-                                        <div class="form-group">
+                                                       <div class="form-group">
                                           <div class="form-row">
                                               <div class="col-md-4">
                                                 <?php if(count($projects)>=1 && access_role("Purchase Requests","save_changes",$_SESSION['user_type'])){?>
@@ -145,6 +141,11 @@
                                           </div>
 
                                       </div>
+                                                  </div>
+
+                                              </div>
+                                        </div>                                  
+                                       
                               </form> 
                               <br/>
                       </div>

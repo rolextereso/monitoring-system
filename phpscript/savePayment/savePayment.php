@@ -21,7 +21,7 @@ if(isset($_POST['sales_id'])){
 		$result[]=$crud->executeUnAutoCommit("UPDATE sales_record SET mode_of_payment='Cash', or_number='$OR',
 			  								 date_save='".date('Y-m-d H:i:s')."'
 											 WHERE sales_id IN($sales_id);");
-		$result[]=$crud->executeUnAutoCommit("UPDATE paid_assess{$year_semester} SET sales_id='$sales_id' 
+		$result[]=$crud->executeUnAutoCommit("UPDATE old_paid_assess SET sales_id='$sales_id' 
 											  WHERE ORNo='$OR';");
 
 		if($selection_for=="sales"){

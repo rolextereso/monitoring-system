@@ -143,7 +143,7 @@
 
     <header>  
           <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <a class="navbar-brand" href="dashboard.php"><img src="img/logo.png" style="width: 137px;" /></a>
+            <a class="navbar-brand" href="index.php"><img src="img/logo.png" style="width: 137px;" /></a>
             <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -231,9 +231,9 @@
                       <img src="<?php echo ($_SESSION['pic']=='')? 'img/pic_avatar.jpg':$_SESSION['pic'];?>" width="20" height="20" />
                       <a class="nav-link " title=" Update Profile Information" style="display: inline-block;" href="user-edit.php?u=<?php echo $_SESSION['user_id_'];?>"> <?php echo $_SESSION['lastname'].', '.$_SESSION['firstname'];?> </a>
                 </li> 
-                <!--<li class="nav-item">
-                      <a class="nav-link" href="help/index.htm" <?php echo (basename($_SERVER['PHP_SELF'])=="help/index.htm")? 'active': '';?>" ><i class="fa fa-question-circle"></i> Help</a>
-                </li>  --!> 
+                <li class="nav-item">
+                      <a class="nav-link" href="help.php" <?php echo (basename($_SERVER['PHP_SELF'])=="help.php")? 'active': '';?>" ><i class="fa fa-question-circle"></i> Help</a>
+                </li> 
                 <li class="nav-item">
                       <a class="nav-link" href="javascript:void(0)" onclick="logout()"><i class="fa fa-fw fa-sign-out"></i>Logout</a>
                 </li>

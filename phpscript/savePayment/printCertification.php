@@ -39,7 +39,7 @@
 									"		FROM rental_specific rs ".							
 									"		INNER JOIN customer c ON c.customer_id =rs.customer_id ".
 													
-									"		WHERE rs.transaction_id='".$id."' LIMIT 1"); 
+									"		WHERE rs.transaction_id='".$id."' AND rs.canceled='N' LIMIT 1"); 
 
              }else{
 					    
@@ -79,7 +79,7 @@
 											FROM sales_record sr 							
 											INNER JOIN customer c ON c.customer_id =sr.customer_id 
 											INNER JOIN sales_specific sp ON sp.or_number=sr.sales_id  							
-											WHERE sp.transaction_id='".$id."' $customer_id  LIMIT 1"); 
+											WHERE sp.transaction_id='".$id."' AND sp.canceled='N' $customer_id  LIMIT 1"); 
 
 			           
 			           
@@ -144,7 +144,7 @@
 					<div style="float:center;font-size: 12px;" >
 						<h4><?php echo $header['company_name'];?></h4>
 						<p> <?php echo $header['company_address'];?></p>
-						<p> <?php echo $header['contact_no'];?></p>
+						<p> <?php echo $header['compContact'];?></p>
 					</div>
 				</div>
 				<div class="clearfix"></div>
@@ -173,7 +173,7 @@
 					<tr>
 						<?php if($paid_for!="rental"){ ?>
 							<?php if($salary_deduction){?>
-							 		<td>&nbsp;<?php echo date('M. d, Y',strtotime($res['date_save']));?></td>
+							 		<td>&nbsp;<?php echo date('m-d-y',strtotime($res['date_save']));?></td>
 							<?php } ?>
 							<td>&nbsp;<?php echo $res['product_name'];?></td>
 							<td>&nbsp;<?php echo $res['quantity'];?> </td>

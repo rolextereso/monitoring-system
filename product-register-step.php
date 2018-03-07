@@ -1,4 +1,4 @@
-r<?php
+<?php
     require_once('layout/header.php');
     require_once('classes/Crud.php');
     require_once('classes/function.php');

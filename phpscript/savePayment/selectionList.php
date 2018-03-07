@@ -92,14 +92,14 @@ foreach($result as $key =>$row){
 	$transaction_id_link=($row["sales_transaction_id"]!=null)?$row["sales_transaction_id"].'@:'.$row['customer_id']
 						:$row["rental_transaction_id"].'@:'.$row['customer_id'];
 	$url=($row['specific_']=="sales")?	"item-selection":"item-selection-rental";				
-	$cancel=($row['order_payment_id']!=null)?"": " | <a href='$url.php?transaction_id=".$transaction_id_row."'><i title='Click to cancel transaction' class='fa fa-arrow-left'></i></a>";
+	$cancel=($row['order_payment_id']!=null)?"": " | <a href='$url.php?transaction_id=".$transaction_id_row."'><i title='Click to modify transaction' class='fa fa-pencil'></i></a>";
 	
 	$nestedData[] =$transaction_id_row;    
 	$nestedData[] =$row["customer_name"];
 	$nestedData[] =$row["customer_address"];
 	$nestedData[] = ($access)?
 							"<a href='item-buy.php?transaction_id=".$transaction_id_link."'><i title='Click to open Transaction' class='fa fa-money'></i></a> |
-							 <a href='javascript:void(0);' onclick=WindowPopUp('phpscript/savePayment/printCertification.php?id=".$transaction_id_link."&for=".$row['specific_']."','print','480','450')><i title='Click to print certification' class='fa fa-file-text'></i></a> ".$cancel
+							 <a href='javascript:void(0);' onclick=WindowPopUp('phpscript/savePayment/printCertification.php?id=".$transaction_id_link."&for=".$row['specific_']."','print','480','450')><i title='Click to view or print Order of Payment Receipt' class='fa fa-file-text'></i></a> ".$cancel
 
 							
 							 : 

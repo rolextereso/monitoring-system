@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 //including the database connection file
@@ -53,7 +52,7 @@ foreach($result as $key =>$row){
 
 
 	if($_SESSION['user_type']=='1'){
-		$command = "<a title='Reset Password' href='bundle-remittance-add-op.php?id=".$row["remittance_id"]."' class='edit btn btn-primary'><i class='fa fa-pencil'></i></a> ";
+		$command = "<a title='Edit ID' href='bundle-remittance-add-op.php?id=".$row["remittance_id"]."' class='edit btn btn-primary'><i class='fa fa-pencil'></i></a> ";
 	}
 
 	$nestedData[] = $command;
@@ -70,3 +69,4 @@ $json_data = array(
 			);
 
 echo json_encode($json_data);  // send data as json format
+

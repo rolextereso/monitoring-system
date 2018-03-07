@@ -73,7 +73,7 @@
                  <nav aria-label="breadcrumb" role="navigation">
                     <?php if($cancel){?>
                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page"><a href='item-selection-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Transaction List</a> / Cancelation of Transaction</li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href='item-selection-list.php'><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Transaction List</a> / Modification of Transaction</li>
                       </ol>
                     <?php } ?>
                     <?php if ($cancel && $selection_for=='sales'){ ?>
@@ -108,7 +108,7 @@
                                                
                     </div>
                     <div class="col-sm-6 form-group">
-                          <label>Customer Address:</label>
+                          <label>Customer Address:<span style="color: green;font-style: italic;">(Optional)</span></label>
                           <input <?php echo ($cancel)?"disabled":"";?> autocomplete="off" type="text" data="address" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" value="<?php echo $customer_address;?>" />    
                           <br/>                
 

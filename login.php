@@ -80,7 +80,7 @@
                   <br/>
                
                 </div>
-                <div class="card-footer small text-muted" style="text-align: center;"> &copy; IGP Monitoring System 2017</div>
+                <div class="card-footer small text-muted" style="text-align: center;"> &copy; CAFES-IGP Monitoring System 2017|DSJM|</div>
               </div>
          </div>
       </div>

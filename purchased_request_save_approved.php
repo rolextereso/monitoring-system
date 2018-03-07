@@ -75,11 +75,15 @@
                                       <div class="form-row">
                                              
                                               <div class="col-md-12">
-                                              
+                                                <h6 class="green" style="display: inline;">*To be filled by the Cashier</h6>   
                                                         <!-- <label><b>PR Transaction No.:</b></label>
                                                         <span><?php echo $pr_id;?></span>
                                                         <br/>  -->
-                                                        <label><b>PR No.:</b></label>
+                                                        <br />
+                                                        <br />
+                                                        <br />
+                                                        <br />
+                                                        <label><b>Purchase Request No.:</b></label>
                                                         <span><?php echo $purchase_request_number;?></span>
                                                         <br/> 
                                                         <label><b>Entity Name:</b></label>

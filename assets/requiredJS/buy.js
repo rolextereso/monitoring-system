@@ -26,7 +26,7 @@ $(function() {
                                                                              .addClass(data.type)
                                                                              .html(data.message)
                                                                              .fadeIn(100,function(){
-                                                                                 $(this).fadeOut(5000);
+                                                                                 $(this).fadeOut(500);
                                                                              });
                                                                                                                               
                                                                   

@@ -17,7 +17,7 @@ if(isset($_POST['user_type'])){
 					 save_changes,
 					 edit_changes,
 					 ur.user_role
-					 FROM user_role ur
+					 FROM user_role_igpms ur
 				INNER JOIN module m ON m.module_id=ur.module_id
 				WHERE ur.user_type_id=".$user_type_id.";";
 

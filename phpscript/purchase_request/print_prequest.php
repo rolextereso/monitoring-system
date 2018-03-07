@@ -15,7 +15,7 @@
     $pr_id="";
     $purchase_request_number="";
     $funds_cluster="";
-
+    $pr_no="";
     if(isset($_GET['pr_id'])){
       
              $pr_id= $crud->escape_string($_GET['pr_id']);  
@@ -47,6 +47,7 @@
                 $status_request =$row['approved'];
                 $purchase_request_number=$row['purchase_request_number'];
                 $funds_cluster=$row['funds_cluster'];
+                $pr_no=$row['pr_no'];
              }
 
              $sql = "SELECT CONCAT(u.firstname,' ',u.lastname) as name,
@@ -361,7 +362,10 @@
                                 <td colspan="7" class="border-t" style="width:30%;border-style: hidden;">&nbsp;*Budget Taken: <?php echo $pr[0]['target_expenses']; ?></td>   
                                </tr>
                                                                                   
-                            
+                              <tr>
+                                <td colspan="7" class="border-t" style="width:30%;border-style: hidden;">&nbsp;*PR Transaction No: <span id="pr_no"><?php echo $pr[0]['pr_no']; ?></span></td>   
+                               
+                               </tr>
                             
                             
                           </table>

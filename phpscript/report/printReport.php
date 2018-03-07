@@ -77,7 +77,7 @@
 					<div style="float:left;line-height: 19px;" >
 						<h4><?php echo $header['company_name'];?></h4>
 						<p> <?php echo $header['company_address'];?></p>
-						<p> <?php echo $header['contact_no'];?></p>
+						<p> <?php echo $header['compContact'];?></p>
 					</div>
 				</div>
 				<div class="clearfix"></div>

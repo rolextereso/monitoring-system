@@ -13,13 +13,13 @@
      if(isset($_POST['submit'])){
      	$id=$_POST['access_role'];
 
-     	$sql= " DELETE FROM user_role WHERE user_type_id='$id';";
+     	$sql= " DELETE FROM user_role_igpms WHERE user_type_id='$id';";
 
      	$result = $crud->executeUnAutoCommit("$sql");
      	echo $result;
      	if($result){
 
-		        $sql= " INSERT INTO user_role(module_id, 
+		        $sql= " INSERT INTO user_role_igpms(module_id, 
 										      view_page, 
 										      view_command, 
 										      edit_command, 

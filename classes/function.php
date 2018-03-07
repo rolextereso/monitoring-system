@@ -18,19 +18,19 @@ function print_message($result, $success_msg, $error_msg, $data=array()){
 function header_info(){
 	global $crud;
 
-	 $owner_info = $crud->getData("SELECT * FROM owner_info LIMIT 1"); 
+	 $signatories = $crud->getData("SELECT * FROM signatories LIMIT 1"); 
 
-	 $info=array("company_name"   => $owner_info[0]["owner_name"],
-				 "company_address"=> $owner_info[0]['owner_address'],
-				 "contact_no"     => $owner_info[0]['contact_no'],
-				 "logo"           => $owner_info[0]['logo']);
+	 $info=array("company_name"   => $signatories[0]["compName"],
+				 "company_address"=> $signatories[0]['compAddress'],
+				 "compContact"     => $signatories[0]['compContact'],
+				 "logo"           => $signatories[0]['logo']);
 	 return $info;
 }
 
 function access_role($module,$access_role,$user_type_id){
 	global $crud;
 
-	$access = $crud->getData("SELECT $access_role as access FROM user_role ur
+	$access = $crud->getData("SELECT $access_role as access FROM user_role_igpms ur
 								INNER JOIN user_type ut ON ut.user_type_id =ur.user_type_id
 								INNER JOIN module m ON ur.module_id =m.module_id
 								WHERE ur.user_type_id='$user_type_id' AND module_name='$module' LIMIT 1;"); 

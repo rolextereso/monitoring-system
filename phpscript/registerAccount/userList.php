@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 //including the database connection file
@@ -44,7 +43,9 @@ $totalFiltered = count($result);
 
 $sql.=" ORDER BY ". $columns[$requestData['order'][0]['column']]."   ".$requestData['order'][0]['dir']."  LIMIT ".$requestData['start']." ,".$requestData['length']."   ";
 
+
 $result = $crud->getData($sql);
+//echo $sql;
 
 $data=array();
 

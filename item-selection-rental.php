@@ -101,7 +101,7 @@
                                                
                     </div>
                     <div class="col-sm-6 form-group">
-                          <label>Customer Address:</label>
+                          <label>Customer Address:<span style="color: green;font-style: italic;">(Optional)</span></label>
                           <input <?php echo ($cancel)?"disabled":"";?> autocomplete="off" type="text" data="address" name="customer_address" placeholder="Type here.." class="form-control form-control-sm" value="<?php echo $customer_address;?>" />    
                           <br/>                
 
@@ -116,7 +116,7 @@
                     </div>
                     <div class="col-sm-6">
                           <label>Date Return (YYYY-MM-DD)</label>
-                          <input <?php echo ($cancel)?"disabled":"";?>  style="background:white;" readonly="" type="text" data-date-format="yyyy-mm-dd" class="date_return form-control form-control-sm"  placeholder="" />
+                          <input <?php echo ($cancel)?"disabled":"";?>  style="background:white;" readonly="" type="text" data-date-format="yyyy-mm-dd" class="date_return form-control form-control-sm"  placeholder="Click here" />
                     </div>
                   </div>            
 

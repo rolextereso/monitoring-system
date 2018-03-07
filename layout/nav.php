@@ -79,6 +79,15 @@
                 <li class="nav-item">
                   <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF'])=="setting.php") || (basename($_SERVER['PHP_SELF'])=="product-register-step.php") || (basename($_SERVER['PHP_SELF'])=="user-list.php") || (basename($_SERVER['PHP_SELF'])=="user-register.php") || (basename($_SERVER['PHP_SELF'])=="user-reset-pass.php") || (basename($_SERVER['PHP_SELF'])=="user-edit.php") || (basename($_SERVER['PHP_SELF'])=="user_logs.php") ? 'active': '';?>" href="setting.php"><i class="fa fa-cog" aria-hidden="true"></i> Setting</a>
                 </li>
+             
+                <br />
+                <div style="background: lightgreen;color: black;text-align: center;padding:11px;">
+             
+                <p style="text-align: left;"><b>Reminders:</b></p>
+                <li>Press<b style="font-style: oblique;color: red;">CTRL+F5 </b><span style="font-style: italic;color: black;">  to reload the page</span></li>
+               <li style="font-style: oblique;"><b>DO NOT LET THIS PAGE OPEN WHEN YOU ARE NOT AROUND </b></span></li>
+                
+                </div>
               </ul>
 
               

@@ -71,7 +71,7 @@ $(document).ready(function(){
 
                                 });
                                
-                                console.log(_data);
+                                //console.log(_data);
                      
                                 var chart = new CanvasJS.Chart("chartContainer", {
                                     animationEnabled: true,

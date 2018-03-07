@@ -24,7 +24,7 @@ if(isset($_POST['user_type'])){
 
 		for ( $row = 0; $row < count($save); $row++ )
 		{	
-		    for ( $col=1; $col < count($save[$row]); $col++ )
+		    for ( $col=1; $col <= count($save[$row]); $col++ )
 		    { 
 		    	//if(isset($save[$row][$col])){
 		    		$user_role=explode("_",$save[$row][$col]);
@@ -32,8 +32,9 @@ if(isset($_POST['user_type'])){
 			    	$access_right_value=$user_role[0];
 			    	$user_role_id=$user_role[1];		    	
 
-			    	$result[] = $crud->executeUnAutoCommit("UPDATE user_role SET $access_rights[$col]='$access_right_value' 
+			    	$result[] = $crud->executeUnAutoCommit("UPDATE user_role_igpms SET $access_rights[$col]='$access_right_value' 
 			    											WHERE user_role=$user_role_id;");
+			    	
 		    	//}
 		    	
 		    }

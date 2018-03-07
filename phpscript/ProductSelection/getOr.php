@@ -12,8 +12,8 @@
 
         if($year_semester!=""){
 
-            $query = "SELECT ORNo, payor, item_name,ps.Amount,ps.date_paid FROM paid_assess{$year_semester} pa
-                      INNER JOIN paid_assess_sub{$year_semester} ps ON ps.paid_assess_id=pa.ORcode
+            $query = "SELECT ORNo, payor, item_name,ps.Amount,ps.date_paid FROM old_paid_assess pa
+                      INNER JOIN old_paid_assess_sub ps ON ps.paid_assess_id=pa.ORcode
                       WHERE pa.ORNo LIKE '%$request%' AND (pa.sales_id IS NULL OR pa.sales_id ='') GROUP BY ORNo";
        
                 
@@ -41,8 +41,8 @@
 
         if($year_semester!=""){
 
-            $query = "SELECT ORNo, payor, item_name,ps.Amount,ps.date_paid FROM paid_assess{$year_semester} pa
-                      INNER JOIN paid_assess_sub{$year_semester} ps ON ps.paid_assess_id=pa.ORcode
+            $query = "SELECT ORNo, payor, item_name,ps.Amount,ps.date_paid FROM old_paid_assess pa
+                      INNER JOIN old_paid_assess_sub ps ON ps.paid_assess_id=pa.ORcode
                       WHERE pa.ORNo = '$request'";
        
                 

@@ -4,20 +4,20 @@
 
     $crud = new Crud();
 
-     $owner_name   = "";
-     $owner_address = "";
-     $contact_no = "";
+     $compName   = "";
+     $compAddress = "";
+     $compContact = "";
      $logo=""; 
      $id="";
 
-     $result = $crud->getData("SELECT * FROM owner_info  LIMIT 1");          
+     $result = $crud->getData("SELECT * FROM signatories  LIMIT 1");          
          
       foreach ($result as $res) {
           $id= $res['id'];
-          $owner_name   = $res['owner_name'];
-          $owner_address = $res['owner_address'];
+          $compName   = $res['compName'];
+          $compAddress = $res['compAddress'];
           $logo  = $res['logo'];
-          $contact_no = $res['contact_no'];     
+          $compContact = $res['compContact'];     
       }
    
 ?>  
@@ -60,18 +60,18 @@
                                         <div class="form-group">                                            
                                                   
                                             <label>Company Name:*</label>
-                                            <input class="form-control form-control-sm" id="owner_name" name="owner_name" type="text"  placeholder="Enter the company name" required value="<?php echo $owner_name;?>">                                      
+                                            <input class="form-control form-control-sm" id="compName" name="compName" type="text"  placeholder="Enter the company name" required value="<?php echo $compName;?>">                                      
                                                                                        
                                         </div>
                                       
                                         <div class="form-group">                                            
                                             <label>Company Address*</label>
-                                            <input class="form-control form-control-sm" id="owner_address" name="owner_address" type="text" placeholder="Enter address" required value="<?php echo $owner_address;?>">
+                                            <input class="form-control form-control-sm" id="compAddress" name="compAddress" type="text" placeholder="Enter address" required value="<?php echo $compAddress;?>">
                                         </div>
                                     
                                         <div class="form-group">                                            
                                             <label>Contact Number</label>
-                                            <input class="form-control form-control-sm" id="contact_no" name="contact_no" type="text" placeholder="Enter mobile/telephone number"  value="<?php echo $contact_no;?>">
+                                            <input class="form-control form-control-sm" id="compContact" name="compContact" type="text" placeholder="Enter mobile/telephone number"  value="<?php echo $compContact;?>">
                                         </div>
                                          <br/>
                                          <br/>

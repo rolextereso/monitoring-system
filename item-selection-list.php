@@ -10,12 +10,13 @@
 <?php if(access_role("Transaction List","view_page",$_SESSION['user_type'])){?> 
            <nav aria-label="breadcrumb" role="navigation">
               <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Transactions</li>
+                    <li class="breadcrumb-item active" aria-current="page"><i class="fa fa-list" aria-hidden="true"></i> Transactions </li>
               </ol>
            </nav>
           
                <div class="table-responsive"> 
                         
+                       <label style="color: green;font-style: italic;margin-left: 17px;">Note: The following are the list of transactions that are not yet mark as paid<br />The Modification feature is not available for Bundled remittance and Salary deduction</label>
                         <input type="hidden" value="<?php echo $project_id;?>" id="id" />                         
                         <table class="table table-hover" id="dataTable" width="100%" cellpadding="0" cellspacing="0">
                           <thead class="thead-dark">

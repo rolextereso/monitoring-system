@@ -25,22 +25,23 @@
               </ol>
            </nav>
            <?php if(access_role("Purchase Requests","add_command",$_SESSION['user_type'])){?>
-                  <a href='purchase_request.php' class="btn btn-success" style="margin-left: 17px;" ><i class="fa fa-plus" aria-hidden="true"></i> Create new request</a>
+                  <a href='purchase_request.php' class="btn btn-success" style="margin-left: 17px;" ><i class="fa fa-plus" aria-hidden="true"></i> Create New Purchase Request</a>
           <?php } ?>
            <br/><br/>
            <div style="text-align: center;">
-           <span class="badge badge-warning warning" title="Waiting for funds">&nbsp;</span><label id="warning"> &nbsp;Waiting for funds</label>&nbsp;
-           <span class="badge badge-info info" title="Waiting for Head Approval">&nbsp;</span><label id="info"> &nbsp;Waiting for Head Approval</label>&nbsp;
-           <span class="badge badge-dark dark" title="Waiting for funds">&nbsp;</span><label id="dark"> &nbsp;Waiting for the PR Number</label>&nbsp;
+           <span class="badge badge-warning warning" title="Waiting for the Fund's Certification">&nbsp;</span><label id="warning"> &nbsp;Waiting for Fund's Certification</label>&nbsp;
+           <span class="badge badge-info info" title="Waiting for Campus Dean's Approval">&nbsp;</span><label id="info"> &nbsp;Waiting for Campus Dean's Approval</label>&nbsp;
+           <span class="badge badge-dark dark" title="Waiting for PR Number">&nbsp;</span><label id="dark"> &nbsp;Waiting for PR Number</label>&nbsp;
            <span class="badge badge-success success" title="Completed">&nbsp;</span><label id="success"> &nbsp;Completed</label>&nbsp;
            <span class="badge badge-danger danger" title="Disapproved">&nbsp;</span><label id="danger"> &nbsp;Disapproved</label>
+           <label style="color: red;font-style: italic;"> Note: This module was based on the actual process of the Purchase Request</label>
          </div>
            <div class="table-responsive"> 
                                         
                     <table class="table table-hover" id="dataTable" width="100%" cellpadding="0" cellspacing="0">
                       <thead class="thead-dark">
                             <tr> 
-                                  <th>Purchase Request No.</th>
+                                  <th>PR Transaction No.</th>
                                   <th>Entity Name</th>
                                   <th>Project</th>
                                   <th>Purpose</th>

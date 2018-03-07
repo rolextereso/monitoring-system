@@ -1,4 +1,3 @@
-
 <?php
     require_once('layout/header.php');
     require_once('classes/Crud.php');

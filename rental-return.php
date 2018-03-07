@@ -82,8 +82,9 @@
                                                         value="<?php echo $customer_address; ?>">
                                                   </div>  
                                                   <div>
-                                                      <p style="padding: 9px;background: #fdf3f3;border: 1px solid silver;">
-                                                          Just <b>CHECK</b> the checkbox on the returned item on the left, then click save
+                                                      <p style="padding: 9px;background: #fdf3f3;border: 1px solid silver;color: green;">
+                                                          Please <b>CHECK</b> the checkbox first on the right, then click Save.<br />
+                                                          <i style="color: red;">Note: Make sure items are returned. This can be done if rental fee is already paid.</i>  
                                                       </p>
                                                   </div>                                                 
                                               </div>

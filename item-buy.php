@@ -162,9 +162,10 @@
                <div class="col-sm-12" id="total_amount_cont">
                   <span>Total Amount Paid in the Cashier</span>
                   <h1 id="total_amount" >&#8369; <span>0</span></h1>
+                  
                   <input type='hidden' id="total_amount_" name="total_amount" value="<?php echo $total_amount;?>">                 
                </div>
-             
+             <label style="font-style: italic;color: red;padding: 5px;text-align:  justify;"> NOTE: Please double check the Total Amount from the Official Reciept and in the system before saving</label>
           </div>
         </div>
           

@@ -52,6 +52,7 @@
               </div>
         </div>
         </div>
+
       <script src="assets/datatables/jquery.dataTables.js"></script>
       <script src="assets/datatables/dataTables.bootstrap4.js"></script> 
       <script>   
@@ -63,15 +64,11 @@
                                   "serverSide": true,
                                   "searching" : true,
                                   "ajax":{
-                                    url :"phpscript/registerAccount/userList.php", // json datasource
-                                    
-                                    error: function(){  // error handling
-                                      $(".employee-grid-error").html("");
-                                      $("#employee-grid").append('<tbody class="employee-grid-error"><tr><th colspan="3">No data found in the server</th></tr></tbody>');
-                                      $("#employee-grid_processing").css("display","none");
-                                      
-                                    }
-                                  }
+                                    url :"phpscript/registerAccount/userList.php"
+                                  },columnDefs: [ {
+                                      targets: [3,4, 5,6], // column or columns numbers
+                                      orderable: false,  // set orderable for selected columns
+                                  }]
                                 } );  
 
 
@@ -80,5 +77,5 @@
 
       </main>
 
-      
+
 <?php require_once('layout/footer.php');?>      

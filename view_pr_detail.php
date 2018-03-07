@@ -16,6 +16,7 @@
     $pr_id="";
     $project_id="";
     $purchase_request_number="";
+    $pr_no="";
 
     if(isset($_GET['pr_id'])){
       
@@ -50,6 +51,7 @@
                 $status_request =$row['approved'];
                 $funds_cluster=$row['fund_cluster'];
                 $purchase_request_number=$row['purchase_request_number'];
+                $pr_no=$row['pr_no'];
              }
 
              $sql = "SELECT CONCAT(u.firstname,' ',u.lastname) as name,
@@ -156,7 +158,7 @@
                                  <button class="btn btn-success approval_stat" stat='Y'>Approved</button>&nbsp;
                                  <button class="btn btn-danger approval_stat" stat='N'>Disapproved</button>
                              <?php }else{ ?>
-                                       <h3 class="green" style="display: inline;">Waiting for the Campus Head Approval </h3> 
+                                       <h3 class="green" style="display: inline;">Waiting for the Campus Dean's Approval </h3> 
                                        <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button> 
                              <?php } ?>
                 <?php }elseif($status_request=='Y'){ ?>   
@@ -178,7 +180,7 @@
                                        <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button> 
                              <?php } ?>            
                 <?php }elseif($status_request=='C'){ ?>                  
-                        <h3 class="green" style="display: inline;">This request is <b>Completed</b></h3>                  
+                        <h3 class="green" style="display: inline;">Purchase Request <b>Complete</b></h3>                  
                         <button class="btn btn-success" onclick="printPR();" style="float:right;">Print Purchase Request</button>
                 <?php }elseif($status_request=='N'){?>                      
                         <h3 class="red">This request is <b>Rejected</b></h3>                     
@@ -453,6 +455,10 @@
                              <tr>
                                                     
                                 <td colspan="7" class="border-t" style="width:30%;border-style: hidden;">&nbsp;*Budget Taken: <span id="budget_taken"><?php echo $pr[0]['target_expenses']; ?></span></td>   
+                               </tr>
+                               <tr>
+                                <td colspan="7" class="border-t" style="width:30%;border-style: hidden;">&nbsp;*PR Transaction No: <span id="pr_no"><?php echo $pr[0]['pr_no']; ?></span></td>   
+                               
                                </tr>
                                                                                   
                             
