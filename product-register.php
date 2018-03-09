@@ -14,6 +14,7 @@
     $unit_of_measurement ="";
     $product_status="";
     $for_gate_pass="";
+    $created_updated_on="";
     $found=false;
     $add=true;
 
@@ -38,6 +39,7 @@
                   $unit_of_measurement =$res['unit_of_measurement'];
                   $product_status =$res['product_status'];
                   $for_gate_pass=$res['for_gate_pass'];
+                  $created_updated_on=$res['created_updated_on'];
                   
               }
         }
@@ -50,6 +52,10 @@
     border-color: #a94442;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  }
+  #updated_on{
+    color: #901852;
+    font-size: 12px;
   }
 
 </style>
@@ -111,6 +117,7 @@
                                                   <div class="form-group">
                                                         <label >Product price*</label>
                                                         <input class="form-control form-control-sm" id="price" name="price" type="text"  placeholder="0.00" required value="<?php echo $price;?>">
+                                                        <label id="updated_on">Price was updated on <?php echo date('F d, Y h:i:s A',strtotime($created_updated_on));?>
                                                   </div>
 
                                                  

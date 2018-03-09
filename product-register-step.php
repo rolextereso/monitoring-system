@@ -463,6 +463,9 @@
                             });
           });
 });
+
+
+
 function format_amount(){
         $('.amount_').keyup(function () {               
               var currentVal = ($(this).val()=="")? '0.00':$(this).val();                   
@@ -493,6 +496,60 @@ function total_amount(el){
         $("#"+id).val(number_format(total.toString()));
 }
 
+function budget(name,expenses=false){ 
+
+      var $temp="";
+      var step2=["Marketing Expenses",
+                  "Other Marketing Expenses",
+                  "Other Related Marketing Expenses",
+                  "Salaries other than Labor", 
+                  "Other Administrative Expenses",
+                  "Registration, Fees, Licenses",
+                  "Others"];
+
+      var specific=(name=="production_cost")?"data='production_name'": "";
+
+      var body=$("#"+name+"_table"),
+                  type="text",
+                  classes="form-control-sm form-control",        
+                  $item="<div class='form-group'><input "+specific+" type='"+type+"' required class='"+classes+"' name='"+name+"[]'/> </div>",
+                  $amount="<div class='form-group'><input data='"+name+"_total' type='"+type+"' required class='"+classes+" amount_' name='"+name+"_amount[]' value='0'/></div> ",
+                  $delete="<h5 class='red delete'>&Cross;</h5>";
+
+      if(expenses){
+          if($("#"+name+"_table tbody tr").length==0){
+              step2.forEach(function(exp) {
+                   $temp ="<tr>"+
+                              " <td>"+$delete+"</td>"+                        
+                              " <td><div class='form-group'><input type='"+type+"' required class='"+classes+"' name='"+name+"[]' value='"+exp+"'/> </div></td>"+
+                              " <td>"+$amount+"</td>"+
+                            "</tr>";
+                  $(body).append($temp);
+              
+              }); 
+          }         
+          format_amount();
+          delete_row();
+      }
+
+      $("#"+name+"").click(function(){
+             $temp ="<tr>"+
+                          " <td>"+$delete+"</td>"+                        
+                          " <td>"+$item+"</td>"+
+                          " <td>"+$amount+"</td>"+
+                        "</tr>";
+              $(body).prepend($temp);
+              format_amount();
+              auto_complete();
+
+              delete_row();
+
+             
+      }); 
+
+      
+}
+
 function setup_price(){
    var body=$("#price_table");
 
@@ -505,21 +562,23 @@ function setup_price(){
        $check="<div class='form-group'><input type='checkbox' class='gate_pass'  name='gate_pass[]' value='Y'/>"+
                                       "<input type='checkbox' style='display:none;' checked  class='gate_pass'  name='gate_pass[]' value='N'/></div> ";
 
-  if($("#price_table tbody tr").length==0){                                   
-       $("[name='production_cost[]']").each(function() { 
-           var $product="<div class='form-group'><input type='"+type+"' readonly class='"+classes+"' value='"+$(this).val()+"' name='product_desc[]' /> </div>";
+      $("#price_table tbody tr").remove();
 
-           $temp ="<tr>"+
-                  " <td>"+$product+"</td>"+                        
-                  " <td>"+$price+"</td>"+
-                  " <td>"+$unit_+"</td>"+
-                  " <td>"+$check+"</td>"+
-                "</tr>";          
+      if($("#price_table tbody tr").length==0){                                   
+         $("[name='production_cost[]']").each(function() { 
+             var $product="<div class='form-group'><input type='"+type+"' readonly class='"+classes+"' value='"+$(this).val()+"' name='product_desc[]' /> </div>";
 
-            $(body).append($temp);
+             $temp ="<tr>"+
+                    " <td>"+$product+"</td>"+                        
+                    " <td>"+$price+"</td>"+
+                    " <td>"+$unit_+"</td>"+
+                    " <td>"+$check+"</td>"+
+                  "</tr>";          
 
-        });
-    }
+              $(body).append($temp);
+
+          });
+      }
     format_amount();
     gate_pass();
     auto_complete();
@@ -589,56 +648,7 @@ function gate_pass(){
      });
 }
 
-function budget(name,expenses=false){ 
 
-      var $temp="";
-      var step2=["Marketing Expenses",
-                  "Other Marketing Expenses",
-                  "Other Related Marketing Expenses",
-                  "Salaries other than Labor", 
-                  "Other Administrative Expenses",
-                  "Registration, Fees, Licenses",
-                  "Others"];
-
-      var specific=(name=="production_cost")?"data='production_name'": "";
-
-      var body=$("#"+name+"_table"),
-                  type="text",
-                  classes="form-control-sm form-control",        
-                  $item="<div class='form-group'><input "+specific+" type='"+type+"' required class='"+classes+"' name='"+name+"[]'/> </div>",
-                  $amount="<div class='form-group'><input data='"+name+"_total' type='"+type+"' required class='"+classes+" amount_' name='"+name+"_amount[]' value='0'/></div> ",
-                  $delete="<h5 class='red delete'>&Cross;</h5>";
-
-      if(expenses){
-          if($("#"+name+"_table tbody tr").length==0){
-              step2.forEach(function(exp) {
-                   $temp ="<tr>"+
-                              " <td>"+$delete+"</td>"+                        
-                              " <td><div class='form-group'><input type='"+type+"' required class='"+classes+"' name='"+name+"[]' value='"+exp+"'/> </div></td>"+
-                              " <td>"+$amount+"</td>"+
-                            "</tr>";
-                  $(body).append($temp);
-              
-              }); 
-          }         
-          format_amount();
-          delete_row();
-      }
-
-      $("#"+name+"").click(function(){
-             $temp ="<tr>"+
-                          " <td>"+$delete+"</td>"+                        
-                          " <td>"+$item+"</td>"+
-                          " <td>"+$amount+"</td>"+
-                        "</tr>";
-              $(body).prepend($temp);
-              format_amount();
-              auto_complete();  
-              delete_row();
-
-             
-      }); 
-}
 
 </script>
 <?php } else { echo UnauthorizedOpenTemp(); } ?>

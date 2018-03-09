@@ -1,6 +1,6 @@
 <?php require_once('layout/header.php');?>   
  
- <link href="assets/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+ 
 <?php require_once('layout/nav.php');?>
 
 <style>
@@ -26,6 +26,20 @@
            }
     #myBtna:hover{
         background-color: #555;
+    }
+
+    .show {
+        background: #e9e8e8;
+        padding: 20px;
+        border: 1px solid #007bff;
+        margin-top: 7px;
+    }
+    a[aria-expanded=true] {
+        padding: 10px;
+        background: #007bff;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        color: white;
     }
 </style>
  <button onclick="topFunction()" id="myBtn" title="Back to Top"><b>&uarr;</b> Top</button>

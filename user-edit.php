@@ -19,8 +19,10 @@
 
         if($id!=''){
             $_user_type=$_SESSION['user_type'];
-            if( $user_type==1){
-                $where_clause=" ";
+            if( $_user_type==1){
+                 $where_clause=" ";
+            }else if($_user_type==7){
+                 $where_clause=" AND (user_type_id=".$_user_type." OR user_type_id='2') ";
             }else{
                 $where_clause=" AND user_type_id=".$_user_type;
             }

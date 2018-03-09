@@ -40,7 +40,7 @@
                                     INNER JOIN customer c ON c.customer_id =sr.customer_id
                                     INNER JOIN products p ON p.product_id=ss.product_id
                                     INNER JOIN product_price pp ON pp.price_id=p.product_price
-                                    WHERE ss.paid='N' AND sr.or_number ='' AND transaction_id='$id' AND c.customer_id=$customer_id_;");
+                                    WHERE ss.paid='N' AND sr.or_number ='' AND transaction_id='$id' AND c.customer_id=$customer_id_ GROUP BY sr.sales_id;");
         
         $rental=$crud->getData("SELECT 
                                   ri.transaction_id,   

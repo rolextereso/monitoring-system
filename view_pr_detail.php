@@ -250,7 +250,7 @@
                                   <td class="border-t border-l">&nbsp;</td>   
                                   <td class="border-t border-l">&nbsp;<?php echo $rows['unit'];?></td>                      
                                   <td colspan="2" class="border-t border-l" style="width:30%;">&nbsp;<?php echo $rows['item_description'];?></td>   
-                                  <td class="border-t border-l"> &nbsp;<?php echo $rows['qty'];?></td>   
+                                  <td class="border-t border-l"> &nbsp;<?php echo number_format($rows['qty'],2);?></td>   
                                   <td class="border-t border-l">&nbsp;</td>   
                                   <td class="border-t border-l">&nbsp;</td>                                                        
                               </tr>

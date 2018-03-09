@@ -18,7 +18,7 @@ if(isset($_POST['pr_no'])){
 		//$funds	     = $crud->escape_string($_POST['funds']);
 		$unit        = $_POST['unit'];
 		$item_description       = $_POST['item_description'];
-		$quantity       = $_POST['quantity'];
+		$quantity       = str_replace(',', '', $_POST['quantity']);
 
 		$result=array();
 

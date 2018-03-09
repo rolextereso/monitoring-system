@@ -130,7 +130,7 @@ try {
     }
 } catch (err) {}
 setIdleTimeout(60000);
-setAwayTimeout(120000);
+setAwayTimeout(300000);
 document.onIdle = function() {
    if(getCookie("away")==""){
         setCookie("away","away",1);       
@@ -154,11 +154,12 @@ document.onBack = function(a, b) {
 };
 
 function auto_log(){
-          
+                get_logout(true);
                 bootbox.alert({
-                    message: "You been away for the last two minutes. The system will redirect you to login page",
+                    message: "You been away for the last five minutes. The system will redirect you to login page",
                     callback: function () {
-                         get_logout();
+                         delete_cookie();                                                   
+                         window.location.href="login.php";  
                     }
                 });
 }
@@ -175,7 +176,7 @@ function logout(){
                 });
 } 
 
-function get_logout(){
+function get_logout(auto=false){
            var url = "phpscript/login/logout.php";
           // POST values in the background the the script URL
           $.ajax({
@@ -183,7 +184,7 @@ function get_logout(){
               url: url,                                                                      
               success: function (data)
               {
-                 if(data=="logout"){ 
+                 if(data=="logout" && auto==false){ 
                       delete_cookie();                                                   
                       window.location.href="login.php";                                                   
                  }

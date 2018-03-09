@@ -19,6 +19,8 @@ $columns = array(
 $where_="WHERE u.user_id=".$_SESSION['user_id']."  AND IGP='9' ";
 if($_SESSION['user_type']=='1'){
 	$where_=" WHERE IGP='9' ";
+}else if($_SESSION['user_type']=='7'){
+	$where_=" WHERE (u.user_id=".$_SESSION['user_id']."  OR u.user_type='2') AND IGP='9' ";
 }
 
 //fetching data in descending order (lastest entry first)
